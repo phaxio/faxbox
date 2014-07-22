@@ -123,6 +123,7 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
 		'Cartalyst\Sentry\SentryServiceProvider',
+        'Faxbox\Providers\RepositoryServiceProvider',
 
 	),
 
