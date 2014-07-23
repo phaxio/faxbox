@@ -124,6 +124,7 @@ return array(
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
 		'Cartalyst\Sentry\SentryServiceProvider',
         'Faxbox\Providers\RepositoryServiceProvider',
+        'Faxbox\Providers\FormServiceProvider',
 
 	),
 

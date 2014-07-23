@@ -1,7 +1,7 @@
 <?php
 
 use Faxbox\Repositories\Session\SessionInterface;
-// todo create LoginForm class
+use Faxbox\Service\Form\Login\LoginForm;
 
 class SessionController extends BaseController {
 

@@ -30,4 +30,9 @@ class Fax extends Eloquent {
     {
         return $this->hasOne('Faxbox\Recipient');
     }
+    
+    public function phone()
+    {
+        return $this->hasOne('Faxbox\Phone');
+    }
 }

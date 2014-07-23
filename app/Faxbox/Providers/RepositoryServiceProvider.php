@@ -2,7 +2,6 @@
 
 namespace Faxbox\Providers;
 
-use Faxbox\Repositories\Session\SentrySession;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -18,32 +17,37 @@ class RepositoryServiceProvider extends ServiceProvider
         
         
         $app->bind(
-            'Faxbox\Repositories\FaxRepositoryInterface',
+            'Faxbox\Repositories\Fax\FaxInterface',
             'Faxbox\Repositories\Fax\EloquentFaxRepository'
         );
 
         $app->bind(
-            'Faxbox\Repositories\GroupRepositoryInterface',
+            'Faxbox\Repositories\Group\GroupInterface',
             'Faxbox\Repositories\Group\SentryGroup'
         );
 
         $app->bind(
-            'Faxbox\Repositories\RecipientRepositoryInterface',
+            'Faxbox\Repositories\Phone\PhoneInterface',
+            'Faxbox\Repositories\Phone\EloquentPhoneRepository'
+        );
+
+        $app->bind(
+            'Faxbox\Repositories\Recipient\RecipientInterface',
             'Faxbox\Repositories\Recipient\EloquentRecipientRepository'
         );
 
         $app->bind(
-            'Faxbox\Repositories\SessionInterface',
+            'Faxbox\Repositories\Session\SessionInterface',
             'Faxbox\Repositories\Session\SentrySession'
         );
 
         $app->bind(
-            'Faxbox\Repositories\SettingRepositoryInterface',
+            'Faxbox\Repositories\Setting\SettingInterface',
             'Faxbox\Repositories\Setting\EloquentSettingRepository'
         );
 
         $app->bind(
-            'Faxbox\Repositories\UserInterface',
+            'Faxbox\Repositories\User\UserInterface',
             'Faxbox\Repositories\User\SentryUser'
         );
     }
