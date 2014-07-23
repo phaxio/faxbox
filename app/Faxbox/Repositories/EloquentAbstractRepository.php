@@ -1,10 +1,10 @@
 <?php
 
-namespace Faxbox\Repositories\Eloquent;
+namespace Faxbox\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 
-abstract class AbstractRepository
+abstract class EloquentAbstractRepository
 {
     /**
      * The model to execute queries on.
