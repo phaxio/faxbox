@@ -84,6 +84,12 @@ class SentryUser implements UserInterface {
                         $user->removeGroup($group);
                     }
                 }
+                
+                // Update User permissions
+                $availablePermissions = array_column(
+                    \Config::get('faxbox.permissions'), 'name'
+                );
+                
             }
 
             // Update the user

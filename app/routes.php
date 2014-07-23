@@ -18,5 +18,5 @@ Route::resource('sessions', 'SessionController', array('only' => array('create',
 
 Route::get('/', function()
 {
-	return View::make('hello');
+	return Sentry::findUserById(1)->toArray();
 });

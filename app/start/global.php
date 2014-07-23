@@ -79,3 +79,5 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+$app['Cartalyst\Sentry\Sentry'] = $app['sentry'];

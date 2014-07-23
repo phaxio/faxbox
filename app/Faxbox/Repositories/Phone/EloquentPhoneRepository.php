@@ -13,4 +13,9 @@ class EloquentPhoneRepository extends EloquentAbstractRepository implements Phon
     {
         $this->model = $phone;
     }
+    
+    public function all()
+    {
+        return $this->model->all()->toArray();
+    }
 } 

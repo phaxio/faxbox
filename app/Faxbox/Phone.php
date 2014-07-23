@@ -11,6 +11,8 @@ class Phone extends Eloquent {
      * @var string
      */
     protected $table = 'phones';
+    
+    
 
     protected $fillable = [
         'description',
