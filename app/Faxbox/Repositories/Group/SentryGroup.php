@@ -4,11 +4,13 @@ use Cartalyst\Sentry\Sentry;
 
 class SentryGroup implements GroupInterface {
 
+    /**
+     * The sentry object 
+     * 
+     * @var Sentry
+     */
     protected $sentry;
 
-    /**
-     * Construct a new SentryGroup Object
-     */
     public function __construct(Sentry $sentry)
     {
         $this->sentry = $sentry;
@@ -21,17 +23,17 @@ class SentryGroup implements GroupInterface {
      */
     public function store($data)
     {
-        $result = array();
+        $result = [];
         try {
             // Create the group
-            $group = $this->sentry->createGroup(array(
+            $group = $this->sentry->createGroup([
                 'name'        => e($data['name']),
-                'permissions' => array(
+                'permissions' => [
                     'update_settings' => array_key_exists('update_settings', $data) ? 1 : 0,
                     'purchase_numbers' => array_key_exists('purchase_numbers', $data) ? 1 : 0,
                     'send_fax' => array_key_exists('send_fax', $data) ? 1 : 0
-                ),
-            ));
+                ],
+            ]);
 
             $result['success'] = true;
             $result['message'] = trans('groups.created');
@@ -65,11 +67,11 @@ class SentryGroup implements GroupInterface {
 
             // Update the group details
             $group->name = e($data['name']);
-            $group->permissions = array(
+            $group->permissions = [
                 'update_settings' => array_key_exists('update_settings', $data) ? 1 : 0,
                 'purchase_numbers' => array_key_exists('purchase_numbers', $data) ? 1 : 0,
                 'send_fax' => array_key_exists('send_fax', $data) ? 1 : 0
-            );
+            ];
 
             // Update the group
             if ($group->save())

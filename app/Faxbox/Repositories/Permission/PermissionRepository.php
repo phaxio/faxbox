@@ -1,28 +1,32 @@
 <?php namespace Faxbox\Repositories\Permission;
 
+use \Cartalyst\Sentry\Users\UserInterface;
 Use Config;
 use Faxbox\Repositories\Phone\PhoneInterface;
 
 class PermissionRepository implements PermissionInterface{
 
     /**
-     * @var The raw permissions config array
+     * The raw permissions config array
+     * 
+     * @var array
      */
     protected $raw;
     
     /**
-     * @var array avaiable permissions taken from the config
+     * Available permissions taken from the config
+     * 
+     * @var array
      */
     protected $available;
 
     /**
-     * @var PhoneInterface The phone repository
+     * The phone repository
+     * 
+     * @var PhoneInterface 
      */
     protected $phones;
     
-    /**
-     * Construct a new SentryUser Object
-     */
     public function __construct(Config $config, PhoneInterface $phone)
     {
         $this->raw = Config::get('faxbox.permissions');
@@ -30,12 +34,24 @@ class PermissionRepository implements PermissionInterface{
         // We need this to generate our dynamic permissions
         $this->phones = $phone;
         
-//        $this->available = $this->all();
+        $this->available = $this->all();
     }
     
     public function all()
     {
         return $this->_getFormatted();
+    }
+    
+    public function allowedForPhone($permission, $number, UserInterface $user)
+    {
+        $phonePermission = $this->_makePhonePermissionName($permission, $number);
+        
+        return $user->hasPermission($phonePermission);
+    }
+    
+    private function _makePhonePermissionName($permission, $number)
+    {
+        return "phone_".$permission."_".$number;
     }
     
     private function _getFormatted()
@@ -46,7 +62,7 @@ class PermissionRepository implements PermissionInterface{
         {
             if(strpos($permission['name'], 'phone_') !== false)
             {
-                // We need to make a permission type for each phone number
+                // We need to return a permission type for each phone number
                 foreach($this->phones->all() as $phone)
                 {
                     $id = sprintf($permission['name'], $phone['number']);

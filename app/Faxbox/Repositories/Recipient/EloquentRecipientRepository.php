@@ -5,9 +5,6 @@ use Faxbox\Recipient;
 
 class EloquentRecipientRepository extends EloquentAbstractRepository implements RecipientInterface {
 
-    /**
-     * Construct a new SentryUser Object
-     */
     public function __construct(Recipient $recipient)
     {
         $this->model = $recipient;

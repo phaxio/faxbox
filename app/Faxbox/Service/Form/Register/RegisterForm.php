@@ -1,9 +1,9 @@
-<?php namespace Faxbox\Service\Form\Login;
+<?php namespace Faxbox\Service\Form\Register;
 
 use Faxbox\Service\Validation\ValidableInterface;
-use Faxbox\Repositories\Session\SessionInterface;
+use Faxbox\Repositories\User\UserInterface;
 
-class LoginForm {
+class RegisterForm {
 
     /**
      * Form Data
@@ -24,17 +24,17 @@ class LoginForm {
      *
      * @var \Faxbox\Repositories\Session\SessionInterface
      */
-    protected $session;
+    protected $user;
 
-    public function __construct(ValidableInterface $validator, SessionInterface $session)
+    public function __construct(ValidableInterface $validator, UserInterface $user)
     {
         $this->validator = $validator;
-        $this->session = $session;
+        $this->user = $user;
 
     }
 
     /**
-     * Create a new session
+     * Create a new user
      *
      * @return integer
      */
@@ -45,7 +45,7 @@ class LoginForm {
             return false;
         }
 
-        return $this->session->store($input);
+        return $this->user->store($input);
     }
 
     /**

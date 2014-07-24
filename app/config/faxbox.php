@@ -7,7 +7,12 @@ return [
 	| Permissions
 	|--------------------------------------------------------------------------
 	|
-	| todo: explain permissions
+    | WARNING: Don't change these unless you know what you're doing. It could 
+    | break everything!
+    | 
+	| This sets up the available permissions for the system. Any permission that
+    | contains the string "phone_" in the name will be applied to each phone 
+    | number in the "phones" table. 
 	|
 	*/
     
@@ -18,7 +23,6 @@ return [
             'short' => 'Administrator',
             'description' => 'Has unrestricted access to everything',
             'restrictedRoutes' => [
-                'fax.send'
             ]
         ],
         
@@ -45,7 +49,7 @@ return [
 
         [
             // Manage a phone number (currently only delete)
-            'name' => 'phone_admin_%d',
+            'name' => 'phone_manage_%d',
             'short' => 'Manage +%d',
             'description' => 'Allows user to delete the phone number +%d',
             'restrictedRoutes' => [
