@@ -32,6 +32,10 @@ Route::post('users/{id}/change', 'UserController@change');
 Route::get('users/{id}/reset/{code}', 'UserController@reset')->where('id', '[0-9]+');
 Route::resource('users', 'UserController');
 
+Route::get('dashboard', [ 'as' => 'dashboard', 'before' => 'auth', function(){ 
+    return View::make('layouts.main')->nest('content', 'dashboard.index');
+}]);
+
 // Fax Routes
 Route::resource('faxes', 'FaxController', array('only' => array('create', 'store', 'show')));
 

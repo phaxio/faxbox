@@ -46,7 +46,7 @@ class SessionController extends BaseController {
             ));
 
             // Success!
-            return Redirect::to('/');
+            return Redirect::intended('dashboard');
 
         } else {
             Session::flash('error', $result['message']);
