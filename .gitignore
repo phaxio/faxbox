@@ -1,5 +1,5 @@
-/bootstrap/compiled.php
-/vendor
+/faxbox//bootstrap/compiled.php
+/faxbox/vendor
 composer.phar
 composer.lock
 .env.*.php
