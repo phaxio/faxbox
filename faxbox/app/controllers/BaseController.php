@@ -2,6 +2,8 @@
 
 class BaseController extends Controller {
 
+    protected $layout = 'layouts.main';
+    
 	/**
 	 * Setup the layout used by the controller.
 	 *

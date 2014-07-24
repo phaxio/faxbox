@@ -45,7 +45,4 @@ Route::resource('phones', 'PhoneController');
 Route::resource('groups', 'GroupController');
 
 // Our home route
-Route::get('/', ['as' => 'home', function()
-{
-	return Sentry::getUser();
-}]);
+Route::get('/', ['as' => 'home', 'before' => 'auth', 'uses' => 'HomeController@index']);
