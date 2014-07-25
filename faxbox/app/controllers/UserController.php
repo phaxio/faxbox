@@ -31,6 +31,8 @@ class UserController extends BaseController {
         ForgotPasswordForm $forgotPasswordForm,
         ChangePasswordForm $changePasswordForm)
     {
+        parent::__construct();
+        
         $this->user = $user;
         $this->group = $group;
         $this->registerForm = $registerForm;

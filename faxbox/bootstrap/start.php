@@ -26,7 +26,7 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('Nicks-MacbookPro-2.local'),
+	'local' => array('Nicks-MacbookPro-2.local', 'vagrant-centos65.vagrantup.com'),
 
 ));
 

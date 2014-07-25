@@ -14,10 +14,16 @@ class HomeController extends BaseController {
 	|	Route::get('/', 'HomeController@showWelcome');
 	|
 	*/
+    
+    public function __construct()
+    {
+        parent::__construct();
+        $this->beforeFilter('can:do:stuff');
+    }
 
 	public function index()
 	{
-		return Redirect::to('users');
+		return Redirect::to('dashboard');
 	}
 
 }

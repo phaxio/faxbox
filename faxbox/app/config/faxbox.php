@@ -4,7 +4,7 @@ return [
 
     /*
 	|--------------------------------------------------------------------------
-	| Permissions
+	| Static Permissions
 	|--------------------------------------------------------------------------
 	|
     | WARNING: Don't change these unless you know what you're doing. It could 
@@ -15,68 +15,63 @@ return [
     | number in the "phones" table. 
 	|
 	*/
-    
     'permissions' => [
-        [
-            // Sending Faxes
-            'name' => 'admin',
-            'short' => 'Administrator',
-            'description' => 'Has unrestricted access to everything',
-            'restrictedRoutes' => [
+    
+        'staticPermissions' => [
+            [
+                // Sending Faxes
+                'id' => 'admin',
+                'name' => 'Administrator',
+                'description' => 'Has unrestricted access to everything'
+            ],
+            
+            [
+                // Sending Faxes
+                'id' => 'send_fax',
+                'name' => 'Send Faxes',
+                'description' => 'Allows users to send faxes.'
+            ],
+    
+            [
+                // Updating application settings
+                'id' => 'update_settings',
+                'name' => 'Update Settings',
+                'description' => 'Allows users to update application settings (ie. API Key, SMTP, etc).'
+            ],
+    
+            [  
+                // Purchase Numbers
+                'id' => 'purchase_numbers',
+                'name' => 'Purchase Numbers',
+                'description' => 'Allows users to purchase phone numbers from Phaxio.'
             ]
         ],
         
-        [
-            // Sending Faxes
-            'name' => 'send_fax',
-            'short' => 'Send Faxes',
-            'description' => 'Allows users to send faxes.',
-            'restrictedRoutes' => [
-                'fax.send'
-            ]
-        ],
-
-        [
-            // Manage a fax (view/delete)
-            'name' => 'phone_view_%d',
-            'short' => 'Manage faxes from +%d',
-            'description' => 'Allows user to manage a fax for the number +%d',
-            'restrictedRoutes' => [
-                'fax.view',
-                'fax.delete'
-            ]
-        ],
-
-        [
-            // Manage a phone number (currently only delete)
-            'name' => 'phone_manage_%d',
-            'short' => 'Manage +%d',
-            'description' => 'Allows user to delete the phone number +%d',
-            'restrictedRoutes' => [
-                'phone.delete'
-            ]
-        ],
-
-        [
-            // Updating application settings
-            'name' => 'update_settings',
-            'short' => 'Update Settings',
-            'description' => 'Allows users to update application settings (ie. API Key, SMTP, etc).',
-            'restrictedRoutes' => [
-                'settings.update'
-            ]
-        ],
-
-        [  
-            // Purchase Numbers
-            'name' => 'purchase_numbers',
-            'short' => 'Purchase Numbers',
-            'description' => 'Allows users to purchase phone numbers from Phaxio',
-            'restrictedRoutes' => [
-                'number.purchase'
+        'dynamicPermissions' => [
+            [
+                'className' => 'Faxbox\Repositories\Phone\PhoneInterface',
+                'niceName' => 'Phone Numbers',
+                'itemLevelPermissions' => [
+                    [
+                        'id' => 'manage',
+                        'name' => 'Manage {number}',
+                        'description' => 'Allows user to delete {number}.',
+                    ],               
+                    [
+                        'id' => 'view',
+                        'name' => 'View faxes from {number}',
+                        'description' => 'Allows user to view a fax for the number {number}.',
+                    ]
+                ],
+                'classLevelPermissions' => [
+                    [
+                        'id' => 'admin',
+                        'name' => 'Administrate all phone numbers',
+                        'description' => 'Allows user unrestricted access to all phone numbers. This will override any individual phone permissions.',
+                    ]
+                ]
             ]
         ]
-        
     ]
     
 ];

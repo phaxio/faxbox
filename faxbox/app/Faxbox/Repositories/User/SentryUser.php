@@ -2,6 +2,7 @@
 namespace Faxbox\Repositories\User;
 
 use Cartalyst\Sentry\Sentry;
+//use Faxbox\Repositories\Permission\PermissionInterface as Permissions;
 use Illuminate\Support\Str;
 
 class SentryUser implements UserInterface {
@@ -14,8 +15,16 @@ class SentryUser implements UserInterface {
     public function __construct(Sentry $sentry)
     {
         $this->sentry = $sentry;
+        $this->permissions = \App::make('Faxbox\Repositories\Permission\PermissionInterface');
     }
-
+    
+    public function isAdmin($id)
+    {
+        $admins = $this->sentry->findGroupByName('admins');
+        $user = $this->sentry->findUserById($id);
+        return $user->inGroup($admins) || $user->hasAccess('admin');
+    }
+    
     /**
      * Store a newly created resource in storage.
      *

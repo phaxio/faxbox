@@ -11,6 +11,8 @@
 |
 */
 
+use Faxbox\Repositories\Permission\PermissionRepository as Permissions;
+
 App::before(function($request)
 {
 	//
@@ -69,6 +71,70 @@ Route::filter('inGroup', function($route, $request, $value)
         Session::flash('error', trans('groups.notfound'));
         return Redirect::guest('login');
     }
+});
+
+Route::filter('hasAccess', function($route, $request, $value)
+{
+    
+    if (!Sentry::check()) return Redirect::guest('login');
+    try
+    {
+        $user = Sentry::getUser();
+        $adminGroup = Sentry::findGroupByName('admins');
+        
+        if( $user->hasAccess($value) ||
+            $user->hasAccess('admin') ||
+            $user->inGroup($adminGroup)
+        ) return;
+    
+        Session::flash('error', trans('users.noaccess'));
+        return Redirect::route('dashboard');
+    }
+    catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+    {
+        Session::flash('error', trans('users.notfound'));
+        return Redirect::guest('login');
+    }
+
+    catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
+    {
+        Session::flash('error', trans('groups.notfound'));
+        return Redirect::guest('login');
+    }
+});
+
+Route::filter('can', function($route, $request, $value)
+{
+    if (!Sentry::check()) return Redirect::guest('login');
+    
+    list($class, $permission) = explode('_', $value);
+
+    try
+    {
+        $user = Sentry::getUser();
+        $adminGroup = Sentry::findGroupByName('admins');
+
+        if ( $user->hasAccess($value) || 
+             $user->hasAccess(Permissions::name($class, 'admin')) ||
+             $user->hasAccess('admin') ||
+             $user->inGroup($adminGroup)
+        ) return;
+
+        Session::flash('error', trans('users.noaccess'));
+        return Redirect::route('dashboard');
+    }
+    catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+    {
+        Session::flash('error', trans('users.notfound'));
+        return Redirect::guest('login');
+    }
+
+    catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
+    {
+        Session::flash('error', trans('groups.notfound'));
+        return Redirect::guest('login');
+    }
+    
 });
 
 /*

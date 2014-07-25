@@ -19,65 +19,113 @@ class PermissionRepository implements PermissionInterface{
      * @var array
      */
     protected $available;
-
-    /**
-     * The phone repository
-     * 
-     * @var PhoneInterface 
-     */
-    protected $phones;
     
-    public function __construct(Config $config, PhoneInterface $phone)
+    public function __construct(Config $config)
     {
         $this->raw = Config::get('faxbox.permissions');
-        
-        // We need this to generate our dynamic permissions
-        $this->phones = $phone;
         
         $this->available = $this->all();
     }
     
     public function all()
     {
-        return $this->_getFormatted();
+        return $this->_getAvailablePermissions();
     }
     
-    public function allowedForPhone($permission, $number, UserInterface $user)
+    public function resource($resourceClass)
     {
-        $phonePermission = $this->_makePhonePermissionName($permission, $number);
         
-        return $user->hasPermission($phonePermission);
     }
     
-    private function _makePhonePermissionName($permission, $number)
-    {
-        return "phone_".$permission."_".$number;
-    }
+//    public function allowedForPhone($permission, $number, UserInterface $user)
+//    {
+//        $phonePermission = $this->_makePhonePermissionName($permission, $number);
+//        
+//        return $user->hasPermission($phonePermission);
+//    }
     
-    private function _getFormatted()
+    public static function name($resourceClass, $permission, $id = null)
     {
-        $formattedPermissions = [];
+        $name = $resourceClass."_".$permission;
+
+        // Don't need the ID if the permission type is admin
+        if($permission == 'admin') return $name;
         
-        foreach($this->raw as $permission)
+        $name = $id ? $name."_".$id : $name;
+        
+        return $name;
+    }
+    
+    private function _getAvailablePermissions()
+    {
+        $permissions = [];
+        
+        foreach($this->raw['staticPermissions'] as $permission)
         {
-            if(strpos($permission['name'], 'phone_') !== false)
+            // This is just a normal permission, so add it
+            $permissions['static'][] = $permission;
+        }
+
+        $i = 0;
+        foreach($this->raw['dynamicPermissions'] as $resource)
+        {
+            $resourceRepo = \App::make($resource['className']);
+            $classPermissions = [];
+            
+            // We need to return a permission type for each item
+            foreach($resourceRepo->all() as $item)
             {
-                // We need to return a permission type for each phone number
-                foreach($this->phones->all() as $phone)
+                foreach($resource['itemLevelPermissions'] as $permission)
                 {
-                    $id = sprintf($permission['name'], $phone['number']);
-                    $formattedPermissions[$id]['short'] = sprintf($permission['short'], $phone['number']);
-                    $formattedPermissions[$id]['description'] = sprintf($permission['description'], $phone['number']);
+                    $classPermissions['itemLevel'][] = $this->_formatPermission($permission, $resource, $item);
                 }
-            } else {
-                // This is just a normal permission, so add it
-                $id = $permission['name'];
-                $formattedPermissions[$id]['short'] = $permission['short'];
-                $formattedPermissions[$id]['description'] = $permission['description'];
+            }
+
+            foreach($resource['classLevelPermissions'] as $permission)
+            {
+                $classPermissions['classLevel'][] = $this->_formatPermission($permission, $resource, $item);
+            }
+            
+            $permissions['dynamic'][$i]['name'] = $resource['niceName'];
+            $permissions['dynamic'][$i]['permissions'] = $classPermissions;
+            $i++;
+        }
+        
+        
+        return $permissions;
+    }
+    
+    private function _formatPermission($permission, $resource, $item = null)
+    {
+        $id = $item['id'] ?: null;
+        $permission['id'] = static::name($resource['className'], $permission['id'], $id);
+        $permission['name'] = $this->_parseStringFromModel($permission['name'], $item);
+        $permission['description'] = $this->_parseStringFromModel($permission['description'], $item);
+
+        return $permission;
+    }
+    
+    private function _extractColumnName($string)
+    {
+        $columns = [];
+        preg_match_all('/{([^}]*)}/', $string, $columns);
+        
+        if(isset($columns[1]))
+            return $columns[1];
+    }
+    
+    private function _parseStringFromModel($string, $model)
+    {
+        if($columns = $this->_extractColumnName($string))
+        {
+            foreach ($columns as $col)
+            {
+                $subject = "{" . $col . "}";
+                $string  = str_replace($subject, $model[$col], $string);
             }
         }
         
-        return $formattedPermissions;
+        return $string;
     }
     
 

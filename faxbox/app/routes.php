@@ -37,7 +37,7 @@ Route::get('dashboard', [ 'as' => 'dashboard', 'before' => 'auth', function(){
 }]);
 
 // Fax Routes
-Route::resource('faxes', 'FaxController', array('only' => array('create', 'store', 'show')));
+Route::resource('faxes', 'FaxController', array('only' => array('create', 'store', 'show', 'index')));
 
 // Settings Routes
 Route::resource('settings', 'SettingController');

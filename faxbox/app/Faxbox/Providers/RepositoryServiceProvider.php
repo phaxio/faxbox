@@ -39,7 +39,7 @@ class RepositoryServiceProvider extends ServiceProvider
             'Faxbox\Repositories\Setting\EloquentSettingRepository'
         );
 
-        $app->bind(
+        $app->singleton(
             'Faxbox\Repositories\Permission\PermissionInterface',
             'Faxbox\Repositories\Permission\PermissionRepository'
         );
