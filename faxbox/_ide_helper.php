@@ -13709,5 +13709,58 @@ namespace {
 		 }
 
 	}
+	class Permission extends \Faxbox\Facades\Permission{
+		/**
+		 * 
+		 *
+		 * @static 
+		 */
+		 public static function __construct($config){
+			//Method inherited from \Faxbox\Repositories\Permission\PermissionRepository
+			 \Faxbox\Repositories\Permission\PermissionRepository::__construct($config);
+		 }
+
+		/**
+		 * 
+		 *
+		 * @static 
+		 */
+		 public static function all(){
+			//Method inherited from \Faxbox\Repositories\Permission\PermissionRepository
+			 \Faxbox\Repositories\Permission\PermissionRepository::all();
+		 }
+
+		/**
+		 * Returns an array of all the available permission ID's that we can use.
+		 *
+		 * @return array
+		 * @static 
+		 */
+		 public static function allIds(){
+			//Method inherited from \Faxbox\Repositories\Permission\PermissionRepository
+			return \Faxbox\Repositories\Permission\PermissionRepository::allIds();
+		 }
+
+		/**
+		 * 
+		 *
+		 * @static 
+		 */
+		 public static function resource($resourceClass){
+			//Method inherited from \Faxbox\Repositories\Permission\PermissionRepository
+			 \Faxbox\Repositories\Permission\PermissionRepository::resource($resourceClass);
+		 }
+
+		/**
+		 * 
+		 *
+		 * @static 
+		 */
+		 public static function name($resourceClass, $permission, $id = null){
+			//Method inherited from \Faxbox\Repositories\Permission\PermissionRepository
+			 \Faxbox\Repositories\Permission\PermissionRepository::name($resourceClass, $permission, $id);
+		 }
+
+	}
 }
 

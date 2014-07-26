@@ -22,9 +22,10 @@ class PhoneController extends BaseController {
         $manage = Permissions::name($resource, 'manage', $id);
         $view = Permissions::name($resource, 'view', $id);
 
+        $this->beforeFilter('auth');
+        $this->beforeFilter('accessResource:'.$view, [ 'only' => [ 'show' ]]);
+        $this->beforeFilter('accessResource:'.$manage, [ 'only' => [ 'delete' ]]);
         $this->beforeFilter('hasAccess:purchase_numbers', [ 'only' => [ 'create', 'store' ]]);
-        $this->beforeFilter('can:'.$manage, [ 'only' => [ 'delete' ]]);
-        $this->beforeFilter('can:'.$view, [ 'only' => [ 'show' ]]);
 	}
     
     public function index()

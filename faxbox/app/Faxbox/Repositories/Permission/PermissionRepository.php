@@ -31,6 +31,25 @@ class PermissionRepository implements PermissionInterface{
     {
         return $this->_getAvailablePermissions();
     }
+
+    /**
+     * Returns an array of all the available permission ID's that we can use.
+     * 
+     * @return array
+     */
+    public function allIds()
+    {
+        $ids = [];
+        $flattened = array_dot($this->available);
+        
+        foreach($flattened as $key => $value)
+        {
+            if(strpos($key, '.id') !== false)
+                $ids[] = $value;
+        }
+        
+        return $ids;
+    }
     
     public function resource($resourceClass)
     {

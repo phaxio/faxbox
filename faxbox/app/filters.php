@@ -103,7 +103,7 @@ Route::filter('hasAccess', function($route, $request, $value)
     }
 });
 
-Route::filter('can', function($route, $request, $value)
+Route::filter('accessResource', function($route, $request, $value)
 {
     if (!Sentry::check()) return Redirect::guest('login');
     

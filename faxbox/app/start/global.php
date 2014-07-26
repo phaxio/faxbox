@@ -82,3 +82,8 @@ require app_path().'/observables.php';
 require app_path().'/filters.php';
 
 $app['Cartalyst\Sentry\Sentry'] = $app['sentry'];
+
+Validator::resolver(function($translator, $data, $rules, $messages)
+{
+    return new \Faxbox\Service\Validation\CustomLaravelValidator($translator, $data, $rules, $messages);
+});

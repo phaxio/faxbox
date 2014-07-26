@@ -16,6 +16,7 @@ Route::get('login',  array('as' => 'login', 'uses' => 'SessionController@create'
 Route::get('logout', array('as' => 'logout', 'uses' => 'SessionController@destroy'));
 Route::resource('sessions', 'SessionController', array('only' => array('create', 'store', 'destroy')));
 
+
 // User Routes
 Route::get('users/{id}/login/{code}', 'UserController@activate')->where('id', '[0-9]+');
 Route::get('resend', array('as' => 'resendActivationForm', function()
@@ -36,17 +37,29 @@ Route::get('dashboard', [ 'as' => 'dashboard', 'before' => 'auth', function(){
     return View::make('layouts.main')->nest('content', 'dashboard.index');
 }]);
 
-// Fax Routes
+
+
+// Fax/Phone Routes
+Route::get('faxes', 'FaxController@all'); // list sent and received faxes in one view
+Route::get('faxes/sent', 'FaxController@index');
+Route::get('faxes/received', 'PhoneController@index');
+Route::get('faxes/received/{number}', 'PhoneController@show');
+
 Route::resource('faxes', 'FaxController', array('only' => array('create', 'store', 'show', 'index')));
+Route::resource('phone', 'PhoneController');
+
 
 // Settings Routes
 Route::resource('settings', 'SettingController');
 
-// Phone Routes
-Route::resource('phones', 'PhoneController');
 
 // Group Routes
 Route::resource('groups', 'GroupController');
 
+
 // Our home route
 Route::get('/', ['as' => 'home', 'before' => 'auth', 'uses' => 'HomeController@index']);
+
+Route::post('test', function(){
+    dd(Input::all());
+});
