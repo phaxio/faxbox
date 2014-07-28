@@ -7,19 +7,24 @@ use Faxbox\Service\Form\Group\GroupForm;
 class GroupController extends BaseController {
 
     protected $permissions;
-    protected $gourps;
-    
-	public function __construct(PermissionInterface $permissions, GroupInterface $groups, GroupForm $groupForm)
-	{
+    protected $groups;
+
+    public function __construct(
+        PermissionInterface $permissions,
+        GroupInterface $groups,
+        GroupForm $groupForm
+    ) {
         parent::__construct();
-        
+
         $this->permissions = $permissions;
-        $this->groups = $groups;
-        $this->groupForm = $groupForm;
+        $this->groups      = $groups;
+        $this->groupForm   = $groupForm;
 
         $this->beforeFilter('auth');
+
+        // group administration is currently only available to the admin
         $this->beforeFilter('hasAccess:superuser');
-	}
+    }
 
     public function index()
     {
@@ -35,19 +40,22 @@ class GroupController extends BaseController {
     public function store()
     {
         // Form Processing
-        $result = $this->groupForm->save( Input::all() );
-        
-        if( $result['success'] )
+        $result = $this->groupForm->save(Input::all());
+
+        if ($result['success'])
         {
             // Success!
             Session::flash('success', $result['message']);
+
             return Redirect::action('GroupController@index');
 
-        } else {
+        } else
+        {
             Session::flash('error', $result['message']);
+
             return Redirect::action('GroupController@create')
                            ->withInput()
-                           ->withErrors( $this->groupForm->errors() );
+                           ->withErrors($this->groupForm->errors());
         }
     }
 

@@ -11,18 +11,29 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
         $this->model = $faxes;
         $this->users = $users;
     }
-    
-    public function all()
+
+    /**
+     * Gets all the sent and received faxes that a user has access to.
+     * 
+     * @param integer $userId
+     *
+     * @return array An array of faxes including the recipient, phone number, and user
+     */
+    public function findByUserId($userId)
     {
-        return $this->model->with(['recipients', 'number'])->get()->toArray();
-    }
-    
-    public function findByUserId($id)
-    {
-        return $this->model
-            ->with(['recipients', 'number'])
-            ->where('user_id', $id)
-            ->get()
-            ->toArray();
+        $permissions = $this->users->byId($userId)->getMergedPermissions();
+        $allowedPhoneIds = $this->users->allowedResourceIds('view', 'Faxbox\Repositories\Phone\PhoneInterface', $permissions);
+
+        $faxes = $this->model
+            ->with(['recipient', 'phone', 'user'])
+            ->where('user_id', '=', $userId);
+        
+        if($allowedPhoneIds === 'all')
+            $faxes->orWhere('direction', '=', 'received');
+        
+        if(is_array($allowedPhoneIds))
+            $faxes->orWhereIn('phone_id', $allowedPhoneIds);
+        
+        return $faxes->orderBy('created_at', 'DESC')->get()->toArray();
     }
 }

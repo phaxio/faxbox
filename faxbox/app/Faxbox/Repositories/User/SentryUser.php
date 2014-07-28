@@ -3,6 +3,7 @@ namespace Faxbox\Repositories\User;
 
 use Cartalyst\Sentry\Sentry;
 //use Faxbox\Repositories\Permission\PermissionInterface as Permissions;
+use Faxbox\Repositories\Permission\PermissionInterface;
 use Illuminate\Support\Str;
 
 class SentryUser implements UserInterface {
@@ -21,25 +22,12 @@ class SentryUser implements UserInterface {
     public function isAdmin($id)
     {
         $user = $this->sentry->findUserById($id);
-        return $user->hasAccess('admin');
+        return $user->hasAccess('superuser');
     }
     
-    public function resourceIds($resource)
+    public function allowedResourceIds($level, $resourceClass, $userId)
     {
-        $ids = [];
-        
-        $permissions = $this->sentry->getUser()->getMergedPermissions();
-            
-        foreach($permissions as $p)
-        {
-            if(strpos($p, $resource) !== false)
-            {
-                $p = explode("_", $p);
-                $ids[$p[1]][] = $p[2];
-            }
-        }
-        
-        return $ids;
+        return $this->permissions->allowedResourceIds($level, $resourceClass, $userId);
     }
     
     /**

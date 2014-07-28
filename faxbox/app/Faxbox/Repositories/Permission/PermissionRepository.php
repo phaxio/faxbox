@@ -51,9 +51,21 @@ class PermissionRepository implements PermissionInterface{
         return $ids;
     }
     
-    public function resource($resourceClass)
+    public function allowedResourceIds($level, $resourceClass, $permissions)
     {
+        $resourceAdmin = static::name($resourceClass, 'admin');
+
+        if(isset($permissions[$resourceAdmin]) && $permissions[$resourceAdmin] == 1)
+            return "all";
+
+        $ids = [];
+        foreach($permissions as $id => $value)
+        {
+            if(strpos($id, static::name($resourceClass, $level)) !== false && $value === 1)
+                $ids[] = explode("_", $id)[2];
+        }
         
+        return $ids;
     }
     
     public static function name($resourceClass, $permission, $id = null)

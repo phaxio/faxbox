@@ -27,6 +27,7 @@ class FaxController extends BaseController {
         } else
         {
             $faxes = $this->faxes->findByUserId($user->getId());
+            dd($faxes);
         }
 
         $this->view('fax.list', $faxes);
