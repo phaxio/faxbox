@@ -12,8 +12,17 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
         $this->users = $users;
     }
     
+    public function all()
+    {
+        return $this->model->with(['recipients', 'number'])->get()->toArray();
+    }
+    
     public function findByUserId($id)
     {
-        return $this->model->with(['recipients', 'number'])->where('user_id', $id)->get()->toArray();
+        return $this->model
+            ->with(['recipients', 'number'])
+            ->where('user_id', $id)
+            ->get()
+            ->toArray();
     }
 }

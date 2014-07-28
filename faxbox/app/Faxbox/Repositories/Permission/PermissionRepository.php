@@ -56,13 +56,6 @@ class PermissionRepository implements PermissionInterface{
         
     }
     
-//    public function allowedForPhone($permission, $number, UserInterface $user)
-//    {
-//        $phonePermission = $this->_makePhonePermissionName($permission, $number);
-//        
-//        return $user->hasPermission($phonePermission);
-//    }
-    
     public static function name($resourceClass, $permission, $id = null)
     {
         $name = $resourceClass."_".$permission;

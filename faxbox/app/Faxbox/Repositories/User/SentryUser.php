@@ -20,9 +20,26 @@ class SentryUser implements UserInterface {
     
     public function isAdmin($id)
     {
-        $admins = $this->sentry->findGroupByName('admins');
         $user = $this->sentry->findUserById($id);
-        return $user->inGroup($admins) || $user->hasAccess('admin');
+        return $user->hasAccess('admin');
+    }
+    
+    public function resourceIds($resource)
+    {
+        $ids = [];
+        
+        $permissions = $this->sentry->getUser()->getMergedPermissions();
+            
+        foreach($permissions as $p)
+        {
+            if(strpos($p, $resource) !== false)
+            {
+                $p = explode("_", $p);
+                $ids[$p[1]][] = $p[2];
+            }
+        }
+        
+        return $ids;
     }
     
     /**

@@ -40,10 +40,10 @@ Route::get('dashboard', [ 'as' => 'dashboard', 'before' => 'auth', function(){
 
 
 // Fax/Phone Routes
-Route::get('faxes', 'FaxController@all'); // list sent and received faxes in one view
 Route::get('faxes/sent', 'FaxController@index');
 Route::get('faxes/received', 'PhoneController@index');
 Route::get('faxes/received/{number}', 'PhoneController@show');
+Route::get('faxes', 'FaxController@all'); // list sent and received faxes in one view
 
 Route::resource('faxes', 'FaxController', array('only' => array('create', 'store', 'show', 'index')));
 Route::resource('phone', 'PhoneController');
@@ -51,7 +51,6 @@ Route::resource('phone', 'PhoneController');
 
 // Settings Routes
 Route::resource('settings', 'SettingController');
-
 
 // Group Routes
 Route::resource('groups', 'GroupController');

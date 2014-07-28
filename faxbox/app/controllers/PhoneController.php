@@ -30,7 +30,7 @@ class PhoneController extends BaseController {
     
     public function index()
     {
-        
+        return $this->phones->all();
     }
     
     public function create()
