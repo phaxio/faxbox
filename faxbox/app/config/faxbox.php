@@ -29,45 +29,45 @@ return [
                 // Sending Faxes
                 'id' => 'send_fax',
                 'name' => 'Send Faxes',
-                'description' => 'Allows users to send faxes.'
+                'description' => 'Can send faxes.'
             ],
     
             [
                 // Updating application settings
                 'id' => 'update_settings',
                 'name' => 'Update Settings',
-                'description' => 'Allows users to update application settings (ie. API Key, SMTP, etc).'
+                'description' => 'Can update application settings (ie. API Key, SMTP, etc).'
             ],
     
             [  
                 // Purchase Numbers
                 'id' => 'purchase_numbers',
                 'name' => 'Purchase Numbers',
-                'description' => 'Allows users to purchase phone numbers from Phaxio.'
+                'description' => 'Can purchase phone numbers from Phaxio.'
             ]
         ],
         
         'dynamicPermissions' => [
             [
                 'className' => 'Faxbox\Repositories\Phone\PhoneInterface',
-                'niceName' => 'Phone Numbers',
+                'niceName' => 'Phone Number',
                 'itemLevelPermissions' => [
                     [
                         'id' => 'manage',
                         'name' => 'Manage {number}',
-                        'description' => 'Allows user to delete {number}.',
+                        'description' => 'Can delete {number}.',
                     ],               
                     [
                         'id' => 'view',
                         'name' => 'View faxes from {number}',
-                        'description' => 'Allows user to view a fax for the number {number}.',
+                        'description' => 'Can view a fax for the number {number}.',
                     ]
                 ],
                 'classLevelPermissions' => [
                     [
                         'id' => 'admin',
                         'name' => 'Administrate all phone numbers',
-                        'description' => 'Allows user unrestricted access to all phone numbers. This will override any individual phone permissions.',
+                        'description' => 'Allows unrestricted access to all phone numbers. This will override any individual phone permissions.',
                     ]
                 ]
             ]

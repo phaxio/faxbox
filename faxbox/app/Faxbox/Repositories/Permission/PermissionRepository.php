@@ -118,8 +118,8 @@ class PermissionRepository implements PermissionInterface{
     {
         $id = $item['id'] ?: null;
         $permission['id'] = static::name($resource['className'], $permission['id'], $id);
-        $permission['name'] = $this->_parseStringFromModel($permission['name'], $item);
-        $permission['description'] = $this->_parseStringFromModel($permission['description'], $item);
+        $permission['name'] = $this->_parseStringForModel($permission['name'], $item);
+        $permission['description'] = $this->_parseStringForModel($permission['description'], $item);
 
         return $permission;
     }
@@ -133,7 +133,7 @@ class PermissionRepository implements PermissionInterface{
             return $columns[1];
     }
     
-    private function _parseStringFromModel($string, $model)
+    private function _parseStringForModel($string, $model)
     {
         if($columns = $this->_extractColumnName($string))
         {

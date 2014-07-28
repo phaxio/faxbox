@@ -28,25 +28,21 @@ class SentryGroup implements GroupInterface {
             // Create the group
             $group = $this->sentry->createGroup([
                 'name'        => e($data['name']),
-                'permissions' => [
-                    'update_settings' => array_key_exists('update_settings', $data) ? 1 : 0,
-                    'purchase_numbers' => array_key_exists('purchase_numbers', $data) ? 1 : 0,
-                    'send_fax' => array_key_exists('send_fax', $data) ? 1 : 0
-                ],
+                'permissions' => $data['permissions'],
             ]);
 
             $result['success'] = true;
             $result['message'] = trans('groups.created');
         }
-        catch (\Cartalyst\Sentry\Users\LoginRequiredException $e)
+        catch (\Cartalyst\Sentry\Groups\NameRequiredException $e)
         {
             $result['success'] = false;
-            $result['message'] = trans('groups.loginreq');
+            $result['message'] = trans('groups.namereq');
         }
-        catch (\Cartalyst\Sentry\Users\UserExistsException $e)
+        catch (\Cartalyst\Sentry\Groups\GroupExistsException $e)
         {
             $result['success'] = false;
-            $result['message'] = trans('groups.userexists');;
+            $result['message'] = trans('groups.exists');;
         }
 
         return $result;

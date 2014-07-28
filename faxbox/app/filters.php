@@ -75,17 +75,13 @@ Route::filter('inGroup', function($route, $request, $value)
 
 Route::filter('hasAccess', function($route, $request, $value)
 {
-    
     if (!Sentry::check()) return Redirect::guest('login');
+    
     try
     {
         $user = Sentry::getUser();
-        $adminGroup = Sentry::findGroupByName('admins');
-        
-        if( $user->hasAccess($value) ||
-            $user->hasAccess('admin') ||
-            $user->inGroup($adminGroup)
-        ) return;
+
+        if( $user->hasAccess($value) ) return;
     
         Session::flash('error', trans('users.noaccess'));
         return Redirect::route('dashboard');
@@ -112,12 +108,9 @@ Route::filter('accessResource', function($route, $request, $value)
     try
     {
         $user = Sentry::getUser();
-        $adminGroup = Sentry::findGroupByName('admins');
 
         if ( $user->hasAccess($value) || 
-             $user->hasAccess(Permissions::name($class, 'admin')) ||
-             $user->hasAccess('admin') ||
-             $user->inGroup($adminGroup)
+             $user->hasAccess(Permissions::name($class, 'admin'))
         ) return;
 
         Session::flash('error', trans('users.noaccess'));

@@ -42,6 +42,10 @@
 
 <div id="wrapper">
 
+<!-- Notifications -->
+@include('partials/notifications')
+<!-- ./ notifications -->
+
 @include('partials.topnav')
 
 @include('partials.sidebar')
