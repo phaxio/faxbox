@@ -11,6 +11,11 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
         $this->model = $faxes;
         $this->users = $users;
     }
+    
+    public function all()
+    {
+        return $this->model->with(['recipient', 'phone', 'user'])->orderBy('created_at', 'DESC')->get()->toArray();
+    }
 
     /**
      * Gets all the sent and received faxes that a user has access to.

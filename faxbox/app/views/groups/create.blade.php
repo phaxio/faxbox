@@ -36,15 +36,7 @@
         <div class="col-md-12">
             <h3>{{ $resource['name'] }} Permissions</h3>
             <div class="form-group">
-                @foreach($resource['permissions']['classLevel'] as $p)
-                <label class="checkbox">
-                    {{ Form::checkbox("permissions[".$p['id']."]", 1) }} {{ $p['name'] }} <span style="font-style: italic; color: #b7b7b7; font-weight: 200">{{ $p['description'] }}</span>
-                </label>
-                @endforeach
-            </div>
-
-            <div class="form-group">
-                @foreach($resource['permissions']['itemLevel'] as $p)
+                @foreach($resource['permissions'] as $p)
                 <label class="checkbox">
                     {{ Form::checkbox("permissions[".$p['id']."]", 1) }} {{ $p['name'] }} <span style="font-style: italic; color: #b7b7b7; font-weight: 200">{{ $p['description'] }}</span>
                 </label>

@@ -28,7 +28,7 @@ class PhoneController extends BaseController {
         $this->beforeFilter('auth');
         $this->beforeFilter('accessResource:' . $view, ['only' => ['show']]);
         $this->beforeFilter('accessResource:' . $manage, ['only' => ['delete']]);
-        $this->beforeFilter('hasAccess:purchase_numbers', ['only' => ['create', 'store']]);
+        $this->beforeFilter('accessResource:purchase_numbers', ['only' => ['create', 'store']]);
     }
 
     public function index()

@@ -31,6 +31,8 @@ abstract class AbstractLaravelValidator	implements ValidableInterface {
      * @var Array
      */
     protected $rules = array();
+    
+    protected $currentId = null;
 
     /**
      * Custom Validation Messages
@@ -63,6 +65,14 @@ abstract class AbstractLaravelValidator	implements ValidableInterface {
      */
     public function passes()
     {
+        //for updates and unique validation, ignore the current id or other use
+        //first you must set the currentId
+        if($this->currentId) {
+            foreach ($this->rules as $key => &$value) {
+                $value = str_replace(':current', $this->currentId, $value);
+            }
+        }
+        
         $validator = $this->validator->make($this->data, $this->rules, $this->messages);
 
         if ($validator->fails() )
@@ -73,6 +83,12 @@ abstract class AbstractLaravelValidator	implements ValidableInterface {
 
 
         return true;
+    }
+    
+    public function setCurrent($id)
+    {
+        $this->currentId = $id;
+        return $this;
     }
 
     /**

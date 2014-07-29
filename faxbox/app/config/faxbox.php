@@ -17,10 +17,10 @@ return [
 	*/
     'permissions' => [
     
-        'staticPermissions' => [
+        'static' => [
             [
                 // Sending Faxes
-                'id' => 'admin',
+                'id' => 'superuser',
                 'name' => 'Administrator',
                 'description' => 'Has unrestricted access to everything'
             ],
@@ -47,11 +47,11 @@ return [
             ]
         ],
         
-        'dynamicPermissions' => [
+        'dynamic' => [
             [
                 'className' => 'Faxbox\Repositories\Phone\PhoneInterface',
                 'niceName' => 'Phone Number',
-                'itemLevelPermissions' => [
+                'permissions' => [
                     [
                         'id' => 'manage',
                         'name' => 'Manage {number}',
@@ -63,13 +63,6 @@ return [
                         'description' => 'Can view a fax for the number {number}.',
                     ]
                 ],
-                'classLevelPermissions' => [
-                    [
-                        'id' => 'admin',
-                        'name' => 'Administrate all phone numbers',
-                        'description' => 'Allows unrestricted access to all phone numbers. This will override any individual phone permissions.',
-                    ]
-                ]
             ]
         ]
     ]

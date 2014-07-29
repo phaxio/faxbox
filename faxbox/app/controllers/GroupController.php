@@ -28,7 +28,15 @@ class GroupController extends BaseController {
 
     public function index()
     {
+        $groups = (array)$this->groups->all();
 
+        foreach ($groups as &$group)
+        {
+            $group = $group->toArray();
+            $group['permissions'] = $this->permissions->allWithChecked($group['permissions']);
+        }
+
+        $this->view('groups.list', compact('groups'));
     }
 
     public function create()
@@ -59,24 +67,41 @@ class GroupController extends BaseController {
         }
     }
 
-    public function show()
-    {
-
-    }
-
-    public function edit()
-    {
-
-    }
-
     public function update()
     {
+        // Form Processing
+        $result = $this->groupForm->update(Input::all());
+        
+        if ($result['success'])
+        {
+            // Success!
+            Session::flash('success', $result['message']);
 
+            return Redirect::action('GroupController@index');
+
+        } else
+        {
+            dd($this->groupForm->errors());
+            Session::flash('error', $result['message']);
+
+            return Redirect::action('GroupController@index')
+                           ->withInput()
+                           ->withErrors($this->groupForm->errors());
+        }
     }
 
-    public function delete()
+    public function destroy($id)
     {
-
+        if ($this->groups->destroy($id))
+        {
+            Session::flash('success', 'Group Deleted');
+            return Redirect::action('GroupController@index');
+        }
+        else
+        {
+            Session::flash('error', 'Unable to Delete Group');
+            return Redirect::action('GroupController@index');
+        }
     }
 
 }

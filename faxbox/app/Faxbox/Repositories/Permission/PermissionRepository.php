@@ -32,6 +32,27 @@ class PermissionRepository implements PermissionInterface{
         return $this->_getAvailablePermissions();
     }
 
+    public function allWithChecked($checkedPermissions)
+    {
+        $available = $this->all();
+        
+        foreach($available['static'] as &$permission)
+        {
+            if(isset($checkedPermissions[$permission['id']]) && $checkedPermissions[$permission['id']] == 1)
+                $permission['checked'] = true;
+        }
+
+        foreach($available['dynamic'] as &$resource)
+        {
+            foreach($resource['permissions'] as &$permission)
+            if(isset($checkedPermissions[$permission['id']]) && $checkedPermissions[$permission['id']] == 1)
+                $permission['checked'] = true;
+        }
+        
+        return $available;
+    }
+    
+
     /**
      * Returns an array of all the available permission ID's that we can use.
      * 
@@ -84,14 +105,14 @@ class PermissionRepository implements PermissionInterface{
     {
         $permissions = [];
         
-        foreach($this->raw['staticPermissions'] as $permission)
+        foreach($this->raw['static'] as $permission)
         {
             // This is just a normal permission, so add it
             $permissions['static'][] = $permission;
         }
 
         $i = 0;
-        foreach($this->raw['dynamicPermissions'] as $resource)
+        foreach($this->raw['dynamic'] as $resource)
         {
             $resourceRepo = \App::make($resource['className']);
             $classPermissions = [];
@@ -99,15 +120,10 @@ class PermissionRepository implements PermissionInterface{
             // We need to return a permission type for each item
             foreach($resourceRepo->all() as $item)
             {
-                foreach($resource['itemLevelPermissions'] as $permission)
+                foreach($resource['permissions'] as $permission)
                 {
-                    $classPermissions['itemLevel'][] = $this->_formatPermission($permission, $resource, $item);
+                    $classPermissions[] = $this->_formatPermission($permission, $resource, $item);
                 }
-            }
-
-            foreach($resource['classLevelPermissions'] as $permission)
-            {
-                $classPermissions['classLevel'][] = $this->_formatPermission($permission, $resource, $item);
             }
             
             $permissions['dynamic'][$i]['name'] = $resource['niceName'];

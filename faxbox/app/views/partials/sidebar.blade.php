@@ -7,7 +7,7 @@
             <li>
                 <a href="#"><i class="fa fa-fax fa-fw"></i> Faxes<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    @if (Sentry::check() && (Sentry::getUser()->hasAccess('admin') || Sentry::getUser()->hasAccess('send_faxes')))
+                    @if (Sentry::check() && (Sentry::getUser()->hasAccess('superuser') || Sentry::getUser()->hasAccess('send_fax')))
                     <li>
                         <a href="{{ action('FaxController@create') }}">Send New Fax</a>
                     </li>

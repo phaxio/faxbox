@@ -40,9 +40,7 @@ Route::get('dashboard', [ 'as' => 'dashboard', 'before' => 'auth', function(){
 
 
 // Fax/Phone Routes
-Route::get('faxes', 'FaxController@all'); // list sent and received faxes in one view
-Route::get('faxes/sent', 'FaxController@index');
-Route::get('faxes/received', 'PhoneController@index');
+Route::get('faxes', 'FaxController@index');
 Route::get('faxes/received/{number}', 'PhoneController@show');
 
 Route::resource('faxes', 'FaxController', array('only' => array('create', 'store', 'show', 'index')));

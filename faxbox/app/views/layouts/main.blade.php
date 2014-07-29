@@ -43,7 +43,7 @@
 <div id="wrapper">
 
 <!-- Notifications -->
-@include('partials/notifications')
+@include('partials.notifications')
 <!-- ./ notifications -->
 
 @include('partials.topnav')

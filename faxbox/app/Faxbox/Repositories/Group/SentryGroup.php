@@ -62,13 +62,10 @@ class SentryGroup implements GroupInterface {
             $group = $this->sentry->findGroupById($data['id']);
 
             // Update the group details
-            $group->name = e($data['name']);
-            $group->permissions = [
-                'update_settings' => array_key_exists('update_settings', $data) ? 1 : 0,
-                'purchase_numbers' => array_key_exists('purchase_numbers', $data) ? 1 : 0,
-                'send_fax' => array_key_exists('send_fax', $data) ? 1 : 0
-            ];
+            $group->permissions = $data['permissions'];
 
+            $group->name = $data['name'];
+            
             // Update the group
             if ($group->save())
             {
@@ -170,6 +167,8 @@ class SentryGroup implements GroupInterface {
      */
     public function all()
     {
-        return $this->sentry->getGroupProvider()->findAll();
+        $groups = $this->sentry->findAllGroups();
+        
+        return $groups;
     }
 }

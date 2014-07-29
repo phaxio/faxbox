@@ -56,6 +56,18 @@ class GroupForm {
 
         return $this->group->store($input);
     }
+    
+    public function update(array $input)
+    {
+        $this->validator->setCurrent($input['id']);
+        
+        if( ! $this->valid($input) )
+        {
+            return false;
+        }
+
+        return $this->group->update($input);
+    }
 
     /**
      * Return any validation errors

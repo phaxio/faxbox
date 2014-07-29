@@ -10,7 +10,7 @@ class GroupFormLaravelValidator extends AbstractLaravelValidator {
      * @var Array
      */
     protected $rules = array(
-        'name' => 'required|max:255|unique:groups',
+        'name' => 'required|max:255|unique:groups,:current',
         'permissions' => 'permissionAvailable'
     );
 
