@@ -1,6 +1,7 @@
 <?php namespace Faxbox\Repositories\Group;
 
 use Cartalyst\Sentry\Sentry;
+use Faxbox\Repositories\Permission\PermissionInterface;
 
 class SentryGroup implements GroupInterface {
 
@@ -11,9 +12,10 @@ class SentryGroup implements GroupInterface {
      */
     protected $sentry;
 
-    public function __construct(Sentry $sentry)
+    public function __construct(Sentry $sentry, PermissionInterface $permissions)
     {
         $this->sentry = $sentry;
+        $this->permissions = $permissions;
     }
 
     /**
@@ -60,7 +62,21 @@ class SentryGroup implements GroupInterface {
         {
             // Find the group using the group id
             $group = $this->sentry->findGroupById($data['id']);
-
+            
+            foreach($data['users'] as $id => $access)
+            {
+                $user = $this->sentry->findUserById($id);
+                
+                if($access){
+                    $user->addGroup($group);
+                }
+                else {
+                    $user->removeGroup($group);
+                }
+                
+                // todo add error checking
+            }
+            
             // Update the group details
             $group->permissions = $data['permissions'];
 
@@ -171,4 +187,19 @@ class SentryGroup implements GroupInterface {
         
         return $groups;
     }
+    
+    public function allWithUsers()
+    {
+        $groups = $this->all();
+        
+        foreach ($groups as &$group)
+        {
+            $group['users'] = $this->sentry->findAllUsersInGroup($group)->lists('id');
+            $group = $group->toArray();
+            $group['permissions'] = $this->permissions->allWithChecked($group['permissions']);
+        }
+        
+        return $groups;
+    }
+    
 }

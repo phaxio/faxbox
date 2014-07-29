@@ -39,6 +39,14 @@
                                     </div>
                                     <div class="col-md-6">
                                         <h5>Users</h5>
+                                        <div class="form-group">
+                                            @foreach($users as $user)
+                                            <label class="checkbox">
+                                                {{ Form::hidden("users[".$user['id']."]", 0) }}
+                                                {{ Form::checkbox("users[".$user['id']."]", 1, in_array($user['id'], $group['users'])) }} {{ $user['first_name'] }}
+                                            </label>
+                                            @endforeach
+                                        </div>
                                     </div>
                                 </div>
                                 {{ Form::hidden('id', $group['id'], array('class' => 'form-control', 'placeholder' => trans('groups.name'))) }}

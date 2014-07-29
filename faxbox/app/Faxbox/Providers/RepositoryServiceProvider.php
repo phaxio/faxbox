@@ -68,7 +68,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $app->bind('Faxbox\Repositories\Group\GroupInterface', function($app)
         {
             return new SentryGroup(
-                $app['sentry']
+                $app['sentry'],
+                \App::make('Faxbox\Repositories\Permission\PermissionInterface')
             );
         });
         

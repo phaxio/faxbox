@@ -3,6 +3,7 @@
 use Faxbox\Repositories\Permission\PermissionInterface;
 use Faxbox\Repositories\Group\GroupInterface;
 use Faxbox\Service\Form\Group\GroupForm;
+use Faxbox\Repositories\User\UserInterface;
 
 class GroupController extends BaseController {
 
@@ -12,13 +13,15 @@ class GroupController extends BaseController {
     public function __construct(
         PermissionInterface $permissions,
         GroupInterface $groups,
-        GroupForm $groupForm
+        GroupForm $groupForm,
+        UserInterface $users
     ) {
         parent::__construct();
 
         $this->permissions = $permissions;
         $this->groups      = $groups;
         $this->groupForm   = $groupForm;
+        $this->users       = $users;
 
         $this->beforeFilter('auth');
 
@@ -28,15 +31,10 @@ class GroupController extends BaseController {
 
     public function index()
     {
-        $groups = (array)$this->groups->all();
+        $groups = (array)$this->groups->allWithUsers();
+        $users = $this->users->all();
 
-        foreach ($groups as &$group)
-        {
-            $group = $group->toArray();
-            $group['permissions'] = $this->permissions->allWithChecked($group['permissions']);
-        }
-
-        $this->view('groups.list', compact('groups'));
+        $this->view('groups.list', compact('groups', 'users'));
     }
 
     public function create()
