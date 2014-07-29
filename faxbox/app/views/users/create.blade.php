@@ -28,18 +28,22 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h3>User Level Permissions</h3>
-            @include("partials.permissions")
+            <div class="form-group">
+            <h4>User Level Permissions</h4>
+                @include("partials.permissions")
+            </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h3>Group Level Permissions</h3>
             <div class="form-group">
+                <h4>Group Level Permissions</h4>
                 @foreach($groups as $group)
-                <label class="checkbox">
-                    {{ Form::checkbox("groups[".$group['id']."]", 1) }} {{ $group['name'] }}
-                </label>
+                <div class="checkbox">
+                    <label>
+                        {{ Form::checkbox("groups[".$group['id']."]", 1) }} {{ $group['name'] }}
+                    </label>
+                </div>
                 @endforeach
             </div>
         </div>

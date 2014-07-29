@@ -34,12 +34,11 @@
                 <a href="#"><i class="fa fa-sitemap fa-fw"></i> Groups<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a {{ (Request::is('groups/create') ? 'class="active"' : '') }} href="{{ action('GroupController@create') }}">Create New</a>
-                    </li>
-                    <li>
                         <a href="{{ action('GroupController@index') }}">View All</a>
                     </li>
-                </ul>
+                    <li>
+                        <a {{ (Request::is('groups/create') ? 'class="active"' : '') }} href="{{ action('GroupController@create') }}">Create New</a>
+                    </li>                </ul>
                 <!-- /.nav-second-level -->
             </li>
             <li>

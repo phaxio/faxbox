@@ -18,33 +18,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <h3>General Permissions</h3>
-            <div class="form-group">
-                @foreach($permissions['static'] as $p)
-                <label class="checkbox">
-                    {{ Form::checkbox("permissions[".$p['id']."]", 1) }} {{ $p['name'] }} <span style="font-style: italic; color: #b7b7b7; font-weight: 200">{{ $p['description'] }}</span>
-                </label>
-                @endforeach
-            </div>
-        </div>
-    </div>
-
-    @foreach($permissions['dynamic'] as $resource)
-    <div class="row">
-        <div class="col-md-12">
-            <h3>{{ $resource['name'] }} Permissions</h3>
-            <div class="form-group">
-                @foreach($resource['permissions'] as $p)
-                <label class="checkbox">
-                    {{ Form::checkbox("permissions[".$p['id']."]", 1) }} {{ $p['name'] }} <span style="font-style: italic; color: #b7b7b7; font-weight: 200">{{ $p['description'] }}</span>
-                </label>
-                @endforeach
-            </div>
-        </div>
-    </div>
-    @endforeach
+    @include('partials.permissions')
 
     {{ Form::submit(trans('groups.create'), array('class' => 'btn btn-primary')) }}
 
