@@ -10,11 +10,13 @@ class RegisterFormLaravelValidator extends AbstractLaravelValidator {
      * @var Array
      */
     protected $rules = array(
-        'email' => 'required|min:4|max:255|email',
+        'first_name' => 'alpha|required',
+        'last_name' => 'alpha|required',
+        'email' => 'required|unique:users,:current|max:255|email',
         'password' => 'required|min:6|confirmed',
         'password_confirmation' => 'required'
     );
-
+    
     /**
      * Custom Validation Messages
      *

@@ -42,19 +42,19 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
-            @endif
             <li>
                 <a href="#"><i class="fa fa-users fa-fw"></i> Users<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="#">View All</a>
+                        <a href="{{ action('UserController@index') }}">View All</a>
                     </li>
                     <li>
-                        <a href="#">Create New</a>
+                        <a href="{{ action('UserController@create') }}">Create New</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            @endif
             <li>
                 <a href="#"><i class="fa fa-wrench fa-fw"></i> Settings<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">

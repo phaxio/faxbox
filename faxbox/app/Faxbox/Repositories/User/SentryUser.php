@@ -40,7 +40,30 @@ class SentryUser implements UserInterface {
         $result = [];
         try {
             //Attempt to register the user. 
-            $user = $this->sentry->register(['email' => e($data['email']), 'password' => e($data['password'])], true);
+            $user = $this->sentry->register(['email' => e($data['email']), 'password' => e($data['password'])]);
+
+            if(isset($data['groups']))
+            {
+                foreach ($data['groups'] as $id => $access)
+                {
+                    $group = $this->sentry->findGroupById($id);
+
+                    if ($access)
+                    {
+                        $user->addGroup($group);
+                    } else
+                    {
+                        $user->removeGroup($group);
+                    }
+
+                    // todo add error checking
+                }
+            }
+            
+            $user->first_name = $data['first_name'];
+            $user->last_name = $data['last_name'];
+            $user->permissions = isset($data['permissions']) ? $data['permissions'] : '';
+            $user->save();
 
             //success!
             $result['success'] = true;

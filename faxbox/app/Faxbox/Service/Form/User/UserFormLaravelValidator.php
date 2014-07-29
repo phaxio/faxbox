@@ -10,9 +10,10 @@ class UserFormLaravelValidator extends AbstractLaravelValidator {
 	 * @var Array 
 	 */
 	protected $rules = array(
-		'firstName' => 'alpha',
-        'lastName' => 'alpha',
-        //todo fill in additional rules
+		'firstName' => 'alpha|required',
+        'lastName' => 'alpha|required',
+        'email' => 'required|unique:email,:current',
+        'password' => 'required|confirmed|min:6',
 	);
 
 	/**
