@@ -24,6 +24,7 @@ class UserMailer extends Mailer {
      */
     public function welcome($email, $userId, $activationCode)
     {
+        \Log::info('Sending welcome email');
         $subject = 'Welcome to Faxbox';
         $view = 'emails.auth.welcome';
         $data['userId'] = $userId;

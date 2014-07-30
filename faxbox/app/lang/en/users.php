@@ -22,7 +22,7 @@ return array(
 
     'notupdated'	=>	"Unable to update profile",
 
-    'activated'		=>	"Activation complete. <a href=':url' class='alert-link'>You may now login</a>",
+    'activated'		=>	"Activation complete. Please create a new password",
 
     'notactivated'	=>	"Activation could not be completed.",
 

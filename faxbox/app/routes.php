@@ -30,7 +30,8 @@ Route::get('forgot', array('as' => 'forgotPasswordForm', function()
 }));
 Route::post('forgot', 'UserController@forgot');
 Route::post('users/{id}/change', 'UserController@change');
-Route::get('users/{id}/reset/{code}', 'UserController@reset')->where('id', '[0-9]+');
+Route::get('users/{id}/reset/{code}', 'UserController@resetForm')->where('id', '[0-9]+');
+Route::post('users/{id}/reset/{code}', 'UserController@reset')->where('id', '[0-9]+');
 Route::resource('users', 'UserController');
 
 Route::get('dashboard', [ 'as' => 'dashboard', 'before' => 'auth', function(){ 

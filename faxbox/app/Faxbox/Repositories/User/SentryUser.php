@@ -25,6 +25,25 @@ class SentryUser implements UserInterface {
         return $user->hasAccess('superuser');
     }
     
+    public function isActivated($id)
+    {
+        $user = $this->byId($id);
+        
+        return $user->isActivated();
+    }
+
+    public function hasLoggedIn($id)
+    {
+        $user = $this->byId($id);
+
+        return $user->last_login ? true : false;
+    }
+
+    public function resetCode($id)
+    {
+        return $this->byId($id)->getResetPasswordCode();
+    }
+    
     public function allowedResourceIds($level, $resourceClass, $userId)
     {
         return $this->permissions->allowedResourceIds($level, $resourceClass, $userId);
@@ -198,9 +217,12 @@ class SentryUser implements UserInterface {
             if ($user->attemptActivation($code))
             {
                 // User activation passed
+                $data = $this->forgotPassword(['email' => $user->email]);
+                
                 $result['success'] = true;
                 $url = route('login');
                 $result['message'] = trans('users.activated', ['url' => $url]);
+                $result['resetCode'] = $data['mailData']['resetCode'];
             }
             else
             {
@@ -305,23 +327,20 @@ class SentryUser implements UserInterface {
      * @param  string $code
      * @return Array
      */
-    public function resetPassword($id, $code)
+    public function resetPassword($data)
     {
         $result = [];
         try
         {
             // Find the user
-            $user = $this->sentry->getUserProvider()->findById($id);
-            $newPassword = $this->_generatePassword();
+            $user = $this->sentry->getUserProvider()->findById($data['id']);
 
             // Attempt to reset the user password
-            if ($user->attemptResetPassword($code, $newPassword))
+            if ($user->attemptResetPassword($data['code'], $data['password']))
             {
                 // Email the reset code to the user
                 $result['success'] = true;
-                $result['message'] = trans('users.emailpassword');
-                $result['mailData']['newPassword'] = $newPassword;
-                $result['mailData']['email'] = $user->getLogin();
+                $result['message'] = trans('users.passwordchg');
             }
             else
             {
@@ -396,7 +415,7 @@ class SentryUser implements UserInterface {
      * Return a specific user from the given id
      *
      * @param  integer $id
-     * @return User
+     * @return \Cartalyst\Sentry\Users\UserInterface
      */
     public function byId($id)
     {

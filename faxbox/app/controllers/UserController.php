@@ -8,6 +8,7 @@ use Faxbox\Service\Form\ResendActivation\ResendActivationForm;
 use Faxbox\Service\Form\ForgotPassword\ForgotPasswordForm;
 use Faxbox\Service\Form\ChangePassword\ChangePasswordForm;
 use Faxbox\Repositories\Permission\PermissionInterface;
+use Faxbox\Service\Form\ResetPassword\ResetPasswordForm;
 
 class UserController extends BaseController {
 
@@ -32,7 +33,8 @@ class UserController extends BaseController {
         ResendActivationForm $resendActivationForm,
         ForgotPasswordForm $forgotPasswordForm,
         ChangePasswordForm $changePasswordForm,
-        PermissionInterface $permissions
+        PermissionInterface $permissions,
+        ResetPasswordForm $resetPasswordForm
     ) {
         parent::__construct();
 
@@ -44,6 +46,7 @@ class UserController extends BaseController {
         $this->forgotPasswordForm   = $forgotPasswordForm;
         $this->changePasswordForm   = $changePasswordForm;
         $this->permissions          = $permissions;
+        $this->resetPasswordForm    = $resetPasswordForm;
         
         //Check CSRF token on POST
         $this->beforeFilter('csrf', ['on' => 'post']);
@@ -251,6 +254,16 @@ class UserController extends BaseController {
             // @codeCoverageIgnoreEnd
         }
 
+        if($this->user->isActivated($id) && !$this->user->hasLoggedIn($id))
+        {
+            return Redirect::action('UserController@resetForm', ['id' => $id, 'code' => $this->user->resetCode($id)]);
+        }
+        else if($this->user->isActivated($id))
+        {
+            return Redirect::route('dashboard');
+        }
+        
+        // activate the user
         $result = $this->user->activate($id, $code);
 
         if ($result['success'])
@@ -258,7 +271,7 @@ class UserController extends BaseController {
             // Success!
             Session::flash('success', $result['message']);
 
-            return Redirect::route('home');
+            return Redirect::action('UserController@resetForm', ['id' => $id, 'code' => $result['resetCode']]);
 
         } else
         {
@@ -331,6 +344,11 @@ class UserController extends BaseController {
                            ->withErrors($this->forgotPasswordForm->errors());
         }
     }
+    
+    public function resetForm($id, $code)
+    {
+        return View::make('users.reset', compact('id', 'code'));
+    }
 
     /**
      * Process a password reset request link
@@ -349,26 +367,21 @@ class UserController extends BaseController {
             // @codeCoverageIgnoreEnd
         }
 
-        $result = $this->user->resetPassword($id, $code);
+        // Form Processing
+        $result = $this->resetPasswordForm->reset(Input::all());
 
         if ($result['success'])
         {
-            Event::fire('user.newpassword',
-            [
-                'email'       => $result['mailData']['email'],
-                'newPassword' => $result['mailData']['newPassword']
-            ]);
-
             // Success!
             Session::flash('success', $result['message']);
 
-            return Redirect::route('home');
+            return Redirect::route('dashboard');
 
         } else
         {
             Session::flash('error', $result['message']);
 
-            return Redirect::route('home');
+            return Redirect::action('UserController@resetForm', compact('id', 'code'))->withErrors($this->resetPasswordForm->errors());
         }
     }
 

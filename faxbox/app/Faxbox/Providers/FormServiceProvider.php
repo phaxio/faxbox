@@ -17,6 +17,8 @@ use Faxbox\Service\Form\ResendActivation\ResendActivationForm;
 use Faxbox\Service\Form\ResendActivation\ResendActivationFormLaravelValidator;
 use Faxbox\Service\Form\User\UserForm;
 use Faxbox\Service\Form\User\UserFormLaravelValidator;
+use Faxbox\Service\Form\ResetPassword\ResetPasswordForm;
+use Faxbox\Service\Form\ResetPassword\ResetPasswordFormLaravelValidator;
 
 class FormServiceProvider extends ServiceProvider
 {
@@ -57,6 +59,14 @@ class FormServiceProvider extends ServiceProvider
         {
             return new ForgotPasswordForm(
                 new ForgotPasswordFormLaravelValidator( $app['validator'] ),
+                $app->make('Faxbox\Repositories\User\UserInterface')
+            );
+        });
+
+        $app->bind('Faxbox\Service\Form\ResetPassword\ResetPasswordForm', function($app)
+        {
+            return new ResetPasswordForm(
+                new ResetPasswordFormLaravelValidator( $app['validator'] ),
                 $app->make('Faxbox\Repositories\User\UserInterface')
             );
         });
