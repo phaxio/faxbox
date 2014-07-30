@@ -30,6 +30,8 @@ return array(
 
     'emailconfirm'	=>	"Check your email for the confirmation link.",
 
+    'resend'	    =>	"Resend Activation Email",
+
     'emailinfo'		=>	"Check your email for instructions.",
 
     'emailpassword'	=>	"Your password has been changed. Check your email for the new password.",

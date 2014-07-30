@@ -26,7 +26,17 @@
                         <td class="text-center"><a href="{{ action('UserController@edit', ['id' => $user['id']]) }}"><i class="fa fa-edit"> Edit</i></a></td>
                         <td>{{ $user['email'] }}</td>
                         <td>{{ $user['first_name'] }} {{ $user['last_name'] }}</td>
-                        <td>{{ $user['activated'] ? "<span class='label label-success'>Activated</span>" : "<span class='label label-danger'>Inactive</span>" }}</td>
+                        <td>
+                            @if($user['activated'])
+                            <span class='label label-success'>Activated</span>
+                            @else
+                            {{ Form::open(['action' => 'UserController@resend', 'method' => 'post']) }}
+                            <span class='label label-danger'>Inactive</span>
+                            {{ Form::hidden('email', $user['email']) }}
+                            {{ Form::submit(trans('users.resend'), array('class' => 'btn btn-link')) }}
+                            {{ Form::close() }}
+                            @endif
+                        </td>
                         <td>{{ $user['created_at'] }}</td>
                     </tr>
                     @endforeach
