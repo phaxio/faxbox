@@ -22,6 +22,8 @@ return array(
 	|
 	*/
 
+    'default' => 'pgsql',
+
 	'connections' => array(
 		'pgsql' => array(
 			'driver'   => 'pgsql',
