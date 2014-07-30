@@ -15,12 +15,6 @@ class HomeController extends BaseController {
 	|
 	*/
     
-    public function __construct()
-    {
-        parent::__construct();
-        $this->beforeFilter('can:do:stuff');
-    }
-
 	public function index()
 	{
 		return Redirect::to('dashboard');

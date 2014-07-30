@@ -17,6 +17,9 @@
     <!-- MetisMenu CSS -->
     <link href="{{ asset('css/plugins/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
 
+    <!-- DataTables CSS -->
+    <link href="{{ asset('css/plugins/dataTables.bootstrap.css') }}" rel="stylesheet">
+
     <!-- Timeline CSS -->
     <link href="{{ asset('css/plugins/timeline.css') }}" rel="stylesheet">
 
@@ -65,6 +68,8 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="{{ asset('js/sb-admin-2.js') }}"></script>
+
+@yield('scripts', '')
 
 @include('partials.footer')
 

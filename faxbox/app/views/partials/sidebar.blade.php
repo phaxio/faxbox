@@ -7,14 +7,14 @@
             <li>
                 <a href="#"><i class="fa fa-fax fa-fw"></i> Faxes<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    @if (Sentry::check() && (Sentry::getUser()->hasAccess('superuser') || Sentry::getUser()->hasAccess('send_fax')))
-                    <li>
-                        <a href="{{ action('FaxController@create') }}">Send New Fax</a>
-                    </li>
-                    @endif
                     <li>
                         <a href="{{ action('FaxController@index') }}">View Faxes</a>
                     </li>
+                    @if (Sentry::check() && (Sentry::getUser()->hasAccess('superuser') || Sentry::getUser()->hasAccess('send_fax')))
+                    <li>
+                        <a href="{{ action('FaxController@create') }}">Send Fax</a>
+                    </li>
+                    @endif
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
@@ -54,6 +54,7 @@
                 <!-- /.nav-second-level -->
             </li>
             @endif
+            @if (Sentry::check() && Sentry::getUser()->hasAccess('update_settings'))
             <li>
                 <a href="#"><i class="fa fa-wrench fa-fw"></i> Settings<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -69,6 +70,7 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            @endif
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

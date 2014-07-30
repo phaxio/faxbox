@@ -52,9 +52,9 @@ class UserController extends BaseController {
         $this->beforeFilter('csrf', ['on' => 'post']);
 
         // Set up Auth Filters
-        $this->beforeFilter('auth', ['only' => ['change']]);
+        $this->beforeFilter('auth', ['except' => ['activate', 'forgot', 'resetForm', 'reset']]);
         $this->beforeFilter('hasAccess:superuser',
-            ['only' => ['show', 'index', 'destroy', 'edit', 'update', 'store']]);
+            ['only' => ['show', 'index', 'destroy', 'edit', 'update', 'store', 'create', 'resend']]);
     }
 
 
@@ -149,26 +149,18 @@ class UserController extends BaseController {
     public function edit($id)
     {
         $user = $this->user->byId($id);
-
+        
         if ($user == null || !is_numeric($id))
         {
             // @codeCoverageIgnoreStart
             return \App::abort(404);
             // @codeCoverageIgnoreEnd
         }
+        
+        $groups      = $this->group->all();
+        $permissions = $this->permissions->allWithChecked($user->getMergedPermissions());
 
-        $currentGroups = $user->getGroups()->toArray();
-        $userGroups    = [];
-        foreach ($currentGroups as $group)
-        {
-            array_push($userGroups, $group['name']);
-        }
-        $allGroups = $this->group->all();
-
-        return View::make('users.edit')
-                   ->with('user', $user)
-                   ->with('userGroups', $userGroups)
-                   ->with('allGroups', $allGroups);
+        $this->view('users.edit', compact('groups', 'permissions', 'user'));
     }
 
     /**
@@ -195,7 +187,7 @@ class UserController extends BaseController {
             // Success!
             Session::flash('success', $result['message']);
 
-            return Redirect::action('UserController@show', [$id]);
+            return Redirect::action('UserController@index');
 
         } else
         {
@@ -302,12 +294,12 @@ class UserController extends BaseController {
             // Success!
             Session::flash('success', $result['message']);
 
-            return Redirect::route('home');
+            return Redirect::action('UserController@index');
         } else
         {
             Session::flash('error', $result['message']);
 
-            return Redirect::route('profile')
+            return Redirect::action('UserController@index')
                            ->withInput()
                            ->withErrors($this->resendActivationForm->errors());
         }

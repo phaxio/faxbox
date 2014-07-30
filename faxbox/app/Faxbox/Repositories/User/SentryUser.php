@@ -427,6 +427,7 @@ class SentryUser implements UserInterface {
         {
             return false;
         }
+        
         return $user;
     }
 

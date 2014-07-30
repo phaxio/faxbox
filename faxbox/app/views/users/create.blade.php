@@ -29,7 +29,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-            <h4>User Level Permissions</h4>
+                <h4>User Level Permissions <small>Any permission set here will be specific to this user.</small></h4>
                 @include("partials.permissions")
             </div>
         </div>
@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <h4>Group Level Permissions</h4>
+                <h4>Group Level Permissions <small>Permissions granted from groups are inherited by the user.</small></h4>
                 @foreach($groups as $group)
                 <div class="checkbox">
                     <label>
