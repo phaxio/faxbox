@@ -26,12 +26,16 @@ return array(
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => $databaseCredentials['host'],
+            'port'     => $databaseCredentials['port'],
 			'database' => $dbName,
 			'username' => $databaseCredentials['user'],
 			'password' => $databaseCredentials['pass'],
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
+            'options'   => array(
+                PDO::ATTR_PERSISTENT => true,
+            )
 		),
 
 	),
