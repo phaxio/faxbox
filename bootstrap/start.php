@@ -29,8 +29,8 @@ $env = $app->detectEnvironment(array(
 ));
 
 //allow environment variables to override environment detection
-if (array_key_exists('faxboxEnv', $_ENV)){
-    $env = $_ENV['faxboxEnv'];
+if (getenv('ENVIRONMENT')){
+    $env = getenv('ENVIRONMENT');
 }
 
 
