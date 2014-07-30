@@ -38,7 +38,7 @@ class CreateFaxesTable extends Migration {
 		});
 		
 		// Now that the faxes table is created we need to create the Recipient foreign key as well
-		Schema::table('receipients', function(Blueprint $table)
+		Schema::table('recipients', function(Blueprint $table)
 		{
 			$table->foreign('fax_id')
 				  ->references('id')
