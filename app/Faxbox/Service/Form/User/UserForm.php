@@ -69,6 +69,12 @@ class UserForm {
 		return $this->validator->with($input)->passes();
 		
 	}
+    
+    public function setCurrent($id)
+    {
+        $this->validator->setCurrent($id);
+        return $this;
+    }
 
 
 }

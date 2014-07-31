@@ -35,7 +35,38 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        @include("partials.permissions", ['permissions' => $group['permissions']])
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>General Permissions</label>
+
+                                                    @foreach($group['permissions']['static'] as $p)
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            {{ Form::select("permissions[".$p['id']."]", [1 => 'Allow', 0 => 'Deny'], $p['value']) }} {{ $p['name'] }} <span style="font-style: italic; color: #b7b7b7; font-weight: 200">{{ $p['description'] }}</span>
+                                                        </label>
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @foreach($group['permissions']['dynamic'] as $resource)
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>{{ $resource['name'] }} Permissions</label>
+                                                    @foreach($resource['permissions'] as $p)
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            {{ Form::select("permissions[".$p['id']."]", [1 => 'Allow', 0 => 'Deny'], $p['value']) }} {{ $p['name'] }}
+                                                        </label>
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
                                     </div>
                                     <div class="col-md-6">
                                         <label>Users</label>

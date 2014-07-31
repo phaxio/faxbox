@@ -8,7 +8,7 @@
     </div>
 
     <div class="row">
-        {{ Form::open(array('action' => 'UserController@update', 'method' => 'PUT')) }}
+        {{ Form::open(array('action' => ['UserController@update', $user['id']], 'method' => 'PUT')) }}
 
         <div class="col-md-4">
             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
@@ -41,7 +41,7 @@
                 @foreach($groups as $group)
                 <div class="checkbox">
                     <label>
-                        {{ Form::checkbox("groups[".$group['id']."]", 1) }} {{ $group['name'] }}
+                        {{ Form::checkbox("groups[".$group['id']."]", 1, $group['value']) }} {{ $group['name'] }}
                     </label>
                 </div>
                 @endforeach
@@ -68,7 +68,8 @@
             </div>
         </div>
     </div>
-    
+
+    {{ Form::hidden('id', $user['id']) }}
     {{ Form::submit(trans('users.update'), array('class' => 'btn btn-primary')) }}
 
     {{ Form::close() }}

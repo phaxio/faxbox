@@ -201,5 +201,20 @@ class SentryGroup implements GroupInterface {
         
         return $groups;
     }
+
+    public function allWithChecked($user)
+    {
+        $userGroups = array_column($user->getGroups()->toArray(), 'id');
+        
+        $groups = $this->all();
+
+        foreach ($groups as &$group)
+        {
+            $group['value'] = 0;
+            if(in_array($group['id'], $userGroups)) $group['value'] = 1; 
+        }
+
+        return $groups;
+    }
     
 }

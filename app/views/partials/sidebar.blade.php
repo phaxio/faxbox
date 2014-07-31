@@ -8,9 +8,9 @@
                 <a href="#"><i class="fa fa-fax fa-fw"></i> Faxes<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ action('FaxController@index') }}">View Faxes</a>
+                        <a href="{{ action('FaxController@index') }}">View All</a>
                     </li>
-                    @if (Sentry::check() && (Sentry::getUser()->hasAccess('superuser') || Sentry::getUser()->hasAccess('send_fax')))
+                    @if (Sentry::check() && Sentry::getUser()->hasAccess('send_fax'))
                     <li>
                         <a href="{{ action('FaxController@create') }}">Send Fax</a>
                     </li>
@@ -38,7 +38,8 @@
                     </li>
                     <li>
                         <a {{ (Request::is('groups/create') ? 'class="active"' : '') }} href="{{ action('GroupController@create') }}">Create New</a>
-                    </li>                </ul>
+                    </li>                
+                </ul>
                 <!-- /.nav-second-level -->
             </li>
             <li>

@@ -157,7 +157,7 @@ class UserController extends BaseController {
             // @codeCoverageIgnoreEnd
         }
         
-        $groups      = $this->group->all();
+        $groups      = $this->group->allWithChecked($user);
         $permissions = $this->permissions->allWithChecked($user->getMergedPermissions());
 
         $this->view('users.edit', compact('groups', 'permissions', 'user'));
@@ -180,8 +180,8 @@ class UserController extends BaseController {
         }
 
         // Form Processing
-        $result = $this->userForm->update(Input::all());
-
+        $result = $this->userForm->setCurrent($id)->update(Input::all());
+        
         if ($result['success'])
         {
             // Success!

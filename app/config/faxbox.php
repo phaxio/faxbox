@@ -53,11 +53,6 @@ return [
                 'niceName' => 'Phone Number',
                 'permissions' => [
                     [
-                        'id' => 'manage',
-                        'name' => 'Manage {number}',
-                        'description' => 'Can delete {number}.',
-                    ],               
-                    [
                         'id' => 'view',
                         'name' => 'View faxes from {number}',
                         'description' => 'Can view a fax for the number {number}.',

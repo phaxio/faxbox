@@ -119,12 +119,13 @@ class SentryUser implements UserInterface {
             $user = $this->sentry->findUserById($data['id']);
 
             // Update the user details
-            $user->first_name = e($data['firstName']);
-            $user->last_name = e($data['lastName']);
+            $user->first_name = e($data['first_name']);
+            $user->last_name = e($data['last_name']);
+            $user->permissions = $data['permissions'];
 
             // Only Admins should be able to change group memberships. 
             $operator = $this->sentry->getUser();
-            if ($operator->hasAccess('admin'))
+            if ($operator->isSuperUser())
             {
                 // Update group memberships
                 $allGroups = $this->sentry->getGroupProvider()->findAll();
@@ -139,12 +140,6 @@ class SentryUser implements UserInterface {
                         $user->removeGroup($group);
                     }
                 }
-                
-                // Update User permissions
-                $availablePermissions = array_column(
-                    \Config::get('faxbox.permissions'), 'name'
-                );
-                
             }
 
             // Update the user

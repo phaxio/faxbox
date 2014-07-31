@@ -30,21 +30,25 @@ class PermissionRepository implements PermissionInterface{
         return $this->_getAvailablePermissions();
     }
 
-    public function allWithChecked($checkedPermissions)
+    public function allWithChecked($checkedPermissions, $default = -1)
     {
         $available = $this->all();
         
         foreach($available['static'] as &$permission)
         {
-            if(isset($checkedPermissions[$permission['id']]) && $checkedPermissions[$permission['id']] == 1)
-                $permission['checked'] = true;
+            $permission['value'] = $default;
+            if(isset($checkedPermissions[$permission['id']]))
+                $permission['value'] = $checkedPermissions[$permission['id']];
         }
 
         foreach($available['dynamic'] as &$resource)
         {
             foreach($resource['permissions'] as &$permission)
-            if(isset($checkedPermissions[$permission['id']]) && $checkedPermissions[$permission['id']] == 1)
-                $permission['checked'] = true;
+            {
+                $permission['value'] = $default;
+                if (isset($checkedPermissions[$permission['id']]))
+                    $permission['value'] = $checkedPermissions[$permission['id']];
+            }
         }
         
         return $available;
