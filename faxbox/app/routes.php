@@ -45,7 +45,7 @@ Route::get('faxes', 'FaxController@index');
 Route::get('faxes/received/{number}', 'PhoneController@show');
 
 Route::resource('faxes', 'FaxController', array('only' => array('create', 'store', 'show', 'index')));
-Route::resource('phone', 'PhoneController');
+Route::resource('phones', 'PhoneController');
 
 
 // Settings Routes
