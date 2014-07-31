@@ -24,6 +24,6 @@ class Phone extends Eloquent {
 
     public function fax()
     {
-        return $this->belongsTo('Faxbox\Fax');
+        return $this->hasMany('Faxbox\Fax');
     }
 }
