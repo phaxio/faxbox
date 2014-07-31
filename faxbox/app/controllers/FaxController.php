@@ -21,6 +21,7 @@ class FaxController extends BaseController {
         // todo this should be moved into the repo
         $user = Sentry::getUser();
 
+        // todo move admin check to repo
         if ($this->users->isAdmin($user->getId()))
         {
             $faxes = $this->faxes->all();
