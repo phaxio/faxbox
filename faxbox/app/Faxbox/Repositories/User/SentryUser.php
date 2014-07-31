@@ -21,8 +21,7 @@ class SentryUser implements UserInterface {
     
     public function isAdmin($id)
     {
-        $user = $this->sentry->findUserById($id);
-        return $user->hasAccess('superuser');
+        return $this->byId($id)->isSuperUser();
     }
     
     public function isActivated($id)
