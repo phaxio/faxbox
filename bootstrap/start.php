@@ -25,10 +25,14 @@ $app = new Illuminate\Foundation\Application;
 */
 
 $env = $app->detectEnvironment(array(
-
 	'local' => array('Nicks-MacbookPro-2.local', 'vagrant-centos65.vagrantup.com'),
-
 ));
+
+//allow environment variables to override environment detection
+if (getenv('ENVIRONMENT')){
+    $env = getenv('ENVIRONMENT');
+}
+
 
 /*
 |--------------------------------------------------------------------------
@@ -41,7 +45,7 @@ $env = $app->detectEnvironment(array(
 |
 */
 
-$app->bindInstallPaths(require __DIR__.'/paths.php');
+$app->bindInstallPaths(require __DIR__ . '/paths.php');
 
 /*
 |--------------------------------------------------------------------------

@@ -7,10 +7,11 @@
 		"laravel/framework": "4.2.*",
         "cartalyst/sentry": "2.1.*",
         "giggsey/libphonenumber-for-php": "~6.0",
-        "phaxio/phaxio": "dev-master"
+        "phaxio/phaxio": "dev-master",
+        "barryvdh/laravel-ide-helper": "1.*",
+        "ext-intl": "*"
 	},
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "1.*",
         "mockery/mockery": "0.9.*@dev",
         "phpunit/phpunit": "3.7.*"
     },
