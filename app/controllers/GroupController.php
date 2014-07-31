@@ -39,7 +39,7 @@ class GroupController extends BaseController {
 
     public function create()
     {
-        $permissions = $this->permissions->all();
+        $permissions = $this->permissions->allWithChecked([], 0);
         $this->view('groups.create', compact('permissions'));
     }
 

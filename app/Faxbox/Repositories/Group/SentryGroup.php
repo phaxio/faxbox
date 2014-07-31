@@ -196,7 +196,7 @@ class SentryGroup implements GroupInterface {
         {
             $group['users'] = $this->sentry->findAllUsersInGroup($group)->lists('id');
             $group = $group->toArray();
-            $group['permissions'] = $this->permissions->allWithChecked($group['permissions']);
+            $group['permissions'] = $this->permissions->allWithChecked($group['permissions'], 0);
         }
         
         return $groups;
