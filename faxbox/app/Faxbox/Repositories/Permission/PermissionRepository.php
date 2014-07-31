@@ -23,8 +23,6 @@ class PermissionRepository implements PermissionInterface{
     public function __construct(Config $config)
     {
         $this->raw = Config::get('faxbox.permissions');
-        
-        $this->available = $this->all();
     }
     
     public function all()
@@ -61,7 +59,7 @@ class PermissionRepository implements PermissionInterface{
     public function allIds()
     {
         $ids = [];
-        $flattened = array_dot($this->available);
+        $flattened = array_dot($this->all());
         
         foreach($flattened as $key => $value)
         {
