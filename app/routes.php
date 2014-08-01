@@ -39,11 +39,7 @@ Route::get('dashboard', [ 'as' => 'dashboard', 'before' => 'auth', function(){
 }]);
 
 
-
 // Fax/Phone Routes
-Route::get('faxes', 'FaxController@index');
-Route::get('faxes/received/{number}', 'PhoneController@show');
-
 Route::resource('faxes', 'FaxController', array('only' => array('create', 'store', 'show', 'index')));
 Route::resource('phones', 'PhoneController');
 

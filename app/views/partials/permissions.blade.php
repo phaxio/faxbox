@@ -6,7 +6,7 @@
             @foreach($permissions['static'] as $p)
             <div class="checkbox"> 
                 <label>
-                    {{ Form::select("permissions[".$p['id']."]", [0 => 'Inherit', 1 => 'Allow', -1 => 'Deny'], $p['value']) }} {{ $p['name'] }} <span style="font-style: italic; color: #b7b7b7; font-weight: 200">{{ $p['description'] }}</span>
+                    {{ Form::select("permissions[".$p['id']."]", [0 => 'Inherit', 1 => 'Allow', -1 => 'Deny'], -1) }} {{ $p['name'] }} <span style="font-style: italic; color: #b7b7b7; font-weight: 200">{{ $p['description'] }}</span>
                 </label>
             </div>
             @endforeach
@@ -22,7 +22,7 @@
             @foreach($resource['permissions'] as $p)
             <div class="checkbox">
                 <label>
-                    {{ Form::select("permissions[".$p['id']."]", [0 => 'Inherit', 1 => 'Allow', -1 => 'Deny'], $p['value']) }} {{ $p['name'] }}
+                    {{ Form::select("permissions[".$p['id']."]", [0 => 'Inherit', 1 => 'Allow', -1 => 'Deny'], -1) }} {{ $p['name'] }}
                 </label>
             </div>
             @endforeach

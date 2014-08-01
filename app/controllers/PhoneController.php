@@ -22,13 +22,14 @@ class PhoneController extends BaseController {
         $id = Request::segment(2) ?: null;
 
         $resource = 'Faxbox\Repositories\Phone\PhoneInterface';
-        $manage   = Permissions::name($resource, 'manage', $id);
+        $admin   = Permissions::name($resource, 'admin', $id);
         $view     = Permissions::name($resource, 'view', $id);
 
         $this->beforeFilter('auth');
+        
         $this->beforeFilter('accessResource:' . $view, ['only' => ['show']]);
-        $this->beforeFilter('accessResource:' . $manage, ['only' => ['delete']]);
-        $this->beforeFilter('accessResource:purchase_numbers', ['only' => ['create', 'store']]);
+        $this->beforeFilter('accessResource:' . $admin, ['only' => ['delete']]);
+        $this->beforeFilter('accessResource:purchase_numbers', ['only' => ['index', 'create', 'store', 'edit', 'update']]);
     }
 
     public function index()

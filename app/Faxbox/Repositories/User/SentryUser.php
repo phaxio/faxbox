@@ -121,12 +121,13 @@ class SentryUser implements UserInterface {
             // Update the user details
             $user->first_name = e($data['first_name']);
             $user->last_name = e($data['last_name']);
-            $user->permissions = $data['permissions'];
 
             // Only Admins should be able to change group memberships. 
             $operator = $this->sentry->getUser();
             if ($operator->isSuperUser())
             {
+                $user->permissions = $data['permissions'];
+
                 // Update group memberships
                 $allGroups = $this->sentry->getGroupProvider()->findAll();
                 foreach ($allGroups as $group)

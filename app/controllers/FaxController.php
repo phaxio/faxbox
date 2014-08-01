@@ -33,11 +33,6 @@ class FaxController extends BaseController {
         $this->view('fax.list', compact('faxes'));
     }
     
-    public function all()
-    {
-        
-    }
-
     public function create()
     {
 
@@ -49,21 +44,6 @@ class FaxController extends BaseController {
     }
 
     public function show($id)
-    {
-
-    }
-
-    public function edit($id)
-    {
-
-    }
-
-    public function update($id)
-    {
-
-    }
-
-    public function delete()
     {
 
     }

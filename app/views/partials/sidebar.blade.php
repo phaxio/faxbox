@@ -18,6 +18,7 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            @if (Sentry::check() && Sentry::getUser()->hasAccess('purchase_numbers'))
             <li>
                 <a href="#"><i class="fa fa-phone fa-fw"></i> Phone Numbers<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -29,6 +30,7 @@
                     </li>
                 </ul>
             </li>
+            @endif
             @if (Sentry::check() && Sentry::getUser()->hasAccess('superuser'))
             <li>
                 <a href="#"><i class="fa fa-sitemap fa-fw"></i> Groups<span class="fa arrow"></span></a>

@@ -33,10 +33,7 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
             ->with(['recipient', 'phone', 'user'])
             ->where('user_id', '=', $userId);
         
-        if($allowedPhoneIds === 'all')
-            $faxes->orWhere('direction', '=', 'received');
-        
-        if(is_array($allowedPhoneIds))
+        if(count($allowedPhoneIds))
             $faxes->orWhereIn('phone_id', $allowedPhoneIds);
         
         return $faxes->orderBy('created_at', 'DESC')->get()->toArray();

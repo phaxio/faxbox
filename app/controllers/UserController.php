@@ -158,7 +158,7 @@ class UserController extends BaseController {
         }
         
         $groups      = $this->group->allWithChecked($user);
-        $permissions = $this->permissions->allWithChecked($user->getMergedPermissions());
+        $permissions = $this->permissions->allWithChecked($user->getPermissions(), 0);
 
         $this->view('users.edit', compact('groups', 'permissions', 'user'));
     }
