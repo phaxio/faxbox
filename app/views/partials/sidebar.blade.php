@@ -20,15 +20,7 @@
             </li>
             @if (Sentry::check() && Sentry::getUser()->hasAccess('purchase_numbers'))
             <li>
-                <a href="#"><i class="fa fa-phone fa-fw"></i> Phone Numbers<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="{{ action('PhoneController@create') }}">Create New</a>
-                    </li>
-                    <li>
-                        <a href="{{ action('PhoneController@index') }}">View All</a>
-                    </li>
-                </ul>
+                <a href="{{ action('PhoneController@index') }}"><i class="fa fa-phone fa-fw"></i> Phone Numbers</a>
             </li>
             @endif
             @if (Sentry::check() && Sentry::getUser()->hasAccess('superuser'))

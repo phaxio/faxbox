@@ -1,10 +1,10 @@
-<?php namespace Faxbox\Service\Form\Group;
+<?php namespace Faxbox\Service\Form\Phone;
 
 use Faxbox\Repositories\Permission\PermissionInterface;
 use Faxbox\Service\Validation\ValidableInterface;
-use Faxbox\Repositories\Group\GroupInterface;
+use Faxbox\Repositories\Phone\PhoneInterface;
 
-class GroupForm {
+class PhoneForm {
 
     /**
      * Form Data
@@ -23,9 +23,9 @@ class GroupForm {
     /**
      * Group Repository
      *
-     * @var \Faxbox\Repositories\Group\GroupInterface
+     * @var \Faxbox\Repositories\Phone\PhoneInterface
      */
-    protected $group;
+    protected $phone;
 
     /**
      * Permission Repository
@@ -34,16 +34,16 @@ class GroupForm {
      */
     protected $permission;
 
-    public function __construct(ValidableInterface $validator, GroupInterface $group, PermissionInterface $permission)
+    public function __construct(ValidableInterface $validator, PhoneInterface $phone, PermissionInterface $permission)
     {
         $this->validator = $validator;
-        $this->group = $group;
+        $this->phone = $phone;
         $this->permission = $permission;
 
     }
 
     /**
-     * Create a new group
+     * Create a new phone
      *
      * @return integer
      */
@@ -54,19 +54,19 @@ class GroupForm {
             return false;
         }
 
-        return $this->group->store($input);
+        return $this->phone->store($input);
     }
-    
+
     public function update(array $input)
     {
         $this->validator->setCurrent($input['id']);
-        
+
         if( ! $this->valid($input) )
         {
             return false;
         }
 
-        return $this->group->update($input);
+        return $this->phone->update($input);
     }
 
     /**

@@ -2,7 +2,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">View Phone Numbers</h1>
+            <h1 class="page-header">View Phone Numbers <a href="{{ action('PhoneController@create') }}" class="brtn btn-sm btn-primary"><i class="fa fa-plus-circle"></i> Create New Number</a></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>

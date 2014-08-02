@@ -16,10 +16,6 @@ class Phone extends Eloquent {
 
     protected $fillable = [
         'description',
-        'number',
-        'city',
-        'state',
-        'country_code'
     ];
 
     public function fax()

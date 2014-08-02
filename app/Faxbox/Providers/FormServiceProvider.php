@@ -19,6 +19,8 @@ use Faxbox\Service\Form\User\UserForm;
 use Faxbox\Service\Form\User\UserFormLaravelValidator;
 use Faxbox\Service\Form\ResetPassword\ResetPasswordForm;
 use Faxbox\Service\Form\ResetPassword\ResetPasswordFormLaravelValidator;
+use Faxbox\Service\Form\Phone\PhoneForm;
+use Faxbox\Service\Form\Phone\PhoneFormLaravelValidator;
 
 class FormServiceProvider extends ServiceProvider
 {
@@ -92,6 +94,15 @@ class FormServiceProvider extends ServiceProvider
             return new GroupForm(
                 new GroupFormLaravelValidator( $app['validator'] ),
                 $app->make('Faxbox\Repositories\Group\GroupInterface'),
+                $app->make('Faxbox\Repositories\Permission\PermissionInterface')
+            );
+        });
+
+        $app->bind('Faxbox\Service\Form\Phone\PhoneForm', function($app)
+        {
+            return new PhoneForm(
+                new PhoneFormLaravelValidator( $app['validator'] ),
+                $app->make('Faxbox\Repositories\Phone\PhoneInterface'),
                 $app->make('Faxbox\Repositories\Permission\PermissionInterface')
             );
         });

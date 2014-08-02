@@ -77,11 +77,13 @@ Route::filter('hasAccess', function($route, $request, $value)
 {
     if (!Sentry::check()) return Redirect::guest('login');
     
+    $userId = Route::input('users');
+    
     try
     {
         $user = Sentry::getUser();
 
-        if( $user->hasAccess($value) ) return;
+        if( $user->hasAccess($value) || $userId == $user->getId()) return;
     
         Session::flash('error', trans('users.noaccess'));
         return Redirect::route('dashboard');

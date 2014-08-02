@@ -8,16 +8,45 @@ use Faxbox\Phone;
 
 class EloquentPhoneRepository extends EloquentAbstractRepository implements PhoneInterface {
     
-    public function __construct(Phone $phone, UserInterface $users)
+    public function __construct(Phone $phone, UserInterface $users, PermissionInterface $permissions)
     {
         $this->phones = $phone;
-//        $this->users = $users;
-//        $this->permissions = $permissions;
+        $this->users = $users;
+        $this->permissions = $permissions;
     }
     
     public function all()
     {
-        return $this->phones->all()->toArray();
+        return $this->phones->orderBy('created_at', 'DESC')->get()->toArray();
+    }
+    
+    public function byId($id)
+    {
+        return $this->phones->findOrFail($id)->toArray();
+    }
+    
+    public function store()
+    {
+        
+    }
+    
+    public function update($data)
+    {
+        $phone = $this->phones->findOrFail($data['id']);
+        
+        $phone->fill($data);
+
+        if($phone->save())
+        {
+            $result['success'] = true;
+            $result['message'] = trans('phone.updated');
+        } else
+        {
+            $result['success'] = false;
+            $result['message'] = trans('phone.updateproblem');
+        }
+        
+        return $result;
     }
 
     /**
@@ -38,7 +67,7 @@ class EloquentPhoneRepository extends EloquentAbstractRepository implements Phon
         else
         {
             $permissions = $user->getMergedPermissions();
-            $allowedPhoneIds = $this->permissions->allowedResourceIds('view',
+            $allowedPhoneIds = $this->permissions->allowedResourceIds('admin',
                 'Faxbox\Repositories\Phone\PhoneInterface',
                 $permissions);
 
@@ -47,4 +76,4 @@ class EloquentPhoneRepository extends EloquentAbstractRepository implements Phon
             return $phones->orderBy('created_at', 'DESC')->get()->toArray();
         }
     }
-} 
+}
