@@ -1,6 +1,12 @@
 <?php
 
 return [
+    
+    // todo move this to db
+    'api' => [
+        'public' => $_ENV['apiPublic'],
+        'secret' => $_ENV['apiSecret']
+    ],
 
     /*
 	|--------------------------------------------------------------------------
