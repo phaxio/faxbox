@@ -79,6 +79,30 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Email Notification</h4>
+            
+            <div class="form-group">
+                <h5>Sent Faxes</h5>
+                <div class="checkbox">
+                    <label>
+                        {{ Form::select('sent_notification', ['never' => 'Never notify me', 'failed' => 'Only on failed attempts', 'always' => 'Always notify me of successful and failed attempts'], $user['sent_notification']) }}
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h5>Received Faxes</h5>
+                <div class="checkbox">
+                    <label>
+                        {{ Form::select('received_notification', ['never' => 'Never notify me', 'groups' => 'Only for groups I\'m a part of', 'mine' => 'Only for numbers I manage', 'always' => 'Always notify me of incoming faxes'], $user['received_notification']) }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="row">
         <div class="col-md-4">

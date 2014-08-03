@@ -13,6 +13,8 @@ class UserFormLaravelValidator extends AbstractLaravelValidator {
 		'first_name' => 'alpha|required',
         'last_name' => 'alpha|required',
         'email' => 'required|unique:users,:current|email',
+        'sent_notification' => 'in:never,failed,always',
+        'received_notification' => 'in:never,groups,mine,always'
         //'password' => 'required|confirmed|min:6',
 	);
 
