@@ -10,4 +10,9 @@ class EloquentRecipientRepository extends EloquentAbstractRepository implements 
         $this->model = $recipient;
     }
     
+    public function newInstance()
+    {
+        return $this->model->newInstance();
+    }
+    
 } 

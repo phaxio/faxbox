@@ -16,10 +16,16 @@ class CreateRecipientsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('fax_id')->unsigned();
-			$table->string('name');
+			$table->string('name')->nullable();
 			$table->integer('number');
 			$table->char('country_code', 2);
 			$table->timestamps();
+
+            $table->foreign('fax_id')
+                  ->references('id')
+                  ->on('faxes')
+                  ->onDelete('cascade')
+                  ->onUpdate('cascade');
 		});
 	}
 

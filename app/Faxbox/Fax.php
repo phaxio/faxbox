@@ -2,6 +2,7 @@
 namespace Faxbox;
 
 use Eloquent;
+use Symfony\Component\HttpFoundation\File\File;
 
 class Fax extends Eloquent {
 
@@ -14,12 +15,42 @@ class Fax extends Eloquent {
     
     protected $fillable = [
         'phaxio_id',
-        'recipient_id',
         'direction',
         'pages',
         'sent',
-        'in_progress'
+        'in_progress',
+        'files'
     ];
+    
+    public function getFilesAttribute($value)
+    {
+        $files = unserialize($value);
+        
+        if(is_array($files))
+        {
+            foreach ($files as &$file)
+            {
+                $file = storage_path('docs/' . $file);
+            }
+        }
+        
+        return $files;
+    }
+
+    public function setFilesAttribute($files)
+    {
+        foreach($files as &$file)
+        {
+            if($file instanceof File){
+                $file = $file->getFilename();
+            } else{
+                $file = str_replace(storage_path('docs/'), '', $file);
+            }
+            
+        }
+
+        $this->attributes['files'] = serialize($files);
+    }
 
     public function user()
     {

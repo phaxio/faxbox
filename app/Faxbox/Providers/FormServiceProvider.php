@@ -2,6 +2,8 @@
 
 namespace Faxbox\Providers;
 
+use Faxbox\Service\Form\Fax\FaxForm;
+use Faxbox\Service\Form\Fax\FaxFormLaravelValidator;
 use Faxbox\Service\Form\Group\GroupForm;
 use Faxbox\Service\Form\Group\GroupFormLaravelValidator;
 use Illuminate\Support\ServiceProvider;
@@ -104,6 +106,14 @@ class FormServiceProvider extends ServiceProvider
                 new PhoneFormLaravelValidator( $app['validator'] ),
                 $app->make('Faxbox\Repositories\Phone\PhoneInterface'),
                 $app->make('Faxbox\Repositories\Permission\PermissionInterface')
+            );
+        });
+
+        $app->bind('Faxbox\Service\Form\Fax\FaxForm', function($app)
+        {
+            return new FaxForm(
+                new FaxFormLaravelValidator( $app['validator'] ),
+                $app->make('Faxbox\Repositories\Fax\FaxInterface')
             );
         });
 

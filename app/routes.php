@@ -41,6 +41,7 @@ Route::get('dashboard', [ 'as' => 'dashboard', 'before' => 'auth', function(){
 
 // Fax/Phone Routes
 Route::resource('faxes', 'FaxController', array('only' => array('create', 'store', 'show', 'index')));
+Route::post('faxes/upload', 'FaxController@upload');
 Route::resource('phones', 'PhoneController');
 
 
@@ -54,7 +55,3 @@ Route::resource('groups', 'GroupController');
 
 // Our home route
 Route::get('/', ['as' => 'home', 'before' => 'auth', 'uses' => 'HomeController@index']);
-
-Route::post('test', function(){
-    dd(Input::all());
-});

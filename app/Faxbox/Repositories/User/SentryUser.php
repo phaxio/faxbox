@@ -48,6 +48,11 @@ class SentryUser implements UserInterface {
         return $this->permissions->allowedResourceIds($level, $resourceClass, $userId);
     }
     
+    public function loggedInUserId()
+    {
+        return $this->sentry->getUser()->getId();
+    }
+    
     /**
      * Store a newly created resource in storage.
      *

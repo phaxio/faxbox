@@ -13,8 +13,9 @@
 	},
     "require-dev": {
         "mockery/mockery": "0.9.*@dev",
-        "phpunit/phpunit": "3.7.*"
-    },
+        "phpunit/phpunit": "3.7.*",
+        "doctrine/dbal": "~2.3"
+},
 	"autoload": {
 		"classmap": [
 			"app/commands",

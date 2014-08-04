@@ -21,10 +21,10 @@ class DummyData extends Seeder {
     public function run()
     {
         Sentry::register([
-            'email'      => 'admin@admin.com',
-            'first_name' => 'The',
-            'last_name'  => 'Admin',
-            'password'   => Hash::make('admin'),
+            'email'      => 'nickv@makesomecode.com',
+            'first_name' => 'Nick',
+            'last_name'  => 'V',
+            'password'   => '111111',
             'permissions' => ['superuser' => 1]
         ], 1);
     }

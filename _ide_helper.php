@@ -13735,9 +13735,9 @@ namespace {
 		 *
 		 * @static 
 		 */
-		 public static function allWithChecked($checkedPermissions){
+		 public static function allWithChecked($checkedPermissions, $default = -1){
 			//Method inherited from \Faxbox\Repositories\Permission\PermissionRepository
-			 \Faxbox\Repositories\Permission\PermissionRepository::allWithChecked($checkedPermissions);
+			 \Faxbox\Repositories\Permission\PermissionRepository::allWithChecked($checkedPermissions, $default);
 		 }
 
 		/**
@@ -13754,11 +13754,15 @@ namespace {
 		/**
 		 * 
 		 *
+		 * @param string $level
+		 * @param string $resourceClass
+		 * @param array  $permissions
+		 * @return array An array of accessible ID's
 		 * @static 
 		 */
 		 public static function allowedResourceIds($level, $resourceClass, $permissions){
 			//Method inherited from \Faxbox\Repositories\Permission\PermissionRepository
-			 \Faxbox\Repositories\Permission\PermissionRepository::allowedResourceIds($level, $resourceClass, $permissions);
+			return \Faxbox\Repositories\Permission\PermissionRepository::allowedResourceIds($level, $resourceClass, $permissions);
 		 }
 
 		/**

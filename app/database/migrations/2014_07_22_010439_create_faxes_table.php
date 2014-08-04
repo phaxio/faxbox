@@ -15,11 +15,10 @@ class CreateFaxesTable extends Migration {
 		Schema::create('faxes', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('phaxio_id');
+			$table->integer('phaxio_id')->nullable();
 			$table->integer('user_id')->unsigned();
-			$table->integer('recipient_id')->unsigned();
 			$table->enum('direction', ['sent', 'received']);
-			$table->integer('pages');
+			$table->integer('pages')->nullable();
 			$table->boolean('sent')->default(false);
 			$table->boolean('in_progress')->default(false);
 			$table->timestamps();
@@ -27,12 +26,6 @@ class CreateFaxesTable extends Migration {
 			$table->foreign('user_id')
 				  ->references('id')
 				  ->on('users')
-				  ->onDelete('cascade')
-				  ->onUpdate('cascade');
-
-			$table->foreign('recipient_id')
-				  ->references('id')
-				  ->on('recipients')
 				  ->onDelete('cascade')
 				  ->onUpdate('cascade');
 		});
