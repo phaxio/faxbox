@@ -85,7 +85,9 @@ class FaxController extends BaseController {
 
     public function show($id)
     {
-
+        $fax = $this->faxes->byId($id);
+        
+        $this->view('fax.show', compact('fax'));
     }
     
     public function upload()
@@ -101,7 +103,18 @@ class FaxController extends BaseController {
         }
         return $names;
     }
+    
+    public function download($id, $type = 'l')
+    {
+        // todo check if allowed to view fax
+        $result = $this->faxes->download($id, $type);
 
+        if ($type == 'p')
+            return \Response::make($result, 200, ['Content-Type' => 'application/pdf']);
+        
+        return \Response::make($result, 200, ['Content-Type' => 'image/jpeg']);
+    }
+    
     /**
      * Gets the list of supported countries and sorts them according to users geo-located IP address.
      *

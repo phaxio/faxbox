@@ -41,6 +41,7 @@ Route::get('dashboard', [ 'as' => 'dashboard', 'before' => 'auth', function(){
 
 // Fax/Phone Routes
 Route::resource('faxes', 'FaxController', array('only' => array('create', 'store', 'show', 'index')));
+Route::get('faxes/{id}/download/{type}', 'FaxController@download');
 Route::post('faxes/upload', 'FaxController@upload');
 Route::resource('phones', 'PhoneController');
 

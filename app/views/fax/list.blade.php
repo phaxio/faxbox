@@ -33,7 +33,7 @@
                             <td>{{ $fax['phone']['number'] ?: '-----'  }}</td>
                             <td>{{ $fax['in_progress'] ?  '<span class="label label-info"><i class="fa fa-spinner fa-spin"></i> In Progress</span>' : '<span class="label label-success">Completed</span>' }}</td>
                             <td>{{ $fax['updated_at'] }}</td>
-                            <td class="text-center"><a href="#"><i class="fa fa-file-pdf-o"></i></a></td>
+                            <td class="text-center"><a href="{{ action('FaxController@download', [$fax['id'], 'p'])}}" target="_blank"><i class="fa fa-file-pdf-o"></i></a></td>
                         </tr>
                         @endforeach
                     </tbody>

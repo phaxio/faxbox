@@ -45,6 +45,19 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
         return $faxes->orderBy('created_at', 'DESC')->get()->toArray();
     }
     
+    public function byId($id)
+    {
+        return $this->model->with(['recipient', 'phone', 'user'])->findOrFail($id)->toArray();
+    }
+    
+    public function download($id, $type = 'l')
+    {
+        $fax = $this->byId($id);
+        $result = $this->api->download($fax['phaxio_id'], $type);
+        
+        return $result;
+    }
+    
     public function store($data)
     {
         $files = [];

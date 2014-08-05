@@ -37,6 +37,11 @@ class PhaxioApi implements FaxInterface {
         $response = $this->phaxio->releaseNumber($phoneNumber);
     }
     
+    public function download($id, $size)
+    {
+        return $this->phaxio->download($id, $size);
+    }
+    
     private function _parseResponse(PhaxioOperationResult $response)
     {
         $this->response->setStatus($response->succeeded());
