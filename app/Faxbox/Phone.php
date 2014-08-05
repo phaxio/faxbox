@@ -2,6 +2,8 @@
 namespace Faxbox;
 
 use Eloquent;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
 
 class Phone extends Eloquent {
 
@@ -21,5 +23,17 @@ class Phone extends Eloquent {
     public function fax()
     {
         return $this->hasMany('Faxbox\Fax');
+    }
+    
+    public function getNumberAttribute($value)
+    {
+        $phoneUtil = PhoneNumberUtil::getInstance();
+        try {
+            $number = $phoneUtil->parse($value, $this->country_code);
+        } catch (\libphonenumber\NumberParseException $e) {
+            return false;
+        }
+        
+        return $phoneUtil->format($number, PhoneNumberFormat::E164);
     }
 }

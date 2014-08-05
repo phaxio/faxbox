@@ -13,6 +13,7 @@
                 <table class="table table-striped table-bordered table-hover" id="dataTables-fax">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Direction</th>
                             <th>Recipient</th>
                             <th>Pages</th>
@@ -25,13 +26,14 @@
                     <tbody>
                         @foreach($faxes as $fax)
                         <tr class="odd gradeX">
+                            <td class="text-center"><a href="{{ action('FaxController@show', $fax['id'])}}"><i class="fa fa-file-text-o"></i></a></td>
                             <td>{{ $fax['direction'] == 'received' ? '<i class="fa fa-arrow-circle-o-down"></i>' : '<i class="fa fa-arrow-circle-o-up"></i>'}} {{ $fax['direction'] }}</td>
                             <td>{{ $fax['recipient']['number'] ?: '-----' }}</td>
                             <td>{{ $fax['pages'] }}</td>
                             <td>{{ $fax['phone']['number'] ?: '-----'  }}</td>
                             <td>{{ $fax['in_progress'] ?  '<span class="label label-info"><i class="fa fa-spinner fa-spin"></i> In Progress</span>' : '<span class="label label-success">Completed</span>' }}</td>
-                            <td>{{ $fax['created_at'] }}</td>
-                            <td class="text-center"><a href="#"><i class="fa fa-download"> Download</i></a></td>
+                            <td>{{ $fax['updated_at'] }}</td>
+                            <td class="text-center"><a href="#"><i class="fa fa-file-pdf-o"></i></a></td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -56,7 +58,9 @@
             "columnDefs": [
                 { "orderable": false, "targets": 6 },
                 { "searchable": false, "targets": 6 }
-            ]
+            ],
+            "iDisplayLength": 25,
+            "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
         });
     });
 </script>

@@ -9,7 +9,8 @@
         "giggsey/libphonenumber-for-php": "~6.0",
         "phaxio/phaxio": "dev-master",
         "barryvdh/laravel-ide-helper": "1.*",
-        "ext-intl": "*"
+        "ext-intl": "*",
+        "mccool/laravel-auto-presenter": "2.*"
 	},
     "require-dev": {
         "mockery/mockery": "0.9.*@dev",

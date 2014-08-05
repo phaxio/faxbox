@@ -356,7 +356,7 @@ namespace {
 		 *
 		 * @param string  $class
 		 * @param array  $parameters
-		 * @return \Illuminate\Foundation\Application
+		 * @return $this
 		 * @static 
 		 */
 		 public static function middleware($class, $parameters = array()){
@@ -1023,7 +1023,7 @@ namespace {
 		/**
 		 * Boot the Console application.
 		 *
-		 * @return \Illuminate\Console\Application
+		 * @return $this
 		 * @static 
 		 */
 		 public static function boot(){
@@ -1098,7 +1098,7 @@ namespace {
 		 * Set the exception handler instance.
 		 *
 		 * @param \Illuminate\Exception\Handler  $handler
-		 * @return \Illuminate\Console\Application
+		 * @return $this
 		 * @static 
 		 */
 		 public static function setExceptionHandler($handler){
@@ -1110,7 +1110,7 @@ namespace {
 		 * Set the Laravel application instance.
 		 *
 		 * @param \Illuminate\Foundation\Application  $laravel
-		 * @return \Illuminate\Console\Application
+		 * @return $this
 		 * @static 
 		 */
 		 public static function setLaravel($laravel){
@@ -1122,7 +1122,7 @@ namespace {
 		 * Set whether the Console app should auto-exit when done.
 		 *
 		 * @param bool  $boolean
-		 * @return \Illuminate\Console\Application
+		 * @return $this
 		 * @static 
 		 */
 		 public static function setAutoExit($boolean){
@@ -1602,7 +1602,7 @@ namespace {
 		 *
 		 * @param string    $driver
 		 * @param \Closure  $callback
-		 * @return \Illuminate\Support\Manager|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function extend($driver, $callback){
@@ -1921,7 +1921,7 @@ namespace {
 		 * Set the current request instance.
 		 *
 		 * @param \Symfony\Component\HttpFoundation\Request
-		 * @return \Illuminate\Auth\Guard
+		 * @return $this
 		 * @static 
 		 */
 		 public static function setRequest($request){
@@ -2245,7 +2245,7 @@ namespace {
 		 *
 		 * @param string    $driver
 		 * @param \Closure  $callback
-		 * @return \Illuminate\Support\Manager|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function extend($driver, $callback){
@@ -2958,7 +2958,7 @@ namespace {
 		 *
 		 * @param string  $path
 		 * @param string  $domain
-		 * @return self
+		 * @return $this
 		 * @static 
 		 */
 		 public static function setDefaultPathAndDomain($path, $domain){
@@ -3079,15 +3079,15 @@ namespace {
 		 }
 
 		/**
-		 * Reconnect to the given database.
+		 * Disconnect from the given database and remove from local cache.
 		 *
 		 * @param string  $name
-		 * @return \Illuminate\Database\Connection
+		 * @return void
 		 * @static 
 		 */
-		 public static function reconnect($name = null){
+		 public static function purge($name = null){
 			//Method inherited from \Illuminate\Database\DatabaseManager
-			return \Illuminate\Database\DatabaseManager::reconnect($name);
+			 \Illuminate\Database\DatabaseManager::purge($name);
 		 }
 
 		/**
@@ -3100,6 +3100,18 @@ namespace {
 		 public static function disconnect($name = null){
 			//Method inherited from \Illuminate\Database\DatabaseManager
 			 \Illuminate\Database\DatabaseManager::disconnect($name);
+		 }
+
+		/**
+		 * Reconnect to the given database.
+		 *
+		 * @param string  $name
+		 * @return \Illuminate\Database\Connection
+		 * @static 
+		 */
+		 public static function reconnect($name = null){
+			//Method inherited from \Illuminate\Database\DatabaseManager
+			return \Illuminate\Database\DatabaseManager::reconnect($name);
 		 }
 
 		/**
@@ -3500,8 +3512,8 @@ namespace {
 		/**
 		 * Set the PDO connection.
 		 *
-		 * @param \PDO  $pdo
-		 * @return \Illuminate\Database\Connection
+		 * @param \PDO|null  $pdo
+		 * @return $this
 		 * @static 
 		 */
 		 public static function setPdo($pdo){
@@ -3512,13 +3524,25 @@ namespace {
 		/**
 		 * Set the PDO connection used for reading.
 		 *
-		 * @param \PDO  $pdo
-		 * @return \Illuminate\Database\Connection
+		 * @param \PDO|null  $pdo
+		 * @return $this
 		 * @static 
 		 */
 		 public static function setReadPdo($pdo){
 			//Method inherited from \Illuminate\Database\Connection
 			return \Illuminate\Database\SQLiteConnection::setReadPdo($pdo);
+		 }
+
+		/**
+		 * Set the reconnect instance on the connection.
+		 *
+		 * @param callable  $reconnector
+		 * @return $this
+		 * @static 
+		 */
+		 public static function setReconnector($reconnector){
+			//Method inherited from \Illuminate\Database\Connection
+			return \Illuminate\Database\SQLiteConnection::setReconnector($reconnector);
 		 }
 
 		/**
@@ -4040,7 +4064,7 @@ namespace {
 		 * @param string  $operator
 		 * @param mixed   $value
 		 * @param string  $boolean
-		 * @return \Illuminate\Database\Eloquent\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function where($column, $operator = null, $value = null, $boolean = 'and'){
@@ -4183,7 +4207,7 @@ namespace {
 		 * Set a model instance for the model being queried.
 		 *
 		 * @param \Illuminate\Database\Eloquent\Model  $model
-		 * @return \Illuminate\Database\Eloquent\Builder
+		 * @return $this
 		 * @static 
 		 */
 		 public static function setModel($model){
@@ -4220,7 +4244,7 @@ namespace {
 		 * Set the columns to be selected.
 		 *
 		 * @param array  $columns
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function select($columns = array()){
@@ -4244,7 +4268,7 @@ namespace {
 		 * Add a new select column to the query.
 		 *
 		 * @param mixed  $column
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function addSelect($column){
@@ -4255,7 +4279,7 @@ namespace {
 		/**
 		 * Force the query to only return distinct results.
 		 *
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function distinct(){
@@ -4267,7 +4291,7 @@ namespace {
 		 * Set the table which the query is targeting.
 		 *
 		 * @param string  $table
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function from($table){
@@ -4284,7 +4308,7 @@ namespace {
 		 * @param string  $two
 		 * @param string  $type
 		 * @param bool    $where
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function join($table, $one, $operator = null, $two = null, $type = 'inner', $where = false){
@@ -4374,7 +4398,7 @@ namespace {
 		 * @param string  $sql
 		 * @param array   $bindings
 		 * @param string  $boolean
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function whereRaw($sql, $bindings = array(), $boolean = 'and'){
@@ -4402,7 +4426,7 @@ namespace {
 		 * @param array   $values
 		 * @param string  $boolean
 		 * @param bool  $not
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function whereBetween($column, $values, $boolean = 'and', $not = false){
@@ -4468,7 +4492,7 @@ namespace {
 		 *
 		 * @param \Illuminate\Database\Query\Builder|static $query
 		 * @param string  $boolean
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function addNestedWhereQuery($query, $boolean = 'and'){
@@ -4482,7 +4506,7 @@ namespace {
 		 * @param \Closure $callback
 		 * @param string   $boolean
 		 * @param bool     $not
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function whereExists($callback, $boolean = 'and', $not = false){
@@ -4535,7 +4559,7 @@ namespace {
 		 * @param mixed   $values
 		 * @param string  $boolean
 		 * @param bool    $not
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function whereIn($column, $values, $boolean = 'and', $not = false){
@@ -4589,7 +4613,7 @@ namespace {
 		 * @param string  $column
 		 * @param string  $boolean
 		 * @param bool    $not
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function whereNull($column, $boolean = 'and', $not = false){
@@ -4684,7 +4708,7 @@ namespace {
 		 *
 		 * @param string  $method
 		 * @param string  $parameters
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function dynamicWhere($method, $parameters){
@@ -4695,8 +4719,7 @@ namespace {
 		/**
 		 * Add a "group by" clause to the query.
 		 *
-		 * @param dynamic  $columns
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function groupBy(){
@@ -4711,7 +4734,7 @@ namespace {
 		 * @param string  $operator
 		 * @param string  $value
 		 * @param string  $boolean
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function having($column, $operator = null, $value = null, $boolean = 'and'){
@@ -4739,7 +4762,7 @@ namespace {
 		 * @param string  $sql
 		 * @param array   $bindings
 		 * @param string  $boolean
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function havingRaw($sql, $bindings = array(), $boolean = 'and'){
@@ -4765,7 +4788,7 @@ namespace {
 		 *
 		 * @param string  $column
 		 * @param string  $direction
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function orderBy($column, $direction = 'asc'){
@@ -4802,7 +4825,7 @@ namespace {
 		 *
 		 * @param string  $sql
 		 * @param array  $bindings
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function orderByRaw($sql, $bindings = array()){
@@ -4814,7 +4837,7 @@ namespace {
 		 * Set the "offset" value of the query.
 		 *
 		 * @param int  $value
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function offset($value){
@@ -4838,7 +4861,7 @@ namespace {
 		 * Set the "limit" value of the query.
 		 *
 		 * @param int  $value
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function limit($value){
@@ -4899,8 +4922,8 @@ namespace {
 		/**
 		 * Lock the selected rows in the table.
 		 *
-		 * @param bool  $update
-		 * @return \Illuminate\Database\Query\Builder
+		 * @param bool  $value
+		 * @return $this
 		 * @static 
 		 */
 		 public static function lock($value = true){
@@ -4946,7 +4969,7 @@ namespace {
 		 *
 		 * @param \DateTime|int  $minutes
 		 * @param string  $key
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function remember($minutes, $key = null){
@@ -4970,7 +4993,7 @@ namespace {
 		 * Indicate that the results, if cached, should use the given cache tags.
 		 *
 		 * @param array|dynamic  $cacheTags
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function cacheTags($cacheTags){
@@ -4982,7 +5005,7 @@ namespace {
 		 * Indicate that the results, if cached, should use the given cache driver.
 		 *
 		 * @param string  $cacheDriver
-		 * @return \Illuminate\Database\Query\Builder|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function cacheDriver($cacheDriver){
@@ -5246,7 +5269,7 @@ namespace {
 		 *
 		 * @param array   $bindings
 		 * @param string  $type
-		 * @return \Illuminate\Database\Query\Builder
+		 * @return $this
 		 * @throws \InvalidArgumentException
 		 * @static 
 		 */
@@ -5260,7 +5283,7 @@ namespace {
 		 *
 		 * @param mixed   $value
 		 * @param string  $type
-		 * @return \Illuminate\Database\Query\Builder
+		 * @return $this
 		 * @throws \InvalidArgumentException
 		 * @static 
 		 */
@@ -5273,7 +5296,7 @@ namespace {
 		 * Merge an array of bindings into our bindings.
 		 *
 		 * @param \Illuminate\Database\Query\Builder  $query
-		 * @return \Illuminate\Database\Query\Builder
+		 * @return $this
 		 * @static 
 		 */
 		 public static function mergeBindings($query){
@@ -5320,7 +5343,7 @@ namespace {
 		/**
 		 * Register an event listener with the dispatcher.
 		 *
-		 * @param string|array  $event
+		 * @param string|array  $events
 		 * @param mixed   $listener
 		 * @param int     $priority
 		 * @return void
@@ -6207,7 +6230,7 @@ namespace {
 		 * Set the session store implementation.
 		 *
 		 * @param \Illuminate\Session\Store  $session
-		 * @return \Illuminate\Html\FormBuilder
+		 * @return $this
 		 * @static 
 		 */
 		 public static function setSessionStore($session){
@@ -6614,7 +6637,7 @@ namespace {
 		/**
 		 * Return the Request instance.
 		 *
-		 * @return \Illuminate\Http\Request
+		 * @return $this
 		 * @static 
 		 */
 		 public static function instance(){
@@ -8269,8 +8292,8 @@ namespace {
 		/**
 		 * Register an error_log handler.
 		 *
-		 * @param integer $messageType
 		 * @param string  $level
+		 * @param integer $messageType
 		 * @return void
 		 * @static 
 		 */
@@ -8661,7 +8684,7 @@ namespace {
 		 * Set the log writer instance.
 		 *
 		 * @param \Illuminate\Log\Writer  $logger
-		 * @return \Illuminate\Mail\Mailer
+		 * @return $this
 		 * @static 
 		 */
 		 public static function setLogger($logger){
@@ -8673,7 +8696,7 @@ namespace {
 		 * Set the queue manager instance.
 		 *
 		 * @param \Illuminate\Queue\QueueManager  $queue
-		 * @return \Illuminate\Mail\Mailer
+		 * @return $this
 		 * @static 
 		 */
 		 public static function setQueue($queue){
@@ -9490,7 +9513,7 @@ namespace {
 		/**
 		 * Return the Request instance.
 		 *
-		 * @return \Illuminate\Http\Request
+		 * @return $this
 		 * @static 
 		 */
 		 public static function instance(){
@@ -11172,6 +11195,7 @@ namespace {
 		 * @param string  $pattern
 		 * @param string  $name
 		 * @param array|null  $methods
+		 * @return void
 		 * @static 
 		 */
 		 public static function when($pattern, $name, $methods = null){
@@ -11537,7 +11561,7 @@ namespace {
 		 * @param \Symfony\Component\HttpFoundation\Request  $request
 		 * @param int   $type
 		 * @param bool  $catch
-		 * @return \Symfony\Component\HttpFoundation\Response
+		 * @return \Illuminate\Http\Response
 		 * @static 
 		 */
 		 public static function handle($request, $type = 1, $catch = true){
@@ -11674,7 +11698,7 @@ namespace {
 		 * Set the database connection instance.
 		 *
 		 * @param \Illuminate\Database\Connection
-		 * @return \Illuminate\Database\Schema\Builder
+		 * @return $this
 		 * @static 
 		 */
 		 public static function setConnection($connection){
@@ -11761,7 +11785,7 @@ namespace {
 		 *
 		 * @param string    $driver
 		 * @param \Closure  $callback
-		 * @return \Illuminate\Support\Manager|static
+		 * @return $this
 		 * @static 
 		 */
 		 public static function extend($driver, $callback){

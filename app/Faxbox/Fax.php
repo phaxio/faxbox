@@ -13,6 +13,8 @@ class Fax extends Eloquent {
      */
     protected $table = 'faxes';
     
+    public $presenter = 'Faxbox\Presenters\FaxPresenter';
+
     protected $fillable = [
         'phaxio_id',
         'direction',
