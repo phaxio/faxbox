@@ -87,13 +87,13 @@ class SentryGroup implements GroupInterface {
             {
                 // Group information was updated
                 $result['success'] = true;
-                $result['message'] = trans('groups.updated');;
+                $result['message'] = trans('groups.updated');
             }
             else
             {
                 // Group information was not updated
                 $result['success'] = false;
-                $result['message'] = trans('groups.updateproblem');;
+                $result['message'] = trans('groups.updateproblem');
             }
         }
         catch (\Cartalyst\Sentry\Groups\NameRequiredException $e)
