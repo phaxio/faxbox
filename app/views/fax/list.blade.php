@@ -19,7 +19,7 @@
                             <th>Pages</th>
                             <th>Incoming Number</th>
                             <th>Status</th>
-                            <th>Date</th>
+                            <th>Completed</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -31,8 +31,17 @@
                             <td>{{ $fax['recipient']['number'] ?: '-----' }}</td>
                             <td>{{ $fax['pages'] }}</td>
                             <td>{{ $fax['phone']['number'] ?: '-----'  }}</td>
-                            <td>{{ $fax['in_progress'] ?  '<span class="label label-info"><i class="fa fa-spinner fa-spin"></i> In Progress</span>' : '<span class="label label-success">Completed</span>' }}</td>
-                            <td>{{ $fax['updated_at'] }}</td>
+                            <td>
+                            @if($fax['in_progress'])
+                            <span class="label label-info"><i class="fa fa-spinner fa-spin"></i> In Progress</span>
+                            @elseif($fax['sent'])
+                            <span class="label label-success">Completed</span>
+                            @elseif(!$fax['in_progress'] && !$fax['sent'])
+                            <span class="label label-danger">Error</span>
+                            <small>{{ $fax['message'] }}</small>
+                            @endif
+                            </td>
+                            <td>{{ $fax['completed_at'] ?: '-----' }}</td>
                             <td class="text-center"><a href="{{ action('FaxController@download', [$fax['id'], 'p'])}}" target="_blank"><i class="fa fa-file-pdf-o"></i></a></td>
                         </tr>
                         @endforeach
@@ -54,7 +63,7 @@
 <script>
     $(document).ready(function() {
         $('#dataTables-fax').dataTable({
-            "order": [[ 6, "desc" ]],
+            "order": [[ 0, "desc" ]],
             "columnDefs": [
                 { "orderable": false, "targets": 6 },
                 { "searchable": false, "targets": 6 }

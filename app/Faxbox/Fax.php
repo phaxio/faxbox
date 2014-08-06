@@ -13,15 +13,16 @@ class Fax extends Eloquent {
      */
     protected $table = 'faxes';
     
-    public $presenter = 'Faxbox\Presenters\FaxPresenter';
-
     protected $fillable = [
         'phaxio_id',
         'direction',
         'pages',
         'sent',
         'in_progress',
-        'files'
+        'files',
+        'status',
+        'message',
+        'completed_at'
     ];
     
     public function getFilesAttribute($value)

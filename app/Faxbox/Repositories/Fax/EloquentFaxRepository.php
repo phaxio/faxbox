@@ -65,16 +65,16 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
         return $faxes->orderBy('created_at', 'DESC')->get()->toArray();
     }
 
-    public function byId($id)
+    public function byId($id, $checkAccess = true)
     {
         $fax = $this->model
             ->with(['recipient', 'phone', 'user'])
             ->findOrFail($id);
 
         $userId = $this->users->loggedInUserId();
-        
-        $this->canAccess($fax, $userId);
-        
+
+        if ($checkAccess) $this->canAccess($fax, $userId);
+
         return $fax;
     }
 
@@ -91,11 +91,11 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
                 'Faxbox\Repositories\Phone\PhoneInterface',
                 $permissions
             );
-        
+
         // The user only has access if they can view faxes from the incoming 
         // number, or they sent the fax.
-        if ( in_array($fax->phone_id, $allowedPhoneIds) || 
-             $fax->user_id == $userId
+        if (in_array($fax->phone_id, $allowedPhoneIds) ||
+            $fax->user_id == $userId
         ) return true;
 
         \App::abort('403', trans('user.unauthorized'));
@@ -139,12 +139,23 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
         $fax->save();
 
         // Send it off to phaxio
-        $apiResult = $this->api->sendFax($fax->recipient->number, $fax->files);
+        $options = [
+            'tags' => ['id' => $fax->id],
+            'callback_url' => \Config::get('faxbox.notify.fax')
+        ];
+        $apiResult = $this->api->sendFax($fax->recipient->number, $fax->files, $options);
 
         $result['success'] = $apiResult->isSuccess();
         $result['message'] = $apiResult->getMessage();
 
         return $result;
+    }
+
+    public function update($data)
+    {
+        $fax = $this->model->findOrFail($data['id']);
+        $fax->fill($data);
+        return $fax->save();
     }
 
     private function sanitizePhone($number)

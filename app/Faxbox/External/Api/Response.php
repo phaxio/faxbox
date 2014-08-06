@@ -4,6 +4,7 @@ class Response {
     
     protected $status;
     protected $message;
+    protected $data;
 
     /**
      * @param bool $status
@@ -17,17 +18,24 @@ class Response {
     {
         return $this->status;
     }
-
-    /**
-     * @param bool $status
-     */
-    public function setMessage($status)
+    
+    public function setMessage($message)
     {
-        $this->status = $status;
+        $this->message = $message;
     }
     
     public function getMessage()
     {
         return $this->message;
+    }
+    
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
+
+    public function getData()
+    {
+        return $this->data;
     }
 }

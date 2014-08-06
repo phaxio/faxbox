@@ -25,6 +25,12 @@ class PhaxioApi implements FaxInterface {
 
     }
     
+    public function status($id)
+    {
+        $response = $this->phaxio->faxStatus($id);
+        return $this->_parseResponse($response);
+    }
+    
     public function createPhone($areaCode, $callbackUrl = null)
     {
         $response = $this->phaxio->provisionNumber($areaCode, $callbackUrl);
@@ -46,6 +52,7 @@ class PhaxioApi implements FaxInterface {
     {
         $this->response->setStatus($response->succeeded());
         $this->response->setMessage($response->getMessage());
+        $this->response->setData($response->getData());
         
         return $this->response;
     }

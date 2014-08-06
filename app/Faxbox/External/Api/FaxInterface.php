@@ -11,6 +11,8 @@ interface FaxInterface {
 
     public function sendFax($to, $filenames = [], $options = []);
 
+    public function status($id);
+
     public function receiveFax();
 
     public function createPhone($areaCode, $callbackUrl = null);

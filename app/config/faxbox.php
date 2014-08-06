@@ -7,6 +7,11 @@ return [
         'public' => $_ENV['apiPublic'],
         'secret' => $_ENV['apiSecret']
     ],
+    
+    'notify' => [
+        'fax' => action('NotifyController@fax')
+    ],
+    
     /*
 	|--------------------------------------------------------------------------
 	| Static Permissions
