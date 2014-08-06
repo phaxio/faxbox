@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-lg-12">
             <small><a href="{{ action('FaxController@index') }}"><< Back to List Faxes</a></small>
-            <h1 class="page-header">Fax Details</h1>
+            <h1 class="page-header">Fax Details #{{ $fax['id'] }}</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -36,6 +36,11 @@
                                 @endif
                             </tr>
 
+                            <tr>
+                                <td>Direction</td>
+                                <td>{{ ucwords($fax['direction']) }}</td>
+                            </tr>
+                            
                             <tr>
                                 <td>Pages</td>
                                 <td>{{ $fax['pages'] }}</td>

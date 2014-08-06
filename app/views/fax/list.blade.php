@@ -26,7 +26,7 @@
                     <tbody>
                         @foreach($faxes as $fax)
                         <tr class="odd gradeX">
-                            <td class="text-center"><a href="{{ action('FaxController@show', $fax['id'])}}"><i class="fa fa-file-text-o"></i></a></td>
+                            <td><a href="{{ action('FaxController@show', $fax['id'])}}"><i class="fa fa-file-text-o"></i> {{ $fax['id'] }}</a></td>
                             <td>{{ $fax['direction'] == 'received' ? '<i class="fa fa-arrow-circle-o-down"></i>' : '<i class="fa fa-arrow-circle-o-up"></i>'}} {{ $fax['direction'] }}</td>
                             <td>{{ $fax['recipient']['number'] ?: '-----' }}</td>
                             <td>{{ $fax['pages'] }}</td>
@@ -54,7 +54,7 @@
 <script>
     $(document).ready(function() {
         $('#dataTables-fax').dataTable({
-            "order": [[ 5, "desc" ]],
+            "order": [[ 6, "desc" ]],
             "columnDefs": [
                 { "orderable": false, "targets": 6 },
                 { "searchable": false, "targets": 6 }

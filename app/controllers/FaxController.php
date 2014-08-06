@@ -28,14 +28,7 @@ class FaxController extends BaseController {
         // todo this should be moved into the repo
         $user = Sentry::getUser();
 
-        // todo move admin check to repo
-        if ($this->users->isAdmin($user->getId()))
-        {
-            $faxes = $this->faxes->all();
-        } else
-        {
-            $faxes = $this->faxes->findByUserId($user->getId());
-        }
+        $faxes = $this->faxes->findByUserId($user->getId());
 
         $this->view('fax.list', compact('faxes'));
     }
@@ -86,7 +79,6 @@ class FaxController extends BaseController {
     public function show($id)
     {
         $fax = $this->faxes->byId($id);
-        
         $this->view('fax.show', compact('fax'));
     }
     
@@ -109,6 +101,7 @@ class FaxController extends BaseController {
         // todo check if allowed to view fax
         $result = $this->faxes->download($id, $type);
 
+        // If they want a pdf we need to set the proper header
         if ($type == 'p')
             return \Response::make($result, 200, ['Content-Type' => 'application/pdf']);
         

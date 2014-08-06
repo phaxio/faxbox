@@ -52,7 +52,7 @@ class SentryUser implements UserInterface {
     {
         return $this->sentry->getUser()->getId();
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -458,7 +458,6 @@ class SentryUser implements UserInterface {
 
     /**
      * Generate password - helper function
-     * From http://www.phpscribble.com/i4xzZu/Generate-random-passwords-of-given-length-and-strength
      *
      */
     private function _generatePassword($length = 10) {
