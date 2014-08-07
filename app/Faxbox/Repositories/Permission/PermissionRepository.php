@@ -89,15 +89,21 @@ class PermissionRepository implements PermissionInterface {
             $admin      = static::name($resourceClass, 'admin');
             $permission = static::name($resourceClass, $level);
 
-            if ((strpos($id, $permission) !== false ||
-                strpos($id, $admin !== false)) &&
-                $value === 1
+            if ( (strpos($id, $permission) !== false && $value === 1) ||
+                 (strpos($id, $admin) !== false && $value === 1)
             ) $ids[] = explode("_", $id)[2];
         }
 
         return $ids;
     }
 
+    /**
+     * @param      $resourceClass
+     * @param      $permission
+     * @param null $id
+     *
+     * @return string
+     */
     public static function name($resourceClass, $permission, $id = null)
     {
         $name = $resourceClass . "_" . $permission;

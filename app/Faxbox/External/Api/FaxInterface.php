@@ -18,4 +18,6 @@ interface FaxInterface {
     public function createPhone($areaCode, $callbackUrl = null);
 
     public function deletePhone($phoneNumber);
+    
+    public function getAvailableAreaCodes();
 }

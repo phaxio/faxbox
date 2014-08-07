@@ -142,7 +142,7 @@ class SentryGroup implements GroupInterface {
      * Return a specific group by a given id
      *
      * @param  integer $id
-     * @return Group
+     * @return \Cartalyst\Sentry\Group
      */
     public function byId($id)
     {
@@ -183,7 +183,13 @@ class SentryGroup implements GroupInterface {
      */
     public function all()
     {
-        $groups = $this->sentry->findAllGroups();
+        if($this->sentry->getUser()->isSuperUser())
+        {
+            $groups = $this->sentry->findAllGroups();
+        } else
+        {
+            $groups = $this->sentry->getUser()->getGroups();
+        }
         
         return $groups;
     }
@@ -202,16 +208,30 @@ class SentryGroup implements GroupInterface {
         return $groups;
     }
 
-    public function allWithChecked($user)
+    public function allWithChecked($resource = null)
     {
-        $userGroups = array_column($user->getGroups()->toArray(), 'id');
+        $resourceGroups = [];
+        
+        if($resource instanceof Sentry)
+        {
+            $resourceGroups = array_column($resource->getGroups()->toArray(), 'id');
+        } else
+        {
+            foreach($this->sentry->findAllGroups() as $group)
+            {
+                if($group->hasAccess($resource))
+                {
+                    $resourceGroups[] = $group->getId();
+                }
+            }
+        }
         
         $groups = $this->all();
 
         foreach ($groups as &$group)
         {
             $group['value'] = 0;
-            if(in_array($group['id'], $userGroups)) $group['value'] = 1; 
+            if(in_array($group['id'], $resourceGroups)) $group['value'] = 1; 
         }
 
         return $groups;

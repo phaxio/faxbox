@@ -48,6 +48,12 @@ class PhaxioApi implements FaxInterface {
         return $this->phaxio->download($id, $size);
     }
     
+    public function getAvailableAreaCodes()
+    {
+        $response = $this->phaxio->getAvailableAreaCodes();
+        return $this->_parseResponse($response);
+    }
+    
     private function _parseResponse(PhaxioOperationResult $response)
     {
         $this->response->setStatus($response->succeeded());

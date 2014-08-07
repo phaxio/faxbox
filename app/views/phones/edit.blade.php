@@ -16,8 +16,26 @@
                 {{ Form::text('description', $phone['description'], array('class' => 'form-control', 'placeholder' => trans('phone.description'))) }}
                 {{ ($errors->has('description') ? $errors->first('description') : '') }}
             </div>
-            {{ Form::submit(trans('phone.update'), array('class' => 'btn btn-primary')) }}
         </div>
     </div>
+
+    @if($groups)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <h4>Group Permissions <small>These groups will have access to view faxes from this number</small></h4>
+                @foreach($groups as $group)
+                <div class="checkbox">
+                    <label>
+                        {{ Form::hidden("groups[".$group['id']."]", 0) }}
+                        {{ Form::checkbox("groups[".$group['id']."]", 1, $group['value']) }} {{ $group['name'] }}
+                    </label>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    {{ Form::submit(trans('phone.update'), array('class' => 'btn btn-primary')) }}
+    @endif
 </div>
 @stop

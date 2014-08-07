@@ -5,6 +5,7 @@ use Faxbox\Repositories\Permission\PermissionRepository as Permissions;
 use Faxbox\Repositories\Phone\PhoneInterface;
 use Faxbox\Service\Form\Phone\PhoneForm;
 use Faxbox\Repositories\Fax\FaxInterface;
+use Faxbox\Repositories\Group\GroupInterface;
 
 class PhoneController extends BaseController {
 
@@ -17,7 +18,8 @@ class PhoneController extends BaseController {
         PhoneInterface $phones,
         PhoneForm $phoneForm,
         FaxInterface $faxes,
-        Users $users
+        Users $users,
+        GroupInterface $groups
     ) {
         parent::__construct();
 
@@ -25,6 +27,7 @@ class PhoneController extends BaseController {
         $this->phones = $phones;
         $this->faxes = $faxes;
         $this->phoneForm = $phoneForm;
+        $this->groups = $groups;
 
         $id = Route::input('phones');
 
@@ -48,12 +51,33 @@ class PhoneController extends BaseController {
 
     public function create()
     {
-
+        $groups = $this->groups->all();
+        $area = $this->phones->getAvailableAreaCodes();
+        $this->view('phones.create', compact('groups', 'area'));
     }
 
     public function store()
     {
+        $data = Input::all();
 
+        // Form Processing
+        $result = $this->phoneForm->save($data);
+
+        if ($result['success'])
+        {
+            // Success!
+            Session::flash('success', $result['message']);
+
+            return Redirect::action('PhoneController@index');
+
+        } else
+        {
+            Session::flash('error', $result['message']);
+
+            return Redirect::action('PhoneController@create')
+                           ->withInput()
+                           ->withErrors($this->phoneForm->errors());
+        }
     }
 
     public function show($id)
@@ -63,15 +87,20 @@ class PhoneController extends BaseController {
 
     public function edit($id)
     {
+        $permission = Permission::name('Faxbox\Repositories\Phone\PhoneInterface', 'view', $id);
+        $groups = $this->groups->allWithChecked($permission);
+        
         $phone = $this->phones->byId($id);
-        $this->view('phones.edit', compact('phone'));
+        
+        $this->view('phones.edit', compact('phone', 'groups'));
     }
 
     public function update($id)
     {
         $data = [
             'id' => $id,
-            'description' => Input::get('description')
+            'description' => Input::get('description'),
+            'groups' => Input::get('groups')
         ];
 
         // Form Processing
@@ -90,7 +119,7 @@ class PhoneController extends BaseController {
 
             return Redirect::action('PhoneController@edit')
                            ->withInput()
-                           ->withErrors($this->groupForm->errors());
+                           ->withErrors($this->phoneForm->errors());
         }
     }
 
