@@ -29,69 +29,76 @@ class NotifyController extends BaseController {
 
         $input = Input::get('fax');
 
-        $input = json_decode($input);
+        $fax = json_decode($input, true);
 
         // Call back to the api to retrieve the data to make sure this is legit
-        $response = $this->api->status($input->id);
+        // todo uncomment this once the phaxio bug is fixed.
+//        $response = $this->api->status($input->id);
+//        $fax = $response->getData();
 
-        $fax = $response->getData();
-
-        if ($response->isSuccess())
+        if(\Config::get('app.debug'))
         {
-            $data['id']           = $fax['tags']['id'];
-            $data['phaxio_id']    = $fax['id'];
-            $data['pages']        = $fax['num_pages'];
-            $data['direction']    = $fax['direction'];
-            $data['completed_at'] = date('Y-m-d H:i:s', $fax['completed_at']);
-            $data['in_progress']  = false;
+            //\Log::info(print_r($response, true));
+            \Log::info(print_r($fax, true));
+        }
 
-            if ($fax['status'] === 'success')
-            {
 
-                $data['sent'] = true;
+//        if ($response->isSuccess())
+//        {
+        $data['id']           = isset($fax['tags']['id']) ? $fax['tags']['id'] : null;
+        $data['phaxio_id']    = $fax['id'];
+        $data['pages']        = $fax['num_pages'];
+        $data['direction']    = $fax['direction'];
+        $data['completed_at'] = isset($fax['completed_at']) ? 
+                                date('Y-m-d H:i:s', $fax['completed_at']) : 
+                                null;
+        
+        $data['in_progress']  = false;
 
-            } else if (isset($fax['recipients'][0]->error_type))
-            {
+        if ($fax['status'] === 'success')
+        {
+            $data['sent'] = true;
+            
+        } else 
+        {
+            $data['sent'] = false;
+            $data['message'] = $this->getErrorMessage($fax);
+            
+        }
 
-                $data['sent']    = false;
-                $data['message'] = $this->getErrorMessage(
-                    $fax['recipients'][0]['error_type'],
-                    $fax['recipients'][0]['error_code']
-                );
-
-            } else if (isset($fax['error_type']))
-            {
-
-                $data['sent']    = false;
-                $data['message'] = $this->getErrorMessage(
-                    $fax['error_type'],
-                    $fax['error_code']
-                );
-
-            } else
-            {
-                $data['sent'] = false;
-            }
-
-            $this->faxes->update($data);
-
-            if ($data['sent'])
-            {
-
-                // send event
-
-            }
+        if($data['id'] !== null)
+        {
+            $faxItem = $this->faxes->update($data);
         } else
         {
-            // this fax doesn't exist on the remote server, someone is doing something fishy
-            return Response::make(null, 403);
+            // todo fill in to/from number
+            $faxItem = $this->faxes->storeReceived($data);
         }
+        
+        Event::fire('fax.processed', ['fax' => $faxItem]);
+        
+//        } else
+//        {
+//            // this fax doesn't exist on the remote server, someone is doing something fishy
+//            return Response::make(null, 403);
+//        }
 
     }
 
-    private function getErrorMessage($type, $code)
+    private function getErrorMessage($fax)
     {
-        $error = '';
+        $error = $type = $code = '';
+
+        if (isset($fax['recipients'][0]['error_type']))
+        {
+            $type = $fax['recipients'][0]['error_type'];
+            $code = $fax['recipients'][0]['error_code'];
+
+        } else if (isset($fax['error_type']))
+        {
+            $type = $fax['error_type'];
+            $code = $fax['error_code'];
+        }
 
         switch ($type)
         {
@@ -109,6 +116,8 @@ class NotifyController extends BaseController {
                 break;
             case'generalError':
                 $error = "An error occurred with our system. Our administrators have been notified.";
+                break;
+            default:
                 break;
         }
 
