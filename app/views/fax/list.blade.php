@@ -65,8 +65,8 @@
         $('#dataTables-fax').dataTable({
             "order": [[ 0, "desc" ]],
             "columnDefs": [
-                { "orderable": false, "targets": 6 },
-                { "searchable": false, "targets": 6 }
+                { "orderable": false, "targets": 7 },
+                { "searchable": false, "targets": 7 }
             ],
             "iDisplayLength": 25,
             "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
