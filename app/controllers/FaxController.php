@@ -3,21 +3,26 @@
 use Faxbox\Repositories\User\UserInterface as Users;
 use Faxbox\Repositories\Fax\FaxInterface;
 use Faxbox\Service\Form\Fax\FaxForm;
+use Symfony\Component\HttpFoundation\File\File;
 
 class FaxController extends BaseController {
 
     protected $cc;
-    
-    public function __construct(FaxInterface $faxes, Users $users, FaxForm $faxForm)
-    {
+
+    public function __construct(
+        FaxInterface $faxes,
+        Users $users,
+        FaxForm $faxForm
+    ) {
         parent::__construct();
 
-        $this->users = $users;
-        $this->faxes = $faxes;
+        $this->users   = $users;
+        $this->faxes   = $faxes;
         $this->faxForm = $faxForm;
-        
+
         $this->beforeFilter('auth');
-        $this->beforeFilter('hasAccess:send_fax', ['only' => ['store', 'create']]);
+        $this->beforeFilter('hasAccess:send_fax',
+            ['only' => ['store', 'create', 'upload']]);
 
         $cc       = @getenv(GEOIP_COUNTRY_CODE) ? @getenv(GEOIP_COUNTRY_CODE) : 'us';
         $this->cc = strtolower($cc);
@@ -32,33 +37,33 @@ class FaxController extends BaseController {
 
         $this->view('fax.list', compact('faxes'));
     }
-    
+
     public function create()
     {
         $countries = $this->getCountries();
-        
-        $types = Config::get('faxbox.supportedFiles');
-        $exts = array_column($types, 'ext');
-        $accepted = implode(',',array_column($types, 'mime'));
-        
+
+        $types    = Config::get('faxbox.supportedFiles');
+        $exts     = array_column($types, 'ext');
+        $accepted = implode(',', array_column($types, 'mime'));
+
         $this->view('fax.create', compact('countries', 'exts', 'accepted'));
     }
 
     public function store()
     {
         $data = Input::all();
-        
+
         // todo validate files keys exists
-        foreach($data['files'] as &$file)
+        foreach ($data['files'] as &$file)
         {
-            $file = new \Symfony\Component\HttpFoundation\File\File(storage_path('docs/'.$file));
+            $file = new File(storage_path('docs/' . $file));
         }
-        
+
         $data['direction'] = 'sent';
-        
+
         $result = $this->faxForm->save($data);
-        
-        if($result['success'])
+
+        if ($result['success'])
         {
             // Success!
             Session::flash('success', $result['message']);
@@ -73,7 +78,7 @@ class FaxController extends BaseController {
                            ->withInput()
                            ->withErrors($this->faxForm->errors());
         }
-        
+
     }
 
     public function show($id)
@@ -81,33 +86,34 @@ class FaxController extends BaseController {
         $fax = $this->faxes->byId($id);
         $this->view('fax.show', compact('fax'));
     }
-    
+
     public function upload()
     {
         //todo validate before moving
         $names = [];
-        
-        foreach(Input::file('files') as $file)
+
+        foreach (Input::file('files') as $file)
         {
             // create a unique name and move it
             $names[] = $name = Str::random('32') . "." . $file->getClientOriginalExtension();
             $file->move(storage_path('docs'), $name);
         }
+
         return $names;
     }
-    
+
     public function download($id, $type = 'l')
     {
-        // todo check if allowed to view fax
         $result = $this->faxes->download($id, $type);
 
         // If they want a pdf we need to set the proper header
-        if ($type == 'p')
-            return \Response::make($result, 200, ['Content-Type' => 'application/pdf']);
-        
-        return \Response::make($result, 200, ['Content-Type' => 'image/jpeg']);
+        $headers = $type == 'p' ?
+            ['Content-Type' => 'application/pdf'] :
+            ['Content-Type' => 'image/jpeg'];
+
+        return \Response::make($result, 200, $headers);
     }
-    
+
     /**
      * Gets the list of supported countries and sorts them according to users geo-located IP address.
      *
@@ -118,8 +124,9 @@ class FaxController extends BaseController {
         $countries = Config::get('faxbox.phone');
         uasort($countries, [$this, 'sortCountries']);
 
-        $oldCC = Input::old('toPhoneCountry') ? Input::old('toPhoneCountry') : Input::get('c',
-            '');
+        $oldCC =    Input::old('toPhoneCountry') ?
+                    Input::old('toPhoneCountry') :
+                    Input::get('c', '');
 
         foreach ($countries as $k => $v)
         {
@@ -130,7 +137,9 @@ class FaxController extends BaseController {
             {
                 $temp              = [$k => $countries[$k]];
                 $temp[$k]['style'] = 'class="bumped"';
+                
                 unset($countries[$k]);
+                
                 $countries = $temp + $countries;
             } else
             {
