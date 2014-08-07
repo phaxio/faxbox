@@ -16,7 +16,7 @@ class CreateFaxesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('phaxio_id')->nullable();
-			$table->integer('user_id')->unsigned();
+			$table->integer('user_id')->unsigned()->nullable();
 			$table->enum('direction', ['sent', 'received']);
 			$table->integer('pages')->nullable();
 			$table->boolean('sent')->default(false);
@@ -26,16 +26,7 @@ class CreateFaxesTable extends Migration {
 			$table->foreign('user_id')
 				  ->references('id')
 				  ->on('users')
-				  ->onDelete('cascade')
 				  ->onUpdate('cascade');
-		});
-		
-		// Now that the faxes table is created we need to create the Recipient foreign key as well
-		Schema::table('recipients', function(Blueprint $table)
-		{
-			$table->foreign('fax_id')
-				  ->references('id')
-				  ->on('faxes');
 		});
 	}
 

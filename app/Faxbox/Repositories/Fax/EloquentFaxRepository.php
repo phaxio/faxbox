@@ -8,7 +8,13 @@ use Faxbox\Repositories\User\UserInterface;
 use Faxbox\External\Api\FaxInterface as FaxApi;
 
 class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInterface {
-
+    
+    protected $faxes;
+    protected $users;
+    protected $api;
+    protected $recipient;
+    protected $phone;
+    
     public function __construct(
         Fax $faxes,
         UserInterface $users,
@@ -71,9 +77,11 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
             ->with(['recipient', 'phone', 'user'])
             ->findOrFail($id);
 
-        $userId = $this->users->loggedInUserId();
-
-        if ($checkAccess) $this->canAccess($fax, $userId);
+        if ($checkAccess)
+        {
+            $userId = $this->users->loggedInUserId();
+            $this->canAccess($fax, $userId);
+        }
 
         return $fax;
     }
@@ -154,8 +162,15 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
     public function update($data)
     {
         $fax = $this->model->findOrFail($data['id']);
-        $fax->fill($data);
-        return $fax->save();
+        $fax->fill($data)->save();
+        return $fax->toArray();
+    }
+    
+    public function storeReceived($data)
+    {
+        $fax = $this->model->newInstance($data);
+        $fax->save();
+        return $fax->toArray();
     }
 
     private function sanitizePhone($number)
