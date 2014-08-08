@@ -26,8 +26,7 @@
                     <button type="button"
                             class="btn btn-default dropdown-toggle"
                             data-toggle="dropdown"><img id="flag" src="/images/flags-iso/shiny/16/{{ strtoupper($countries[0]['short']) }}.png">
-                        +<span
-                            id="cc">{{ $countries[0]['code'] }}</span>
+                        +<span id="cc">{{ $countries[0]['code'] }}</span>
                         <span class="caret"></span></button>
                     <ul class="dropdown-menu text-left">
                         @foreach($countries as $country)
@@ -37,8 +36,8 @@
                             data-country="{{ $country['short'] }}"
                             data-code="{{ $country['code'] }}"
                             data-flag="/images/flags-iso/shiny/16/{{ strtoupper($country['short']) }}.png"
-                            href="#"><img
-                                src="/images/flags-iso/shiny/16/{{ strtoupper($country['short']) }}.png" alt="{{ strtoupper($country['name']) }}">
+                            href="#">
+                            <img src="/images/flags-iso/shiny/16/{{ strtoupper($country['short']) }}.png" alt="{{ strtoupper($country['name']) }}">
                             {{ $country['name'] }}
                             <small>+{{ $country['code'] }}</small>
                         </a></li>
@@ -48,14 +47,15 @@
                 <!-- /btn-group -->
                 {{ Form::text('number', null, array('placeholder' => 'Recipient\'s Fax Number', 'class' => 'form-control', 'id' => 'number', 'pattern' => '\d*')) }}
             </div>
+                {{ ($errors->has('fullNumber') ? $errors->first('fullNumber') : '') }}
             </div>
             <!-- /.col-md-4 -->
         </div>
     </div>
     
-    <div class="row">
+    <div class="row" style="padding-top:20px">
         <div class="col-md-4">
-            <span class="btn btn-success fileinput-button">
+            <span class="btn btn-sm btn-success fileinput-button">
             <i class="glyphicon glyphicon-plus"></i>
             <span>Add files...</span>
                 <!-- The file input field used as target for the file upload widget -->
@@ -68,15 +68,27 @@
                 <div class="progress-bar progress-bar-success"></div>
             </div>
             <!-- The container for the uploaded files -->
-            <div id="files" class="files"></div>
+            <div id="files" class="files">
+                @if(Input::old('files'))
+                    @foreach(Input::old('files') as $file)
+                    {{ $file }}
+                    @endforeach
+                @endif
+            </div>
         </div>
     </div>
 
     {{ Form::hidden('toPhoneArea', Input::old('toPhoneArea'), array('id' => 'toPhoneArea')) }}
 
     {{ Form::hidden('toPhoneCountry', Input::old('toPhoneCountry', $countries[0]['short']), array('id' => 'toPhoneCountry')) }}
+
+    @if(Input::old('files'))
+        @foreach(Input::old('files') as $file)
+        <input type="hidden" name="files[]" value="{{ $file }}">
+        @endforeach
+    @endif
     
-    {{ Form::submit() }}
+    {{ Form::submit(trans('fax.send'), ['class' => 'btn btn-primary']) }}
     {{ Form::close() }}
 </div>
 @stop
