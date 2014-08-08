@@ -2,6 +2,7 @@
 
 use Illuminate\Validation\Validator;
 use libphonenumber\PhoneNumberUtil;
+use Symfony\Component\HttpFoundation\File\File;
 
 class CustomLaravelValidator extends Validator {
 
@@ -32,6 +33,9 @@ class CustomLaravelValidator extends Validator {
         $allowed = \Config::get('faxbox.supportedFiles');
         $allowedMimes = array_column($allowed, 'mime');
         $allowedExts = array_column($allowed, 'ext');
+
+        if(!$value instanceof File)
+            $value = new File(storage_path('docs/' . $value));
 
         return in_array($value->getMimeType(), $allowedMimes) && in_array($value->getExtension(), $allowedExts);
     }

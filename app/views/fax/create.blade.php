@@ -69,8 +69,8 @@
             </div>
             <!-- The container for the uploaded files -->
             <div id="files" class="files">
-                @if(Input::old('files'))
-                    @foreach(Input::old('files') as $file)
+                @if(Input::old('fileNames'))
+                    @foreach(Input::old('fileNames') as $file)
                     {{ $file }}
                     @endforeach
                 @endif
@@ -82,9 +82,9 @@
 
     {{ Form::hidden('toPhoneCountry', Input::old('toPhoneCountry', $countries[0]['short']), array('id' => 'toPhoneCountry')) }}
 
-    @if(Input::old('files'))
-        @foreach(Input::old('files') as $file)
-        <input type="hidden" name="files[]" value="{{ $file }}">
+    @if(Input::old('fileNames'))
+        @foreach(Input::old('fileNames') as $file)
+        <input type="hidden" name="fileNames[]" value="{{ $file }}">
         @endforeach
     @endif
     
@@ -154,7 +154,7 @@
                 $.each(data.files, function (index, file) {
                     $('<p/>').text(file.name).appendTo('#files');
                     $('<input type="hidden">')
-                        .attr('name', 'files[]')
+                        .attr('name', 'fileNames[]')
                         .attr('type', 'hidden')
                         .val(data.result[index])
                         .appendTo('#faxform');

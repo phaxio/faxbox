@@ -128,7 +128,7 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
         $fax->user_id     = $this->users->loggedInUserId();
         $fax->direction   = $data['direction'];
         $fax->in_progress = true;
-        $fax->files       = $data['files'];
+        $fax->files       = $data['fileNames'];
         $fax->save();
 
         if ($data['direction'] == 'sent')

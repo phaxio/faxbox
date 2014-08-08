@@ -51,10 +51,10 @@ class FaxController extends BaseController {
 
     public function store()
     {
-        $data = $_POST;  // BUG laravel stripping out file data on re-submit
+        $data = Input::all();
         
         // todo validate files keys exists
-        foreach ($data['files'] as &$file)
+        foreach ($data['fileNames'] as &$file)
         {
             $file = new File(storage_path('docs/' . $file));
         }
