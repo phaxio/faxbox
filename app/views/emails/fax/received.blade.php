@@ -1,1 +1,1 @@
-A fax was recived.
+A fax was received.

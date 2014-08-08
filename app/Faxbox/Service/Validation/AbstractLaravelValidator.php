@@ -67,11 +67,11 @@ abstract class AbstractLaravelValidator	implements ValidableInterface {
     {
         //for updates and unique validation, ignore the current id or other use
         //first you must set the currentId
-        if($this->currentId) {
+//        if($this->currentId) {
             foreach ($this->rules as $key => &$value) {
-                $value = str_replace(':current', $this->currentId, $value);
+                $value = str_replace(':current', $this->currentId ?: "", $value);
             }
-        }
+//        }
         
         $validator = $this->validator->make($this->data, $this->rules, $this->messages);
 

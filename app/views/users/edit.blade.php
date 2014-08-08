@@ -65,6 +65,7 @@
             </div>
         </div>
     </div>
+    @if($groups)
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
@@ -79,6 +80,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     <div class="row">
         <div class="col-md-4">

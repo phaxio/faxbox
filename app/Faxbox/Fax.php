@@ -60,13 +60,13 @@ class Fax extends Eloquent {
         return $this->belongsTo('Faxbox\User');
     }
     
-    public function recipient()
+    public function number()
     {
-        return $this->hasOne('Faxbox\Recipient');
+        return $this->hasOne('Faxbox\Number');
     }
     
     public function phone()
     {
-        return $this->belongsTo('Faxbox\Phone');
+        return $this->belongsTo('Faxbox\Phone')->withTrashed();
     }
 }

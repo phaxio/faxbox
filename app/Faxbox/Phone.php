@@ -4,9 +4,12 @@ namespace Faxbox;
 use Eloquent;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class Phone extends Eloquent {
 
+    use SoftDeletingTrait;
+    
     /**
      * The database table used by the model.
      *
@@ -14,10 +17,12 @@ class Phone extends Eloquent {
      */
     protected $table = 'phones';
     
-    
-
     protected $fillable = [
         'description',
+        'number',
+        'city',
+        'state',
+        'country_code'
     ];
 
     public function fax()
@@ -28,12 +33,12 @@ class Phone extends Eloquent {
     public function getNumberAttribute($value)
     {
         $phoneUtil = PhoneNumberUtil::getInstance();
+
         try {
-            $number = $phoneUtil->parse($value, $this->country_code);
+            $number = $phoneUtil->parse($value, $this->country_code ?: "US");
         } catch (\libphonenumber\NumberParseException $e) {
-            return false;
+            return $value;
         }
-        
-        return $phoneUtil->format($number, PhoneNumberFormat::E164);
+        return $phoneUtil->format($number, PhoneNumberFormat::INTERNATIONAL);
     }
 }

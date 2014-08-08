@@ -31,12 +31,14 @@ class NotifyController extends BaseController {
 
         $fax = json_decode($input, true);
 
+        if ($fax['is_test'] && \App::environment() == 'production') return;
+
         // Call back to the api to retrieve the data to make sure this is legit
         // todo uncomment this once the phaxio bug is fixed.
 //        $response = $this->api->status($input->id);
 //        $fax = $response->getData();
 
-        if(\Config::get('app.debug'))
+        if (\Config::get('app.debug'))
         {
             //\Log::info(print_r($response, true));
             \Log::info(print_r($fax, true));
@@ -49,40 +51,46 @@ class NotifyController extends BaseController {
         $data['phaxio_id']    = $fax['id'];
         $data['pages']        = $fax['num_pages'];
         $data['direction']    = $fax['direction'];
-        $data['completed_at'] = isset($fax['completed_at']) ? 
-                                date('Y-m-d H:i:s', $fax['completed_at']) : 
+        $data['completed_at'] = isset($fax['completed_at']) ?
+                                date('Y-m-d H:i:s', $fax['completed_at']) :
                                 null;
-        
-        $data['in_progress']  = false;
+
+        $data['in_progress'] = false;
 
         if ($fax['status'] === 'success')
         {
             $data['sent'] = true;
-            
-        } else 
+
+        } else
         {
-            $data['sent'] = false;
+            $data['sent']    = false;
             $data['message'] = $this->getErrorMessage($fax);
-            
+
         }
 
-        if($data['id'] !== null)
+        if ($data['direction'] == 'sent')
         {
             $faxItem = $this->faxes->update($data);
         } else
         {
-            // todo fill in to/from number
-            $faxItem = $this->faxes->storeReceived($data);
+            $data['number'] = $fax['from_number'];
+            $data['phone']  = $fax['to_number'];
+            
+            $faxItem = $this->faxes->createReceived($data);
         }
-        
+
         Event::fire('fax.processed', ['fax' => $faxItem]);
-        
+
 //        } else
 //        {
 //            // this fax doesn't exist on the remote server, someone is doing something fishy
 //            return Response::make(null, 403);
 //        }
-
+    }
+    
+    public function phone()
+    {
+        
     }
 
     private function getErrorMessage($fax)

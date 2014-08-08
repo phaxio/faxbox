@@ -3,36 +3,36 @@
 use Faxbox\Fax;
 use Faxbox\Repositories\EloquentAbstractRepository;
 use Faxbox\Repositories\Phone\PhoneInterface;
-use Faxbox\Repositories\Recipient\RecipientInterface;
+use Faxbox\Repositories\Number\NumberInterface;
 use Faxbox\Repositories\User\UserInterface;
 use Faxbox\External\Api\FaxInterface as FaxApi;
 
 class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInterface {
-    
+
     protected $faxes;
     protected $users;
     protected $api;
-    protected $recipient;
+    protected $number;
     protected $phone;
-    
+
     public function __construct(
         Fax $faxes,
         UserInterface $users,
         FaxApi $api,
-        RecipientInterface $recipient,
+        NumberInterface $number,
         PhoneInterface $phone
     ) {
-        $this->model     = $faxes;
-        $this->users     = $users;
-        $this->api       = $api;
-        $this->recipient = $recipient;
-        $this->phone     = $phone;
+        $this->model  = $faxes;
+        $this->users  = $users;
+        $this->api    = $api;
+        $this->number = $number;
+        $this->phone  = $phone;
     }
 
     public function all()
     {
         return $this->model
-            ->with(['recipient', 'phone', 'user'])
+            ->with(['number', 'phone', 'user'])
             ->orderBy('created_at', 'DESC')
             ->get()
             ->toArray();
@@ -43,7 +43,7 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
      *
      * @param integer $userId
      *
-     * @return array An array of faxes including the recipient, phone number, and user
+     * @return array An array of faxes including the number, phone number, and user
      */
     public function findByUserId($userId)
     {
@@ -62,7 +62,7 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
             );
 
         $faxes = $this->model
-            ->with(['recipient', 'phone', 'user'])
+            ->with(['number', 'phone', 'user'])
             ->where('user_id', '=', $userId);
 
         if (count($allowedPhoneIds))
@@ -74,7 +74,7 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
     public function byId($id, $checkAccess = true)
     {
         $fax = $this->model
-            ->with(['recipient', 'phone', 'user'])
+            ->with(['number', 'phone', 'user'])
             ->findOrFail($id);
 
         if ($checkAccess)
@@ -133,11 +133,11 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
 
         if ($data['direction'] == 'sent')
         {
-            $recipient               = $this->recipient->newInstance();
-            $recipient->number       = $data['number'];
-            $recipient->country_code = strtoupper($data['toPhoneCountry']);
+            $number               = $this->number->newInstance();
+            $number->number       = $data['number'];
+            $number->country_code = strtoupper($data['toPhoneCountry']);
 
-            $fax->recipient()->save($recipient);
+            $fax->number()->save($number);
         } else
         {
             $phone = $this->phone->findByNumber($data['number']);
@@ -147,11 +147,13 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
         $fax->save();
 
         // Send it off to phaxio
-        $options = [
-            'tags' => ['id' => $fax->id],
+        $options   = [
+            'tags'         => ['id' => $fax->id],
             'callback_url' => \Config::get('faxbox.notify.fax')
         ];
-        $apiResult = $this->api->sendFax($fax->recipient->number, $fax->files, $options);
+        $apiResult = $this->api->sendFax($fax->number->number,
+            $fax->files,
+            $options);
 
         $result['success'] = $apiResult->isSuccess();
         $result['message'] = $apiResult->getMessage();
@@ -163,13 +165,33 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
     {
         $fax = $this->model->findOrFail($data['id']);
         $fax->fill($data)->save();
+
         return $fax->toArray();
     }
-    
-    public function storeReceived($data)
+
+    public function createReceived($data)
     {
-        $fax = $this->model->newInstance($data);
+        $fax = $this->model->newInstance();
+        
+        if(isset($data['phone']))
+        {
+            $data['phone'] = $this->sanitizePhone($data['phone']);
+            $phone = $this->phone->findByNumber($data['phone'], true);
+            $fax->phone()->associate($phone);
+        }
+
+        
+        $fax->fill($data);
         $fax->save();
+
+        if(isset($data['number']))
+        {
+            $data['number'] = $this->sanitizePhone($data['number']);
+            $number = $this->number->newInstance();
+            $number->number = $data['number'];
+            $fax->number()->save($number);
+        }
+        
         return $fax->toArray();
     }
 

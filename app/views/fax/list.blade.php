@@ -15,9 +15,9 @@
                         <tr>
                             <th></th>
                             <th>Direction</th>
-                            <th>Recipient</th>
+                            <th>Recipient/From</th>
                             <th>Pages</th>
-                            <th>Incoming Number</th>
+                            <th>Incoming Phone</th>
                             <th>Status</th>
                             <th>Completed</th>
                             <th></th>
@@ -27,8 +27,8 @@
                         @foreach($faxes as $fax)
                         <tr class="odd gradeX">
                             <td><a href="{{ action('FaxController@show', $fax['id'])}}"><i class="fa fa-file-text-o"></i> {{ $fax['id'] }}</a></td>
-                            <td>{{ $fax['direction'] == 'received' ? '<i class="fa fa-arrow-circle-o-down"></i>' : '<i class="fa fa-arrow-circle-o-up"></i>'}} {{ $fax['direction'] }}</td>
-                            <td>{{ $fax['recipient']['number'] ?: '-----' }}</td>
+                            <td>{{ $fax['direction'] == 'received' ? '<span class="label label-info"><i class="fa fa-arrow-circle-down"></i>' : '<span class="label label-primary"><i class="fa fa-arrow-circle-up"></i>'}} {{ $fax['direction'] }}</span></td>
+                            <td>{{ $fax['number']['number'] }}</td>
                             <td>{{ $fax['pages'] }}</td>
                             <td>{{ $fax['phone']['number'] ?: '-----'  }}</td>
                             <td>

@@ -27,6 +27,7 @@
                     <div class="table-responsive">
                         <table class="table">
                             <tbody>
+                            @if($fax['direction'] == 'sent')
                             <tr>
                                 <td>Status</td>
                                 @if($fax['sent'])
@@ -35,6 +36,7 @@
                                 <td><span class="label label-info"><i class="fa fa-spinner fa-spin"></i> In Progress</span></td>
                                 @endif
                             </tr>
+                            @endif
 
                             <tr>
                                 <td>Direction</td>
@@ -46,10 +48,22 @@
                                 <td>{{ $fax['pages'] }}</td>
                             </tr>
                             
+                            
                             <tr>
-                                <td>Number</td>
-                                <td>{{ $fax['recipient']['number'] ?: $fax['phone']['number'] }}</td>
+                                @if($fax['direction'] == 'sent')
+                                <td>Recipient</td>
+                                @else
+                                <td>From Number</td>
+                                @endif
+                                <td>{{ $fax['number']['number'] }}</td>
                             </tr>
+
+                            @if($fax['direction'] == 'received')
+                            <tr>
+                                <td>Incoming Number</td>
+                                <td>{{ $fax['phone']['number'] }} - {{ $fax['phone']['description'] }}</td>
+                            </tr>
+                            @endif
                             
                             </tbody>
                         </table>

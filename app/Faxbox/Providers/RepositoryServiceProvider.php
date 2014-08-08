@@ -30,8 +30,8 @@ class RepositoryServiceProvider extends ServiceProvider
         );
 
         $app->bind(
-            'Faxbox\Repositories\Recipient\RecipientInterface',
-            'Faxbox\Repositories\Recipient\EloquentRecipientRepository'
+            'Faxbox\Repositories\Number\NumberInterface',
+            'Faxbox\Repositories\Number\EloquentNumberRepository'
         );
 
         $app->bind(

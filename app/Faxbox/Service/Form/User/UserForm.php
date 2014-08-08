@@ -22,7 +22,7 @@ class UserForm {
 	/**
 	 * Session Repository
 	 *
-	 * @var \Faxbox\Repositories\Session\SessionInterface 
+	 * @var \Faxbox\Repositories\User\UserInterface 
 	 */
 	protected $user;
 

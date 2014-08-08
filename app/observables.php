@@ -80,9 +80,9 @@ Event::listen('fax.processed', function($fax){
             
             if ($send)
             {
-                Mail::send('fax.received', compact('fax'), function ($message) use ($fax)
+                Mail::send('emails.fax.received', compact('fax'), function ($message) use ($fax, $user)
                 {
-                    $message->to($fax['user']['email'])->subject('Incoming Fax from '.$fax['phone']);
+                    $message->to($user['email'])->subject('Incoming Fax from '.$fax['phone']['number']);
                 });
             }
         }
