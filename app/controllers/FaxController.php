@@ -51,8 +51,8 @@ class FaxController extends BaseController {
 
     public function store()
     {
-        $data = Input::all();
-
+        $data = $_POST;  // BUG laravel stripping out file data on re-submit
+        
         // todo validate files keys exists
         foreach ($data['files'] as &$file)
         {
@@ -62,7 +62,7 @@ class FaxController extends BaseController {
         $data['direction'] = 'sent';
 
         $result = $this->faxForm->save($data);
-
+        
         if ($result['success'])
         {
             // Success!
@@ -73,7 +73,7 @@ class FaxController extends BaseController {
         } else
         {
             Session::flash('error', $result['message']);
-
+            
             return Redirect::action('FaxController@create')
                            ->withInput()
                            ->withErrors($this->faxForm->errors());
