@@ -108,9 +108,6 @@ class PermissionRepository implements PermissionInterface {
     {
         $name = $resourceClass . "_" . $permission;
 
-        // Don't need the ID if the permission type is admin
-        if ($permission == 'admin') return $name;
-
         $name = $id ? $name . "_" . $id : $name;
 
         return $name;

@@ -37,10 +37,12 @@ class PhaxioApi implements FaxInterface {
         
         return $this->_parseResponse($response);
     }
-    
-    public function deletePhone($phoneNumber)
+
+    public function deletePhone($number)
     {
-        $response = $this->phaxio->releaseNumber($phoneNumber);
+        $response = $this->phaxio->releaseNumber($number);
+
+        return $this->_parseResponse($response);
     }
     
     public function download($id, $size)

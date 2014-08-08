@@ -122,10 +122,26 @@ class PhoneController extends BaseController {
                            ->withErrors($this->phoneForm->errors());
         }
     }
-
-    public function delete()
+    
+    public function destroy($id)
     {
+        // Form Processing
+        $result = $this->phones->destroy($id);
 
+        if ($result['success'])
+        {
+            // Success!
+            Session::flash('success', $result['message']);
+
+            return Redirect::action('PhoneController@index');
+
+        } else
+        {
+            Session::flash('error', $result['message']);
+
+            return Redirect::action('PhoneController@edit', ['id' => $id])
+                           ->withInput()
+                           ->withErrors($this->phoneForm->errors());
+        }
     }
-
 }

@@ -13,7 +13,7 @@
         <div class="col-md-4">
             <h4>{{ $phone['number'] }}</h4>
             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
-                {{ Form::text('description', $phone['description'], array('class' => 'form-control', 'placeholder' => trans('phone.description'))) }}
+                {{ Form::text('description', $phone['description'], array('class' => 'form-control', 'placeholder' => trans('phones.description'))) }}
                 {{ ($errors->has('description') ? $errors->first('description') : '') }}
             </div>
         </div>
@@ -34,8 +34,22 @@
                 @endforeach
             </div>
         </div>
+        
     </div>
-    {{ Form::submit(trans('phone.update'), array('class' => 'btn btn-primary')) }}
+
+    <div class="row">
+        <div class="col-sm-6">
+        {{ Form::submit(trans('phones.update'), array('class' => 'btn btn-primary')) }}
+        {{ Form::close() }}
+        </div>
+        <div class="col-sm-6">
+            {{ Form::open(['action' => ['PhoneController@destroy', $phone['id']], 'method' => 'DELETE']) }}
+            {{ Form::submit(trans('phones.delete'), array('class' => 'btn btn-danger pull-right')) }}
+            {{ Form::close() }}    
+        </div> 
+    </div>
+    
+    
     @endif
 </div>
 @stop
