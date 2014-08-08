@@ -56,7 +56,6 @@ Route::resource('groups', 'GroupController');
 
 // Notify Routes
 Route::post('notify/fax', 'NotifyController@fax');
-Route::post('notify/phone', 'NotifyController@phone');
 
 // Our home route
 Route::get('/', ['as' => 'home', 'before' => 'auth', 'uses' => 'HomeController@index']);

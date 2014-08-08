@@ -87,11 +87,7 @@ class NotifyController extends BaseController {
 //            return Response::make(null, 403);
 //        }
     }
-    
-    public function phone()
-    {
-        
-    }
+
 
     private function getErrorMessage($fax)
     {
