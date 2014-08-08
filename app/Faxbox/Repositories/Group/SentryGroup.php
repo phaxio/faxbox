@@ -212,7 +212,7 @@ class SentryGroup implements GroupInterface {
     {
         $resourceGroups = [];
         
-        if($resource instanceof Sentry)
+        if($resource instanceof \Cartalyst\Sentry\Users\UserInterface)
         {
             $resourceGroups = array_column($resource->getGroups()->toArray(), 'id');
         } else
