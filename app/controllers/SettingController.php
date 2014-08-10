@@ -28,14 +28,14 @@ class SettingController extends BaseController {
 
     }
 
-    public function edit()
+    public function editMail()
     {
-
+        $this->view('settings.mail');
     }
 
-    public function update()
+    public function updateMail()
     {
-
+        
     }
 
     public function delete()
