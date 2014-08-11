@@ -80,6 +80,8 @@ class NotifyController extends BaseController {
         }
 
         Event::fire('fax.processed', ['fax' => $faxItem]);
+        
+        return Response::make('', 200);
 
 //        } else
 //        {

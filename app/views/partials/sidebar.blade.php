@@ -60,7 +60,7 @@
                         <a href="#">Appearance</a>
                     </li>
                     <li>
-                        <a href="#">SMTP Settings</a>
+                        <a href="{{ action('SettingController@editMail') }}">Mail Server</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
