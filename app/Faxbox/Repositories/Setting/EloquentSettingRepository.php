@@ -70,8 +70,18 @@ class EloquentSettingRepository extends EloquentAbstractRepository implements Se
     
     private function writeToDb($name, $value)
     {
-        $setting = $this->model->newInstance();
-        return $setting->updateOrCreate(['name' => $name], ['value' => $value]);
+        //$setting = $this->model->newInstance();
+        //return $setting->updateOrCreate(['name' => $name], ['value' => $value]);
+        
+        // Lets instead only write existing values to db
+        $result = $this->model->where('name', '=', $name)->first();
+        
+        if($result)
+        {
+            $result->value = $value;
+            return $result->save();
+        }
+        
     }
     
     

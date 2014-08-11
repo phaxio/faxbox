@@ -56,9 +56,6 @@ class SettingController extends BaseController {
     {
         $data = Input::all();
         
-         /* TODO: fix this up for security. shouldn't let admin just write 
-         anything to the DB. but for now its ok since it's only the admin 
-         being allowed to do this anyways */
         $this->settings->writeArray($data);
 
         Session::flash('success', "Mail settings successfully updated");
