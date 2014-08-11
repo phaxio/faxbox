@@ -75,8 +75,10 @@
             <!-- /.panel -->
         </div>
         <div class="col-md-6 text-right">
-            <img src="{{ action('FaxController@download', [$fax['id'], 'l']) }}"><br>
-            <a href="{{ action('FaxController@download', [$fax['id'], 'p']) }}" target="_blank"><i class="fa fa-file-pdf-o"></i> Download PDF</a>
+            <a href="{{ action('FaxController@download', [$fax['id'], 'p']) }}" target="_blank">
+                <img src="{{ action('FaxController@download', [$fax['id'], 'l']) }}"><br>
+                <i class="fa fa-file-pdf-o"></i> Download PDF
+            </a>
         </div>
     </div>
     
