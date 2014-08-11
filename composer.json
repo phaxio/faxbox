@@ -16,6 +16,7 @@
         "phaxio/phaxio": "dev-master",
         "barryvdh/laravel-ide-helper": "1.*",
         "ext-intl": "*",
+        "ext-readline" : "*",
         "october/config": "dev-master",
         "guzzlehttp/guzzle": "~4.0"
 	},
