@@ -50,7 +50,12 @@ class SentryUser implements UserInterface {
     
     public function loggedInUserId()
     {
-        return $this->sentry->getUser()->getId();
+        $user = $this->sentry->getUser();
+        
+        if($user) return $user->getId();
+        
+        return null;
+        
     }
 
     /**
@@ -431,6 +436,23 @@ class SentryUser implements UserInterface {
         }
         
         return $user;
+    }
+    
+    public function getIdByLoginName($username)
+    {
+        try
+        {
+            // Get the current active/logged in user
+            $user = \Sentry::findUserByLogin($username);
+            \Log::info(print_r($user, true));
+            return $user->getId();
+        }
+        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
+        {
+            return null;
+        }
+        
+        return null;
     }
 
     /**

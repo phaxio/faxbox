@@ -6,7 +6,7 @@ class BaseController extends Controller {
     
     public function __construct()
     {
-        $this->beforeFilter('csrf', [ 'on' => 'post' ]);
+        $this->beforeFilter('csrf', [ 'on' => 'post', 'except' => 'sendFromEmail' ]);
     }
     
 	/**

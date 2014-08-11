@@ -125,7 +125,18 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
         $data['number'] = $this->sanitizePhone($data['fullNumber']);
         $fax            = $this->model->newInstance();
 
-        $fax->user_id     = $this->users->loggedInUserId();
+        if(isset($data['user_id']))
+        {
+            $fax->user_id = $data['user_id'];
+            
+        }else if($this->users->loggedInUserId())
+        {
+            $fax->user_id = $this->users->loggedInUserId();
+        }else
+        {
+            \App::abort('401');
+        }
+        
         $fax->direction   = $data['direction'];
         $fax->in_progress = true;
         $fax->files       = $data['fileNames'];
@@ -151,7 +162,7 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
             'tags'         => ['id' => $fax->id],
             'callback_url' => \Config::get('faxbox.notify.fax')
         ];
-        $apiResult = $this->api->sendFax($fax->number->number,
+        $apiResult = $this->api->sendFax($data['number'],
             $fax->files,
             $options);
 
@@ -163,7 +174,7 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
 
     public function update($data)
     {
-        $fax = $this->model->findOrFail($data['id']);
+        $fax = $this->byId($data['id'], false);
         $fax->fill($data)->save();
 
         return $fax->toArray();

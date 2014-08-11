@@ -25,11 +25,30 @@ class Number extends Eloquent {
     {
         $phoneUtil = PhoneNumberUtil::getInstance();
         
+        $value = $this->clean($value);
+        
         try {
-            $number = $phoneUtil->parse($value, $this->country_code ?: "US");
+            $number = $phoneUtil->parse($value, $this->country_code ?: "");
         } catch (\libphonenumber\NumberParseException $e) {
             return $value;
         }
         return $phoneUtil->format($number, PhoneNumberFormat::INTERNATIONAL);
+    }
+
+    private function clean($number){
+        $startsWithPlus = substr($number, 0, 1) === '+';
+        $number = preg_replace ('/[^\d]/', '', $number);
+
+        if ($startsWithPlus){
+            $number = '+' . $number;
+        }
+        else if (strlen($number) == 10){
+            $number = '+1' . $number;
+        }
+        else {
+            $number = '+' . $number;
+        }
+
+        return $number;
     }
 }

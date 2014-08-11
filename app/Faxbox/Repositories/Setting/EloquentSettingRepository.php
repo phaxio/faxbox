@@ -57,7 +57,7 @@ class EloquentSettingRepository extends EloquentAbstractRepository implements Se
         }
         
     }
-    
+
     public function writeArray($keyValue, $forceDb = false)
     {
         $keyValue = array_dot($keyValue);

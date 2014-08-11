@@ -90,6 +90,36 @@ class NotifyController extends BaseController {
 //        }
     }
 
+    public function sendFromEmail($number)
+    {
+        \Log::info(print_r(Input::all(), true));
+        
+        $input = Input::all();
+        $data = [];
+
+        $data['user_id'] = $this->users->getIdByLoginName($input['sender']);
+
+        if($data['user_id'] === null)
+            return Response::make("Unauthorized", 200); // mailgun will only shut up when we respond 200
+
+        foreach (Input::file() as $file)
+        {
+            // create a unique name and move it
+            $data['fileNames'][] = $name = Str::random('32') . "." . $file->getClientOriginalExtension();
+            $file->move(storage_path('docs'), $name);
+        }
+        
+        
+        
+        $data['direction'] = 'sent';
+        $data['toPhoneCountry'] = '';
+        $data['fullNumber'] = $number;
+        
+        $this->faxes->store($data);
+        
+        return \Response::make("", 200);
+    }
+
 
     private function getErrorMessage($fax)
     {

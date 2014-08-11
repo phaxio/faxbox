@@ -42,7 +42,7 @@
                             @endif
                             </td>
                             <td>{{ $fax['completed_at'] ?: '-----' }}</td>
-                            <td class="text-center"><a href="{{ action('FaxController@download', [$fax['id'], 'p'])}}" target="_blank"><i class="fa fa-file-pdf-o"></i></a></td>
+                            <td class="text-center"><a href="{{ action('FaxController@download', [$fax['id'], 'p'])}}"><i class="fa fa-file-pdf-o"></i></a></td>
                         </tr>
                         @endforeach
                     </tbody>

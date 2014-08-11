@@ -105,15 +105,15 @@ class FaxController extends BaseController {
     public function download($id, $type = 'l')
     {
         $result = $this->faxes->download($id, $type);
-
+        
         // If they want a pdf we need to set the proper header
         $headers = $type == 'p' ?
-            ['Content-Type' => 'application/pdf'] :
+            ['Content-Type' => 'application/pdf', "Content-Disposition" => "attachment; filename=fax-$id.pdf"] :
             ['Content-Type' => 'image/jpeg'];
 
         return \Response::make($result, 200, $headers);
     }
-
+    
     /**
      * Gets the list of supported countries and sorts them according to users geo-located IP address.
      *

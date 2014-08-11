@@ -11,6 +11,7 @@ class SentryGroup implements GroupInterface {
      * @var Sentry
      */
     protected $sentry;
+    protected $permissions;
 
     public function __construct(Sentry $sentry, PermissionInterface $permissions)
     {
