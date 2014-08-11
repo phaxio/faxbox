@@ -3,6 +3,12 @@
 	"description": "The Laravel Framework.",
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
+    "repositories": [
+        {
+            "url": "https://github.com/greatwitenorth/laravel-config-writer.git",
+            "type": "git"
+        }
+    ],
 	"require": {
 		"laravel/framework": "4.2.*",
         "cartalyst/sentry": "2.1.*",
@@ -10,13 +16,14 @@
         "phaxio/phaxio": "dev-master",
         "barryvdh/laravel-ide-helper": "1.*",
         "ext-intl": "*",
-        "mccool/laravel-auto-presenter": "2.*"
+        "october/config": "dev-master",
+        "guzzlehttp/guzzle": "~4.0"
 	},
     "require-dev": {
         "mockery/mockery": "0.9.*@dev",
         "phpunit/phpunit": "3.7.*",
         "doctrine/dbal": "~2.3"
-},
+    },
 	"autoload": {
 		"classmap": [
 			"app/commands",
