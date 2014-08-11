@@ -17,7 +17,7 @@
         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
     </a>
     <ul class="dropdown-menu dropdown-user">
-        <li><a href="{{ action('UserController@edit', [Session::get('userId')]) }}"><i class="fa fa-user fa-fw"></i> User Profile</a>
+        <li><a href="{{ action('UserController@edit', [Sentry::getUser()->getId()]) }}"><i class="fa fa-user fa-fw"></i> User Profile</a>
         </li>
         <li class="divider"></li>
         <li><a href="{{ route('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
