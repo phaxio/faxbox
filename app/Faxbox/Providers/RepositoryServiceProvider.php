@@ -39,6 +39,11 @@ class RepositoryServiceProvider extends ServiceProvider
             'Faxbox\Repositories\Setting\EloquentSettingRepository'
         );
 
+        $this->app['setting'] = $this->app->share(function($app)
+        {
+            return \App::make('Faxbox\Repositories\Setting\SettingInterface');
+        });
+
         $app->singleton(
             'Faxbox\Repositories\Permission\PermissionInterface',
             'Faxbox\Repositories\Permission\PermissionRepository'
