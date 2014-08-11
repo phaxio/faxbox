@@ -17,6 +17,7 @@
         "barryvdh/laravel-ide-helper": "1.*",
         "ext-intl": "*",
         "ext-readline" : "*",
+        "ext-pcntl" : "*",
         "october/config": "dev-master",
         "guzzlehttp/guzzle": "~4.0"
 	},
