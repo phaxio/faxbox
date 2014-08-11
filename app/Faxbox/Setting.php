@@ -12,5 +12,7 @@ class Setting extends Eloquent {
      */
     protected $table = 'settings';
     
+    public $timestamps = false;
+    
     protected $fillable = ['name', 'value'];
 }
