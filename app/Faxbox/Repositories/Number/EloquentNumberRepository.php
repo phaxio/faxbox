@@ -3,7 +3,7 @@
 use Faxbox\Repositories\EloquentAbstractRepository;
 use Faxbox\Number;
 
-class EloquentNumberRepository extends EloquentAbstractRepository implements NumberInterface {
+class EloquentNumberRepository extends EloquentAbstractRepository implements NumberInterface, NumberRepository {
 
     public function __construct(Number $recipient)
     {

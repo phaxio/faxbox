@@ -3,7 +3,7 @@
 use Cartalyst\Sentry\Sentry;
 use Faxbox\Repositories\Permission\PermissionInterface;
 
-class SentryGroup implements GroupInterface {
+class SentryGroup implements GroupInterface, GroupInterface {
 
     /**
      * The sentry object 

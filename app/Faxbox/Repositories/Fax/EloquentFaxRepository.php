@@ -7,7 +7,7 @@ use Faxbox\Repositories\Number\NumberInterface;
 use Faxbox\Repositories\User\UserInterface;
 use Faxbox\External\Api\FaxInterface as FaxApi;
 
-class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInterface {
+class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInterface, FaxInterface {
 
     protected $faxes;
     protected $users;

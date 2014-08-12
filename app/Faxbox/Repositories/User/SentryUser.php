@@ -6,7 +6,7 @@ use Cartalyst\Sentry\Sentry;
 use Faxbox\Repositories\Permission\PermissionInterface;
 use Illuminate\Support\Str;
 
-class SentryUser implements UserInterface {
+class SentryUser implements UserInterface, UserInterface {
 
     protected $sentry;
 
