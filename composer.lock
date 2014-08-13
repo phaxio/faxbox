@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "be7be6baa8f97bd7bba0dc2d878941b0",
+    "hash": "f8bf6e6e4d1aa03a66b53aa094f349c0",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
-            "version": "v1.11.0",
+            "version": "v1.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-ide-helper.git",
-                "reference": "b80db2cebf97c9fd8232c504e505c3ccaf65a95f"
+                "reference": "1b608fc44697e79e20ef060bc679ec5b519362cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/b80db2cebf97c9fd8232c504e505c3ccaf65a95f",
-                "reference": "b80db2cebf97c9fd8232c504e505c3ccaf65a95f",
+                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/1b608fc44697e79e20ef060bc679ec5b519362cb",
+                "reference": "1b608fc44697e79e20ef060bc679ec5b519362cb",
                 "shasum": ""
             },
             "require": {
@@ -67,7 +67,7 @@
                 "phpstorm",
                 "sublime"
             ],
-            "time": "2014-08-09 21:03:31"
+            "time": "2014-08-11 11:26:11"
         },
         {
             "name": "cartalyst/sentry",
@@ -847,11 +847,10 @@
         {
             "name": "october/config",
             "version": "dev-master",
-            "target-dir": "October/Rain/Config",
             "source": {
                 "type": "git",
                 "url": "https://github.com/greatwitenorth/laravel-config-writer.git",
-                "reference": "d6a8b055f23b156a9c008bb0c99df065ee273863"
+                "reference": "96f8d13baa0993b840e50b11a197a99a2b7c6773"
             },
             "require": {
                 "illuminate/config": "4.2.x",
@@ -859,8 +858,8 @@
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "October\\Rain\\Config": ""
+                "psr-4": {
+                    "October\\Rain\\Config\\": "src/"
                 }
             },
             "license": [
@@ -885,7 +884,7 @@
                 "october cms",
                 "write"
             ],
-            "time": "2014-08-11 03:44:22"
+            "time": "2014-08-11 15:13:52"
         },
         {
             "name": "patchwork/utf8",
@@ -2623,12 +2622,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/padraic/mockery.git",
-                "reference": "eb1b9506b0f80a9d7d1b69841ff2ea53bb127297"
+                "reference": "217e04f061861c88ce56677225f8b0cf1eac9e79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/eb1b9506b0f80a9d7d1b69841ff2ea53bb127297",
-                "reference": "eb1b9506b0f80a9d7d1b69841ff2ea53bb127297",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/217e04f061861c88ce56677225f8b0cf1eac9e79",
+                "reference": "217e04f061861c88ce56677225f8b0cf1eac9e79",
                 "shasum": ""
             },
             "require": {
@@ -2681,7 +2680,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2014-08-08 12:49:13"
+            "time": "2014-08-11 12:38:44"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -3097,7 +3096,9 @@
             "time": "2014-08-05 09:00:40"
         }
     ],
-    "aliases": [],
+    "aliases": [
+
+    ],
     "minimum-stability": "stable",
     "stability-flags": {
         "phaxio/phaxio": 20,
@@ -3106,7 +3107,11 @@
     },
     "prefer-stable": false,
     "platform": {
-        "ext-intl": "*"
+        "ext-intl": "*",
+        "ext-readline": "*",
+        "ext-pcntl": "*"
     },
-    "platform-dev": []
+    "platform-dev": [
+
+    ]
 }
