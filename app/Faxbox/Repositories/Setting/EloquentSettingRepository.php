@@ -4,7 +4,7 @@ use Faxbox\Repositories\EloquentAbstractRepository;
 use Faxbox\Setting;
 use October\Rain\Config\Repository;
 
-class EloquentSettingRepository extends EloquentAbstractRepository implements SettingInterface, SettingInterface {
+class EloquentSettingRepository extends EloquentAbstractRepository implements SettingInterface {
 
     /**
      * Construct a new SentryUser Object

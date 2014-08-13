@@ -8,7 +8,7 @@ use Faxbox\Repositories\User\UserInterface;
 use Phaxio;
 use Faxbox\Phone;
 
-class EloquentPhoneRepository extends EloquentAbstractRepository implements PhoneInterface, PhoneInterface {
+class EloquentPhoneRepository extends EloquentAbstractRepository implements PhoneInterface {
 
     public function __construct(
         Phone $phone,

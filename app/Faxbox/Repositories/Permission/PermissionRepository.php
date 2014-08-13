@@ -4,7 +4,7 @@ use \Cartalyst\Sentry\Users\UserInterface;
 Use Config;
 use Faxbox\Repositories\Phone\PhoneInterface;
 
-class PermissionRepository implements PermissionInterface, PermissionInterface {
+class PermissionRepository implements PermissionInterface {
 
     /**
      * The raw permissions config array
