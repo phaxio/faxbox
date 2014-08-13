@@ -57,7 +57,7 @@
                         <a href="#">Pahxio API Keys</a>
                     </li>
                     <li>
-                        <a href="#">Appearance</a>
+                        <a href="{{ action('SettingController@editAppearance') }}">Appearance</a>
                     </li>
                     <li>
                         <a href="{{ action('SettingController@editMail') }}">Mail Server</a>

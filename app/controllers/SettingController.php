@@ -1,7 +1,6 @@
 <?php
 
 use Faxbox\Repositories\Setting\SettingInterface;
-use Mailgun\Mailgun;
 
 class SettingController extends BaseController {
 
@@ -66,6 +65,41 @@ class SettingController extends BaseController {
 
         Session::flash('success', "Mail settings successfully updated");
         return Redirect::action('SettingController@editMail');
+    }
+    
+    public function editAppearance()
+    {
+        $settings = $this->settings->get([
+            'name',
+            'logo',
+            'color1',
+            'color2',
+            'color3',
+            'color4',
+        ]);
+        
+        $this->view('settings.appearance', compact('settings'));
+    }
+
+    public function updateAppearance()
+    {
+        $data = Input::get();
+        
+        if(Input::hasFile('logo'))
+        {
+            $logo = Input::file('logo');
+            $ext = $logo->getClientOriginalExtension();
+            $name = 'logo.'.$ext;
+            $logo->move(public_path('images'), $name);
+            
+            $this->settings->write('logo', $name);
+        }
+        
+        
+        $this->settings->writeArray($data);
+
+        Session::flash('success', "Appearance settings successfully updated");
+        return Redirect::action('SettingController@editAppearance');
     }
 
     public function delete()

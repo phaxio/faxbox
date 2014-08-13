@@ -49,6 +49,8 @@ Route::resource('phones', 'PhoneController');
 // Settings Routes
 Route::get('settings/mail', 'SettingController@editMail');
 Route::post('settings/mail', 'SettingController@updateMail');
+Route::get('settings/appearance', 'SettingController@editAppearance');
+Route::post('settings/appearance', 'SettingController@updateAppearance');
 
 
 // Group Routes
