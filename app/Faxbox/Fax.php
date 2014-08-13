@@ -1,5 +1,4 @@
-<?php
-namespace Faxbox;
+<?php namespace Faxbox;
 
 use Eloquent;
 use Symfony\Component\HttpFoundation\File\File;
