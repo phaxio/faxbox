@@ -18,7 +18,7 @@
 	</div>
     
 	<div class="row">
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<div class="form-group {{ ($errors->has('mail.from.address')) ? 'has-error' : '' }}">
 				{{ Form::text('mail[from][address]', $settings['mail.from.address'], ['class' => 'form-control', 'placeholder' => 'From Email']) }}
 				{{ ($errors->has('mail.from.address') ? $errors->first('mail.from.address') : '') }}
@@ -27,7 +27,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<div class="form-group {{ ($errors->has('mail.from.name')) ? 'has-error' : '' }}">
 				{{ Form::text('mail[from][name]', $settings['mail.from.name'], ['class' => 'form-control', 'placeholder' => 'From Name']) }}
 				{{ ($errors->has('mail.from.name') ? $errors->first('mail.from.name') : '') }}
@@ -53,7 +53,7 @@
 		</div>
 		
 		<div class="row">
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<div class="form-group {{ ($errors->has('mail.username')) ? 'has-error' : '' }}">
 					{{ Form::text('mail[username]', $settings['mail.username'], ['class' => 'form-control', 'placeholder' => 'SMTP Username']) }}
 					{{ ($errors->has('mail.username') ? $errors->first('mail.username') : '') }}
@@ -62,7 +62,7 @@
 		</div>
 	
 		<div class="row">
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<div class="form-group {{ ($errors->has('mail.password')) ? 'has-error' : '' }}">
 					{{ Form::text('mail[password]', $settings['mail.password'], ['class' => 'form-control', 'placeholder' => 'SMTP Password']) }}
 					{{ ($errors->has('mail.password') ? $errors->first('mail.password') : '') }}
@@ -73,7 +73,7 @@
 	
 	<div class="mailgun-settings" style="display:none">
 		<div class="row">
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<div class="form-group {{ ($errors->has('services.mailgun.domain')) ? 'has-error' : '' }}">
 					{{ Form::text('services[mailgun][domain]', $settings['services.mailgun.domain'], ['class' => 'form-control', 'placeholder' => 'Mailgun Domain']) }}
 					{{ ($errors->has('services.mailgun.domain') ? $errors->first('services.mailgun.domain') : '') }}
@@ -81,7 +81,7 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<div class="form-group {{ ($errors->has('services.mailgun.secret')) ? 'has-error' : '' }}">
 					{{ Form::text('services[mailgun][secret]', $settings['services.mailgun.secret'], ['class' => 'form-control', 'placeholder' => 'Mailgun Secret']) }}
 					{{ ($errors->has('services.mailgun.secret') ? $errors->first('services.mailgun.secret') : '') }}
