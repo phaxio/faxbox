@@ -1,5 +1,7 @@
 <?php
 
+use Mailgun\Mailgun;
+
 // User Login event
 Event::listen('user.login', function($userId, $email)
 {
@@ -15,6 +17,38 @@ Event::listen('user.logout', function()
 
 // Subscribe to User Mailer events
 Event::subscribe('Faxbox\Mailers\UserMailer');
+
+Event::listen('update.mailgun.route', function(){
+    
+    $settings = App::make('Faxbox\Repositories\Setting\SettingInterface');
+    
+    # Instantiate the client.
+    $mgClient = new Mailgun(Config::get('services.mailgun.secret'));
+
+    $domain = explode( '@', Config::get('mail.from.address') )[1];
+    
+    $notifyUrl = action('NotifyController@sendFromEmail', ['number' => null]) . "/\\g<phone>";  
+    
+    if($id = $settings->get('mailgun.routeId')){
+        $id = "/".$id;
+        $method = "put";
+    } else 
+    {
+        $id = "";
+        $method = "post";
+    }
+    
+    # Issue the call to the client.
+    $result = $mgClient->$method("routes".$id, array(
+        'priority'    => 0,
+        'expression'  => 'match_recipient("(?P<phone>.*?)@'.$domain.'")',
+        'action'      => array('forward("'.$notifyUrl.'")', 'stop()'),
+        'description' => 'Faxbox Send Fax Route',
+    ));
+
+    $id = substr($id, 1);
+    $settings->write('mailgun.routeId', $id ?: $result->http_response_body->route->id);
+});
 
 Event::listen('fax.processed', function($fax){
     

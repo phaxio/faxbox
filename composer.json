@@ -17,7 +17,8 @@
         "barryvdh/laravel-ide-helper": "1.*",
         "ext-intl": "*",
         "october/config": "dev-master",
-        "guzzlehttp/guzzle": "~4.0"
+        "guzzlehttp/guzzle": "~4.0",
+		"mailgun/mailgun-php": "~1.7.1"
 	},
     "require-dev": {
         "mockery/mockery": "0.9.*@dev",

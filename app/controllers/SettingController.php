@@ -1,6 +1,7 @@
 <?php
 
 use Faxbox\Repositories\Setting\SettingInterface;
+use Mailgun\Mailgun;
 
 class SettingController extends BaseController {
 
@@ -56,6 +57,11 @@ class SettingController extends BaseController {
     {
         $data = Input::all();
         
+        if($data['mail']['driver'] == 'mailgun')
+        {
+            Event::fire('update.mailgun.route');
+        }
+        
         $this->settings->writeArray($data);
 
         Session::flash('success', "Mail settings successfully updated");
@@ -66,5 +72,5 @@ class SettingController extends BaseController {
     {
 
     }
-
+    
 }
