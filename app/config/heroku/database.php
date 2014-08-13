@@ -28,7 +28,7 @@ return array(
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => $databaseCredentials['host'],
-            'port'     => $databaseCredentials['port'],
+                        'port'     => $databaseCredentials['port'],
 			'database' => $dbName,
 			'username' => $databaseCredentials['user'],
 			'password' => $databaseCredentials['pass'],
