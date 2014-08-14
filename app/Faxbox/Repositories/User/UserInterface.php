@@ -48,6 +48,8 @@ interface UserInterface {
      * @return bool
      */
     public function activate($id, $code);
+    
+    public function deactivate($id);
 
     /**
      * Resend the activation email to the specified email address

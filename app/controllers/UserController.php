@@ -272,6 +272,25 @@ class UserController extends BaseController {
             return Redirect::route('home');
         }
     }
+    
+    public function deactivate($id)
+    {
+        $result = $this->user->deactivate($id);
+
+        if ($result['success'])
+        {
+            // Success!
+            Session::flash('success', $result['message']);
+
+            return Redirect::action('UserController@index');
+
+        } else
+        {
+            Session::flash('error', $result['message']);
+
+            return Redirect::action('UserController@index');
+        }
+    }
 
     /**
      * Process resend activation request

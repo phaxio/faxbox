@@ -255,6 +255,23 @@ class SentryUser implements UserInterface {
         }
         return $result;
     }
+    
+    public function deactivate($id)
+    {
+        $user = $this->byId($id);
+        
+        $user->activated = false;
+        
+        if($user->save())
+        {
+            $result['success'] = true;
+            $result['message'] = trans('users.deactivated');
+        }else
+        {
+            $result['success'] = false;
+            $result['message'] = trans('users.generalproblem');
+        }
+    }
 
     /**
      * Resend the activation email to the specified email address

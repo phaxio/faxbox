@@ -29,7 +29,7 @@
                         
                             @if($user['activated'])
                         <td><span class='label label-success'>Activated</span></td>
-                        <td class="text-center">Deactivate</td>
+                        <td class="text-center"><a href="{{ action('UserController@deactivate', ['id' => $user['id']]) }}">Deactivate</a></td>
                             @else
                         <td>
                             {{ Form::open(['action' => 'UserController@resend', 'method' => 'post']) }}
@@ -38,7 +38,7 @@
                             {{ Form::submit(trans('users.resend'), array('class' => 'btn btn-link')) }}
                             {{ Form::close() }}
                         </td>
-                        <td class="text-center">Activate</td>
+                        <td class="text-center"></td>
                             @endif
                         
                     </tr>
