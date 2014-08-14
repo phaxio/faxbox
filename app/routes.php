@@ -52,6 +52,8 @@ Route::get('settings/mail', 'SettingController@editMail');
 Route::post('settings/mail', 'SettingController@updateMail');
 Route::get('settings/appearance', 'SettingController@editAppearance');
 Route::post('settings/appearance', 'SettingController@updateAppearance');
+Route::get('settings/api', 'SettingController@editFaxApi');
+Route::post('settings/api', 'SettingController@updateFaxApi');
 
 
 // Group Routes

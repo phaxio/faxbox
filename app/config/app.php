@@ -125,8 +125,8 @@ return array(
 		'Cartalyst\Sentry\SentryServiceProvider',
         'Faxbox\Providers\RepositoryServiceProvider',
         'Faxbox\Providers\FormServiceProvider',
+        'October\Rain\Config\ConfigServiceProvider',
         'Faxbox\Providers\FaxServiceProvider',
-
 	),
 
 	/*

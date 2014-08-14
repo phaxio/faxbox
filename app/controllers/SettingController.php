@@ -102,6 +102,26 @@ class SettingController extends BaseController {
         return Redirect::action('SettingController@editAppearance');
     }
 
+    public function editFaxApi()
+    {
+        $settings = $this->settings->get([
+            'fax_api_public',
+            'fax_api_secret'
+        ]);
+
+        $this->view('settings.api', compact('settings'));
+    }
+
+    public function updateFaxApi()
+    {
+        $data = Input::all();
+
+        $this->settings->writeArray($data);
+
+        Session::flash('success', "API settings successfully updated");
+        return Redirect::action('SettingController@editFaxApi');
+    }
+
     public function delete()
     {
 

@@ -54,7 +54,7 @@
                 <a href="#"><i class="fa fa-wrench fa-fw"></i> Settings<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="#">Pahxio API Keys</a>
+                        <a href="{{ action('SettingController@editFaxApi') }}">Pahxio API Keys</a>
                     </li>
                     <li>
                         <a href="{{ action('SettingController@editAppearance') }}">Appearance</a>
