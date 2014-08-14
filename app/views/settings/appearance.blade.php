@@ -48,13 +48,13 @@
     <div class="row">
 		<div class="col-md-2">
 			<div class="form-group {{ ($errors->has('color1')) ? 'has-error' : '' }}">
-				{{ Form::text('color1', null, ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color1']) }}
+				{{ Form::text('color1', $settings['color1'], ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color1']) }}
 				{{ ($errors->has('color1') ? $errors->first('color1') : '') }}
 			</div>
 		</div>
 		<div class="col-md-2">
 			<div class="form-group {{ ($errors->has('color2')) ? 'has-error' : '' }}">
-				{{ Form::text('color2', null, ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color2']) }}
+				{{ Form::text('color2', $settings['color2'], ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color2']) }}
 				{{ ($errors->has('color2') ? $errors->first('color2') : '') }}
 			</div>
 		</div>
@@ -62,13 +62,13 @@
 	<div class="row">
 		<div class="col-md-2">
 			<div class="form-group {{ ($errors->has('color3')) ? 'has-error' : '' }}">
-				{{ Form::text('color3', null, ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color3']) }}
+				{{ Form::text('color3', $settings['color3'], ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color3']) }}
 				{{ ($errors->has('color3') ? $errors->first('color3') : '') }}
 			</div>
 		</div>
 		<div class="col-md-2">
 			<div class="form-group {{ ($errors->has('color4')) ? 'has-error' : '' }}">
-				{{ Form::text('color4', null, ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color4']) }}
+				{{ Form::text('color4', $settings['color4'], ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color4']) }}
 				{{ ($errors->has('color4') ? $errors->first('color4') : '') }}
 			</div>
 		</div>
