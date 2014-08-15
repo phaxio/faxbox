@@ -40,7 +40,7 @@ class SettingController extends BaseController {
         {
             Event::fire('update.mailgun.route');
         }
-        
+
         $this->settings->writeArray($data);
 
         Session::flash('success', "Mail settings successfully updated");
@@ -95,7 +95,7 @@ class SettingController extends BaseController {
     public function updateFaxApi()
     {
         $data = Input::all();
-
+        
         $this->settings->writeArray($data);
 
         Session::flash('success', "API settings successfully updated");

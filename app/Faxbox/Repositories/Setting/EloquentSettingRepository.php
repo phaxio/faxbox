@@ -37,6 +37,8 @@ class EloquentSettingRepository extends EloquentAbstractRepository implements Se
 
     public function writeArray($keyValue, $forceDb = false)
     {
+        unset($keyValue['_token']);
+        
         $keyValue = array_dot($keyValue);
         
         foreach($keyValue as $key => $value)
