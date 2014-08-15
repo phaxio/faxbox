@@ -60,9 +60,15 @@ Route::post('settings/api', 'SettingController@updateFaxApi');
 Route::resource('groups', 'GroupController');
 
 
+Route::resource('install', 'InstallController', ['only' => ['index', 'store']]);
+Route::get('install/checkVersion', 'InstallController@checkVersion');
+Route::get('install/checkExtension', 'InstallController@checkExtension');
+Route::get('install/checkDBCredentials', 'InstallController@checkDBCredentials');
+Route::get('install/checkPermissions', 'InstallController@checkPermissions');
+
 // Notify Routes
 Route::post('notify/fax', 'NotifyController@fax');
 Route::post('notify/send/{number}', "NotifyController@sendFromEmail");
 
 // Our home route
-Route::get('/', ['as' => 'home', 'before' => 'auth', 'uses' => 'HomeController@index']);
+Route::get('/', ['as' => 'home', 'before' => ['checkInstalled', 'auth'], 'uses' => 'HomeController@index']);

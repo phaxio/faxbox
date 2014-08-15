@@ -160,7 +160,7 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
         // Send it off to phaxio
         $options   = [
             'tags'         => ['id' => $fax->id],
-            'callback_url' => action('NotifyController@fax')
+            'callback_url' => \Config::get('faxbox.notify.fax')
         ];
         $apiResult = $this->api->sendFax($data['number'],
             $fax->files,

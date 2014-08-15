@@ -11,22 +11,27 @@ class DatabaseSeeder extends Seeder {
     {
         Eloquent::unguard();
 
-        $this->call('DummyData');
+        $this->call('DefaultSettings');
     }
 
 }
 
-class DummyData extends Seeder {
+class DefaultSettings extends Seeder {
 
     public function run()
     {
-        Sentry::register([
-            'email'      => 'nickv@makesomecode.com',
-            'first_name' => 'Nick',
-            'last_name'  => 'V',
-            'password'   => '111111',
-            'permissions' => ['superuser' => 1]
-        ], 1);
+        DB::table('settings')->insert([
+            [ 'name' => 'mailgunRouteId', 'value' => ''],
+            [ 'name' => 'logo', 'value' => 'logo.png'],
+            [ 'name' => 'name', 'value' => 'Faxbox'],
+            [ 'name' => 'color1', 'value' => ''],
+            [ 'name' => 'color2', 'value' => ''],
+            [ 'name' => 'color3', 'value' => ''],
+            [ 'name' => 'color4', 'value' => ''],
+            [ 'name' => 'fax_api_public', 'value' => ''],
+            [ 'name' => 'fax_api_secret', 'value' => ''],
+            [ 'name' => 'installed', 'value' => '0'],
+        ]);
     }
 
 }

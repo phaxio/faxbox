@@ -38,7 +38,7 @@ class EloquentPhoneRepository extends EloquentAbstractRepository implements Phon
     {
         $apiResult = $this->api->createPhone(
             $data['area'],
-            action('NotifyController@fax')
+            \Config::get('faxbox.notify.fax')
         );
 
         $apiData = $apiResult->getData();

@@ -134,3 +134,13 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+Route::filter('checkInstalled', function($route, $request){
+    
+    $config = App::make('October\Rain\Config\Repository');
+    if($config->get('faxbox.installed'))
+        return Redirect::to('login');
+    
+    if($request->getRequestUri() != '/install')
+        return Redirect::action('InstallController@index');
+});

@@ -63,12 +63,12 @@ class SentryUser implements UserInterface {
      *
      * @return Response
      */
-    public function store($data)
+    public function store($data, $activate = false)
     {
         $result = [];
         try {
             //Attempt to register the user. 
-            $user = $this->sentry->register(['email' => e($data['email']), 'password' => e($data['password'])]);
+            $user = $this->sentry->register(['email' => e($data['email']), 'password' => e($data['password'])], $activate);
 
             if(isset($data['groups']))
             {

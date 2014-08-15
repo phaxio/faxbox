@@ -45,7 +45,8 @@ class RegisterForm {
             return false;
         }
 
-        return $this->user->store($input);
+        $activate = isset($input['activate']) && $input['activate'] ?: false;
+        return $this->user->store($input, $activate);
     }
 
     /**

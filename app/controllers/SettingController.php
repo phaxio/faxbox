@@ -16,26 +16,6 @@ class SettingController extends BaseController {
         $this->beforeFilter('hasAccess:superuser');
 	}
 
-    public function index()
-    {
-
-    }
-
-    public function create()
-    {
-
-    }
-
-    public function store()
-    {
-
-    }
-
-    public function show()
-    {
-
-    }
-
     public function editMail()
     {
         $settings = $this->settings->get([

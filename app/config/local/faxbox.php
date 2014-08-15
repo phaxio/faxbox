@@ -1,7 +1,9 @@
 <?php
 return [
+    'installed' => true,
+    
     'notify' => [
         'fax' => "http://gwn.chickenkiller.com/notify/fax",
-        'phone' => "http://gwn.chickenkiller.com/notify/phone",
+        'send' => "http://gwn.chickenkiller.com/notify/fax/send",
     ],
 ];

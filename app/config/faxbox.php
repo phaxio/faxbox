@@ -1,7 +1,14 @@
 <?php
 
 return [
+    
+    'installed' => false,
 
+    'notify' => [
+        'fax' => action('NotifyController@fax'),
+        'send' => action('NotifyController@sendFromEmail', ['number' => null])
+    ],
+    
     /*
 	|--------------------------------------------------------------------------
 	| Static Permissions

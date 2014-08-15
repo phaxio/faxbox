@@ -27,9 +27,9 @@ Event::listen('update.mailgun.route', function(){
 
     $domain = explode( '@', Config::get('mail.from.address') )[1];
     
-    $notifyUrl = action('NotifyController@sendFromEmail', ['number' => null]) . "/\\g<phone>";  
+    $notifyUrl = \Config::get('faxbox.notify.send') . "/\\g<phone>";  
     
-    if($id = $settings->get('mailgun.routeId')){
+    if($id = $settings->get('mailgunRouteId')){
         $id = "/".$id;
         $method = "put";
     } else 
@@ -41,13 +41,13 @@ Event::listen('update.mailgun.route', function(){
     # Issue the call to the client.
     $result = $mgClient->$method("routes".$id, array(
         'priority'    => 0,
-        'expression'  => 'match_recipient("(?P<phone>.*?)@'.$domain.'")',
-        'action'      => array('forward("'.$notifyUrl.'")', 'stop()'),
+        'expression'  => "match_recipient(\"(?P<phone>.*?)@$domain\")",
+        'action'      => array("forward(\"".$notifyUrl.'")', 'stop()'),
         'description' => 'Faxbox Send Fax Route',
     ));
 
     $id = substr($id, 1);
-    $settings->write('mailgun.routeId', $id ?: $result->http_response_body->route->id);
+    $settings->write('mailgunRouteId', $id ?: $result->http_response_body->route->id);
 });
 
 Event::listen('fax.processed', function($fax){
