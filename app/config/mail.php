@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'support@sandbox0b4d1c3c69164798a652302ca1ca6751.mailgun.org', 'name' => 'Support'),
+	'from' => array('address' => '', 'name' => ''),
 
 	/*
 	|--------------------------------------------------------------------------
