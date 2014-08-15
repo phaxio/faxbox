@@ -25,51 +25,51 @@
     <div class="row">
     {{ Form::open(array('action' => 'SettingController@updateAppearance', 'enctype' => 'multipart/form-data')) }}
 		<div class="col-md-4">
-			<div class="form-group {{ ($errors->has('name')) ? 'has-error' : '' }}">
-				{{ Form::text('name', $settings['name'], ['class' => 'form-control', 'placeholder' => 'Site Name']) }}
-				{{ ($errors->has('name') ? $errors->first('name') : '') }}
+			<div class="form-group {{ ($errors->has('faxbox[name]')) ? 'has-error' : '' }}">
+				{{ Form::text('faxbox[name]', $settings['faxbox.name'], ['class' => 'form-control', 'placeholder' => 'Site Name']) }}
+				{{ ($errors->has('faxbox[name]') ? $errors->first('faxbox[name]') : '') }}
 			</div>
 		</div>
 	</div>
 	
 	<div class="row">
 		<div class="col-md-4">
-			<div class="form-group {{ ($errors->has('logo')) ? 'has-error' : '' }}">
-				@if($settings['logo'])
-				<img style="max-width:200px;" src="{{ asset('images/'.$settings['logo']) }}"><br>
+			<div class="form-group {{ ($errors->has('faxbox[logo]')) ? 'has-error' : '' }}">
+				@if($settings['faxbox.logo'])
+				<img style="max-width:200px;" src="{{ asset('images/'.$settings['faxbox.logo']) }}"><br>
 				@endif
 				<label>Logo</label>
 				{{ Form::file('logo', ['accept' => 'image/jpeg,image/png']) }}
-				{{ ($errors->has('logo') ? $errors->first('logo') : '') }}
+				{{ ($errors->has('faxbox[logo]') ? $errors->first('faxbox[logo]') : '') }}
 			</div>
 		</div>
 	</div>	
 	
     <div class="row">
 		<div class="col-md-2">
-			<div class="form-group {{ ($errors->has('color1')) ? 'has-error' : '' }}">
-				{{ Form::text('color1', $settings['color1'], ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color1']) }}
-				{{ ($errors->has('color1') ? $errors->first('color1') : '') }}
+			<div class="form-group {{ ($errors->has('faxbox[colors][sidebar]')) ? 'has-error' : '' }}">
+				{{ Form::text('faxbox[colors][sidebar]', $settings['faxbox.colors.sidebar'], ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color1']) }}
+				{{ ($errors->has('faxbox[colors][sidebar]') ? $errors->first('faxbox[colors][sidebar]') : '') }}
 			</div>
 		</div>
 		<div class="col-md-2">
-			<div class="form-group {{ ($errors->has('color2')) ? 'has-error' : '' }}">
-				{{ Form::text('color2', $settings['color2'], ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color2']) }}
-				{{ ($errors->has('color2') ? $errors->first('color2') : '') }}
+			<div class="form-group {{ ($errors->has('faxbox[colors][link]')) ? 'has-error' : '' }}">
+				{{ Form::text('faxbox[colors][link]', $settings['faxbox.colors.link'], ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color2']) }}
+				{{ ($errors->has('faxbox[colors][link]') ? $errors->first('faxbox[colors][link]') : '') }}
 			</div>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-2">
-			<div class="form-group {{ ($errors->has('color3')) ? 'has-error' : '' }}">
-				{{ Form::text('color3', $settings['color3'], ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color3']) }}
-				{{ ($errors->has('color3') ? $errors->first('color3') : '') }}
+			<div class="form-group {{ ($errors->has('faxbox[colors][text]')) ? 'has-error' : '' }}">
+				{{ Form::text('faxbox[colors][text]', $settings['faxbox.colors.text'], ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color3']) }}
+				{{ ($errors->has('faxbox[colors][text]') ? $errors->first('faxbox[colors][text]') : '') }}
 			</div>
 		</div>
 		<div class="col-md-2">
-			<div class="form-group {{ ($errors->has('color4')) ? 'has-error' : '' }}">
-				{{ Form::text('color4', $settings['color4'], ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color4']) }}
-				{{ ($errors->has('color4') ? $errors->first('color4') : '') }}
+			<div class="form-group {{ ($errors->has('faxbox[colors][background]')) ? 'has-error' : '' }}">
+				{{ Form::text('faxbox[colors][background]', $settings['faxbox.colors.background'], ['class' => 'form-control', 'placeholder' => 'Color', 'id' => 'color4']) }}
+				{{ ($errors->has('faxbox[colors][background]') ? $errors->first('faxbox[colors][background]') : '') }}
 			</div>
 		</div>
 	</div>

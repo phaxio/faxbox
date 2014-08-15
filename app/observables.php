@@ -29,7 +29,7 @@ Event::listen('update.mailgun.route', function(){
     
     $notifyUrl = \Config::get('faxbox.notify.send') . "/\\g<phone>";  
     
-    if($id = $settings->get('mailgunRouteId')){
+    if($id = $settings->get('mailgun.routeId')){
         $id = "/".$id;
         $method = "put";
     } else 
@@ -47,7 +47,7 @@ Event::listen('update.mailgun.route', function(){
     ));
 
     $id = substr($id, 1);
-    $settings->write('mailgunRouteId', $id ?: $result->http_response_body->route->id);
+    $settings->write('mailgun.routeId', $id ?: $result->http_response_body->route->id);
 });
 
 Event::listen('fax.processed', function($fax){

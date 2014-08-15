@@ -50,12 +50,12 @@ class SettingController extends BaseController {
     public function editAppearance()
     {
         $settings = $this->settings->get([
-            'name',
-            'logo',
-            'color1',
-            'color2',
-            'color3',
-            'color4',
+            'faxbox.name',
+            'faxbox.logo',
+            'faxbox.colors.sidebar',
+            'faxbox.colors.link',
+            'faxbox.colors.text',
+            'faxbox.colors.background',
         ]);
         
         $this->view('settings.appearance', compact('settings'));
@@ -72,7 +72,7 @@ class SettingController extends BaseController {
             $name = 'logo.'.$ext;
             $logo->move(public_path('images'), $name);
             
-            $this->settings->write('logo', $name);
+            $this->settings->write('faxbox.logo', $name);
         }
         
         
@@ -85,8 +85,8 @@ class SettingController extends BaseController {
     public function editFaxApi()
     {
         $settings = $this->settings->get([
-            'fax_api_public',
-            'fax_api_secret'
+            'services.phaxio.public',
+            'services.phaxio.secret'
         ]);
 
         $this->view('settings.api', compact('settings'));

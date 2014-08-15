@@ -86,12 +86,12 @@
 								<p>Your Phaxio api keys can be found in your <a href="http://www.phaxio.com/apiSettings" target="_blank">Phaxio account page</a>.</p>
 								<fieldset>
 									<div class="form-group">
-									  <label class="sr-only" for="fax_api_public">{{ trans('install.apiPublic') }}</label>
-									  {{ Form::text('fax_api_public', null, array('class' => 'form-control', 'placeholder' => trans('install.apiPublic'))) }}
+									  <label class="sr-only" for="services[phaxio][public]">{{ trans('install.apiPublic') }}</label>
+									  {{ Form::text('services[phaxio][public]', null, array('class' => 'form-control', 'placeholder' => trans('install.apiPublic'))) }}
 									</div>
 									<div class="form-group">
-									  <label class="sr-only" for="fax_api_secret">{{ trans('install.apiSecret') }}</label>
-									  {{ Form::text('fax_api_secret', null, array('class' => 'form-control', 'placeholder' => trans('install.apiSecret'))) }}
+									  <label class="sr-only" for="services[phaxio][secret]">{{ trans('install.apiSecret') }}</label>
+									  {{ Form::text('services[phaxio][secret]', null, array('class' => 'form-control', 'placeholder' => trans('install.apiSecret'))) }}
 									</div>
 								</fieldset>
 								<hr>

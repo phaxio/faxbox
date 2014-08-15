@@ -21,21 +21,21 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
-    
+
 	<div class="row">
 		{{ Form::open(array('action' => 'SettingController@updateFaxApi')) }}
 		<div class="col-md-5">
-			<div class="form-group {{ ($errors->has('fax_api_public')) ? 'has-error' : '' }}">
-				{{ Form::text('fax_api_public', $settings['fax_api_public'], ['class' => 'form-control', 'placeholder' => 'Api Public', 'id' => 'fax_api_public']) }}
-				{{ ($errors->has('fax_api_public') ? $errors->first('fax_api_public') : '') }}
+			<div class="form-group {{ ($errors->has('services[phaxio][public]')) ? 'has-error' : '' }}">
+				{{ Form::text('services[phaxio][public]', $settings['services.phaxio.public'], ['class' => 'form-control', 'placeholder' => 'Api Public']) }}
+				{{ ($errors->has('services[phaxio][public]') ? $errors->first('services[phaxio][public]') : '') }}
 			</div>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-5">
-			<div class="form-group {{ ($errors->has('fax_api_secret')) ? 'has-error' : '' }}">
-				{{ Form::text('fax_api_secret', $settings['fax_api_secret'], ['class' => 'form-control', 'placeholder' => 'Api Secret', 'id' => 'fax_api_secret']) }}
-				{{ ($errors->has('fax_api_secret') ? $errors->first('fax_api_secret') : '') }}
+			<div class="form-group {{ ($errors->has('services[phaxio][secret]')) ? 'has-error' : '' }}">
+				{{ Form::text('services[phaxio][secret]', $settings['services.phaxio.secret'], ['class' => 'form-control', 'placeholder' => 'Api Secret']) }}
+				{{ ($errors->has('services[phaxio][secret]') ? $errors->first('services[phaxio][secret]') : '') }}
 			</div>
 		</div>
 	</div>

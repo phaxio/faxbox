@@ -2,10 +2,45 @@
 
 return [
 
-    'version' => 0.1,
+    'name' => '',
     
+    'logo' => '',
+    
+    'colors' => [
+        'sidebar' => '',
+        'link' => '',
+        'text' => '',
+        'background' => '',
+    ],
+    
+    'version' => 0.1,
+
+    /*
+	|--------------------------------------------------------------------------
+	| Installed
+	|--------------------------------------------------------------------------
+	|
+	| Pretty simple, whether or not the application has been installed. Setting
+    | this to true after installation poses a security risk. So don't change it
+    | unless you know what you're doing.
+	|
+	*/
     'installed' => false,
 
+    /*
+	|--------------------------------------------------------------------------
+	| Notify Routes
+	|--------------------------------------------------------------------------
+	|
+	| These are the routes used by Phaxio to callback to the application when
+    | a fax is sent, or for Mailgun to tell the app to send a fax from a 
+    | received email. You might want to override these if you're using a 
+    | localhost for your domain since callbacks cannot use localhost. 
+    |
+    | To do this simply put an override file in the config/local folder with
+    | your route that can be reached externally.
+	|
+	*/
     'notify' => [
         'fax' => action('NotifyController@fax'),
         'send' => action('NotifyController@sendFromEmail', ['number' => null])
@@ -66,6 +101,16 @@ return [
             ]
         ]
     ],
+
+    /*
+	|--------------------------------------------------------------------------
+	| Supported Files
+	|--------------------------------------------------------------------------
+	|
+    | These are the files supported by Phaxio for sending a fax. This is used
+    | in the fax/create.blade.php template along with our validator.
+	|
+	*/
     'supportedFiles' => [
         [
             'ext'  => 'pdf',
@@ -112,9 +157,15 @@ return [
             'mime' => 'image/png'
         ]
     ],
-    /**
-     * These are the supported countries that we can fax to
-     */
+
+    /*
+	|--------------------------------------------------------------------------
+	| Supported Countries
+	|--------------------------------------------------------------------------
+	|
+    | These are the countries supported by Phaxio for sending a fax.
+	|
+	*/
     'phone' => [
         [
             'name'   => 'United States',

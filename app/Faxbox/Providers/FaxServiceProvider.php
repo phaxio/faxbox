@@ -23,8 +23,8 @@ class FaxServiceProvider extends ServiceProvider
         $app->bind('Faxbox\External\Api\FaxInterface', function($app) use ($settings)
         {
             $phaxio = new Phaxio(
-                $settings->get('fax_api_public'),
-                $settings->get('fax_api_secret')
+                $settings->get('services.phaxio.public'),
+                $settings->get('services.phaxio.secret')
             );
             return new PhaxioApi($phaxio, new Response());
         });

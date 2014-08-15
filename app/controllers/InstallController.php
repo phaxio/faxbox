@@ -70,7 +70,6 @@ class InstallController extends BaseController {
         // Run our migrations
         exec('php artisan migrate --package=cartalyst/sentry --force');
         exec('php artisan migrate --force');
-        exec('php artisan db:seed --force');
 
         // Create our user
         $data['admin']['permissions']['superuser'] = 1;
@@ -85,9 +84,9 @@ class InstallController extends BaseController {
 
         
         // write our other settings
-        $this->settings->write('name', $data['name']);
-        $this->settings->write('fax_api_public', $data['fax_api_public']);
-        $this->settings->write('fax_api_secret', $data['fax_api_secret']);
+        $this->settings->write('faxbox.name', $data['name']);
+        $this->settings->write('services.phaxio.public', $data['services']['phaxio']['public']);
+        $this->settings->write('services.phaxio.secret', $data['services']['phaxio']['secret']);
         $this->settings->write('faxbox.installed', true);
         
         Session::flash('success', "Faxbox successfully installed. Please Login below with the account you just created.");
