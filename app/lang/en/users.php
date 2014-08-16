@@ -70,6 +70,14 @@ return array(
     
     'passwordconfirmed' => 'Password Confirmation',
     
-    'create' => "Create User"
+    'create' => "Create User",
+    
+    'forgot' => "Forgot your password",
+    
+    'pword' => "Password",
+    
+    'remember' => "Remember Me"
+    
+    
 
 );

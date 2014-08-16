@@ -7,5 +7,9 @@ return array(
     'create' => 'Create',
 
     'delete' => 'Delete',
+    
+    'password' => 'Password',
+    
+    'email' => 'Email'
 
 );
