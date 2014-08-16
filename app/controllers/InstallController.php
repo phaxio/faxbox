@@ -124,6 +124,7 @@ class InstallController extends BaseController {
         
         $dirs[] = storage_path();
         $dirs[] = app_path('config');
+        $dirs[] = app_path('database');
         
         foreach(scandir(storage_path()) as $path)
         {
