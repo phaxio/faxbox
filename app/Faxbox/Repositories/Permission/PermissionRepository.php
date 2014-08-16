@@ -36,6 +36,8 @@ class PermissionRepository implements PermissionInterface {
 
         foreach ($available['static'] as &$permission)
         {
+            $permission['value'] = $default;
+            
             if (isset($checkedPermissions[$permission['id']]))
                 $permission['value'] = $checkedPermissions[$permission['id']];
         }

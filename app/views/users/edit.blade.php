@@ -131,8 +131,8 @@
 
     {{ Form::close() }}
     
-    {{ Form::open(['action' => ['UserController@destroy', $user['id']], 'method' => 'delete', 'class' => 'pull-right']) }}
-	{{ Form::submit(trans('general.delete'), array('class' => 'btn btn-sm btn-danger')) }}
-	{{ Form::close() }}
+    {{--{{ Form::open(['action' => ['UserController@destroy', $user['id']], 'method' => 'delete', 'class' => 'pull-right']) }}--}}
+	{{--{{ Form::submit(trans('general.delete'), array('class' => 'btn btn-sm btn-danger')) }}--}}
+	{{--{{ Form::close() }}--}}
 </div>
 @stop
