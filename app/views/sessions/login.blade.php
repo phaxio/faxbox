@@ -55,7 +55,7 @@
                         {{ Form::open(array('action' => 'SessionController@store')) }}
                         <fieldset>
                             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
-                                {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => trans('general.email'), 'autofocus')) }}
+                                {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => trans('users.email'), 'autofocus')) }}
                                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
                             </div>
 
