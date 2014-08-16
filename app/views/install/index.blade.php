@@ -82,6 +82,20 @@
                         
                         <div class="row">
 							<div class="col-sm-12">
+								<h4>Site Url</h4>
+								<p>What is the url you will use to access the site?</p>
+								<fieldset>
+									<div class="form-group">
+									  <label class="sr-only" for="app[url]">{{ trans('install.url') }}</label>
+									  {{ Form::text('app[url]', 'http://', array('class' => 'form-control', 'placeholder' => trans('install.url'))) }}
+									</div>
+								</fieldset>
+								<hr>
+							</div>
+						</div>
+                        
+                        <div class="row">
+							<div class="col-sm-12">
 								<h4>Phaxio API Keys</h4>
 								<p>Your Phaxio api keys can be found in your <a href="http://www.phaxio.com/apiSettings" target="_blank">Phaxio account page</a>.</p>
 								<fieldset>
@@ -104,21 +118,21 @@
 								<p>This user will have access to everything.</p>
 								<fieldset>
 									<div class="form-group">
-									  <label class="sr-only" for="first_name">{{ trans('user.firstname') }}</label>
-									  {{ Form::text('admin[first_name]', null, array('class' => 'form-control', 'placeholder' => trans('user.firstname'))) }}
+									  <label class="sr-only" for="first_name">{{ trans('users.firstname') }}</label>
+									  {{ Form::text('admin[first_name]', null, array('class' => 'form-control', 'placeholder' => trans('users.firstname'))) }}
 									</div>
 									<div class="form-group">
-									  <label class="sr-only" for="last_name">{{ trans('user.lastname') }}</label>
-									  {{ Form::text('admin[last_name]', null, array('class' => 'form-control', 'placeholder' => trans('user.lastname'))) }}
+									  <label class="sr-only" for="last_name">{{ trans('users.lastname') }}</label>
+									  {{ Form::text('admin[last_name]', null, array('class' => 'form-control', 'placeholder' => trans('users.lastname'))) }}
 									</div>
 									<div class="form-group">
-									  <label class="sr-only" for="email">{{ trans('user.email') }}</label>
-									  {{ Form::text('admin[email]', null, array('class' => 'form-control', 'placeholder' => trans('user.email'))) }}
+									  <label class="sr-only" for="email">{{ trans('users.email') }}</label>
+									  {{ Form::text('admin[email]', null, array('class' => 'form-control', 'placeholder' => trans('users.email'))) }}
 									</div>
 									<div class="form-group">
-									  <label class="sr-only" for="password">{{ trans('user.password') }}</label>
-									  {{ Form::password('admin[password]', array('class' => 'form-control', 'placeholder' => trans('user.password'))) }}
-									  {{ Form::password('admin[password_confirmation]', array('class' => 'form-control', 'placeholder' => trans('user.passwordConfirmed'))) }}
+									  <label class="sr-only" for="password">{{ trans('users.password') }}</label>
+									  {{ Form::password('admin[password]', array('class' => 'form-control', 'placeholder' => trans('users.password'))) }}
+									  {{ Form::password('admin[password_confirmation]', array('class' => 'form-control', 'placeholder' => trans('users.passwordconfirmed'))) }}
 									</div>
 								</fieldset>
 								<hr>

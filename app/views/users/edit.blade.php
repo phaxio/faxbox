@@ -16,11 +16,11 @@
                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
             </div>
             <div class="form-group {{ ($errors->has('first_name')) ? 'has-error' : '' }}">
-                {{ Form::text('first_name', $user['first_name'], array('class' => 'form-control', 'placeholder' => trans('users.first_name'))) }}
+                {{ Form::text('first_name', $user['first_name'], array('class' => 'form-control', 'placeholder' => trans('users.firstname'))) }}
                 {{ ($errors->has('first_name') ? $errors->first('first_name') : '') }}
             </div>
             <div class="form-group {{ ($errors->has('last_name')) ? 'has-error' : '' }}">
-                {{ Form::text('last_name', $user['last_name'], array('class' => 'form-control', 'placeholder' => trans('users.last_name'))) }}
+                {{ Form::text('last_name', $user['last_name'], array('class' => 'form-control', 'placeholder' => trans('users.lastname'))) }}
                 {{ ($errors->has('last_name') ? $errors->first('last_name') : '') }}
             </div>
         </div>
@@ -112,15 +112,15 @@
                 <h4>Change Password</h4>
             </div>
             <div class="form-group {{ ($errors->has('last_name')) ? 'has-error' : '' }}">
-                {{ Form::password('oldpassword', null, array('class' => 'form-control', 'placeholder' => trans('users.oldpassword'))) }}
+                {{ Form::password('oldpassword', array('class' => 'form-control', 'placeholder' => trans('users.currentpassword'))) }}
                 {{ ($errors->has('last_name') ? $errors->first('last_name') : '') }}
             </div>
             <div class="form-group {{ ($errors->has('last_name')) ? 'has-error' : '' }}">
-                {{ Form::password('password', null, array('class' => 'form-control', 'placeholder' => trans('users.newpassword'))) }}
+                {{ Form::password('password', array('class' => 'form-control', 'placeholder' => trans('users.newpassword'))) }}
                 {{ ($errors->has('last_name') ? $errors->first('last_name') : '') }}
             </div>
             <div class="form-group {{ ($errors->has('last_name')) ? 'has-error' : '' }}">
-                {{ Form::password('password_confirmed', null, array('class' => 'form-control', 'placeholder' => trans('users.newpasswordconfirm'))) }}
+                {{ Form::password('password_confirmed', array('class' => 'form-control', 'placeholder' => trans('users.newpasswordconfirm'))) }}
                 {{ ($errors->has('last_name') ? $errors->first('last_name') : '') }}
             </div>
         </div>

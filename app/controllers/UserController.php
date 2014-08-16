@@ -78,7 +78,7 @@ class UserController extends BaseController {
     public function create()
     {
         $groups      = $this->group->all();
-        $permissions = $this->permissions->all();
+        $permissions = $this->permissions->allWithChecked();
         $password    = \Str::random(16);
         
         $this->view('users.create', compact('groups', 'permissions', 'password'));

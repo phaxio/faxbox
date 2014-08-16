@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ Session::token() }}">
 
-    <title>Faxbox</title>
+    <title>{{ Config::get('faxbox.name') }}</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">

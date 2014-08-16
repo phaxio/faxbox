@@ -1,0 +1,11 @@
+<?php
+
+return array(
+
+    'update' => 'Update',
+
+    'create' => 'Create',
+
+    'delete' => 'Delete',
+
+);

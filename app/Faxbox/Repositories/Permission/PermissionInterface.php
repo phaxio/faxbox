@@ -4,7 +4,7 @@ interface PermissionInterface {
 
     public function all();
 
-    public function allWithChecked($checkedPermissions, $default = -1);
+    public function allWithChecked($checkedPermissions = [], $default = -1);
 
     /**
      * Returns an array of all the available permission ID's that we can use.

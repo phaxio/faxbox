@@ -30,13 +30,20 @@ class PermissionRepository implements PermissionInterface {
         return $this->_getAvailablePermissions();
     }
 
-    public function allWithChecked($checkedPermissions, $default = -1)
+    public function allWithChecked($checkedPermissions = [], $default = -1)
     {
         $available = $this->all();
 
         foreach ($available['static'] as &$permission)
         {
-            $permission['value'] = $default;
+            // override the default for just these 2 permissions
+            if($permission['id'] == 'send_fax' || $permission['id'] == 'purchase_numbers'){
+                $permission['value'] = 1;
+            } else
+            {
+                $permission['value'] = $default;
+            }
+                
             if (isset($checkedPermissions[$permission['id']]))
                 $permission['value'] = $checkedPermissions[$permission['id']];
         }

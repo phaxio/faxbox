@@ -16,11 +16,11 @@
                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
             </div>
             <div class="form-group {{ ($errors->has('first_name')) ? 'has-error' : '' }}">
-                {{ Form::text('first_name', null, array('class' => 'form-control', 'placeholder' => trans('users.first_name'))) }}
+                {{ Form::text('first_name', null, array('class' => 'form-control', 'placeholder' => trans('users.firstname'))) }}
                 {{ ($errors->has('first_name') ? $errors->first('first_name') : '') }}
             </div>
             <div class="form-group {{ ($errors->has('last_name')) ? 'has-error' : '' }}">
-                {{ Form::text('last_name', null, array('class' => 'form-control', 'placeholder' => trans('users.last_name'))) }}
+                {{ Form::text('last_name', null, array('class' => 'form-control', 'placeholder' => trans('users.lastname'))) }}
                 {{ ($errors->has('last_name') ? $errors->first('last_name') : '') }}
             </div>
         </div>
@@ -52,7 +52,7 @@
     {{ Form::hidden('password', $password) }}
     {{ Form::hidden('password_confirmation', $password) }}
 
-    {{ Form::submit(trans('users.create'), array('class' => 'btn btn-primary')) }}
+    {{ Form::submit(trans('general.create'), array('class' => 'btn btn-primary')) }}
 
     {{ Form::close() }}
 </div>

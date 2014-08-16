@@ -2,7 +2,9 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">View Groups</h1>
+            <h1 class="page-header">View Groups
+            <a href="{{ action('GroupController@create') }}" class="btn btn-primary">{{ trans('groups.create')  }}</a>
+            </h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>

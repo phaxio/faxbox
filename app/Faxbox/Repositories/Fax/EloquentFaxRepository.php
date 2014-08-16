@@ -106,7 +106,7 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
             $fax->user_id == $userId
         ) return true;
 
-        \App::abort('403', trans('user.unauthorized'));
+        \App::abort('403', trans('users.unauthorized'));
 
     }
 

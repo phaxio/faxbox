@@ -78,12 +78,14 @@ class InstallController extends BaseController {
         
         if(!$result['success'])
         {
-            Session::set('error', 'There was a problem with your user details');
+            Session::set('error', trans('install.generalerror'));
             return Redirect::action('InstallController@index')->withErrors($this->registerForm->errors());
         }
 
         
         // write our other settings
+        $this->settings->write('app.key', Str::random(32));
+        $this->settings->write('app.url', $data['app']['url']);
         $this->settings->write('faxbox.name', $data['name']);
         $this->settings->write('services.phaxio.public', $data['services']['phaxio']['public']);
         $this->settings->write('services.phaxio.secret', $data['services']['phaxio']['secret']);

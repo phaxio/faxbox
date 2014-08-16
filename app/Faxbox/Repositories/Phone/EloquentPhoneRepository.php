@@ -136,11 +136,11 @@ class EloquentPhoneRepository extends EloquentAbstractRepository implements Phon
         if ($phone->save())
         {
             $result['success'] = true;
-            $result['message'] = trans('phone.updated');
+            $result['message'] = trans('phones.updated');
         } else
         {
             $result['success'] = false;
-            $result['message'] = trans('phone.updateproblem');
+            $result['message'] = trans('phones.updateproblem');
         }
 
         return $result;

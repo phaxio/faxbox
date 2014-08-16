@@ -43,6 +43,12 @@ return array(
     'passwordprob'	=>	"Your password could not be changed.",
 
     'oldpassword'	=>	"You did not provide the correct original password.",
+    
+    'currentpassword' => "Current Password",
+    
+    "newpassword" => "New Password",
+    
+    "newpasswordconfirm" => "Password Confirmation",
 
     'suspended'		=>	"User has been suspended for :minutes minutes.",
 
@@ -51,5 +57,19 @@ return array(
     'banned'		=>	"User has been banned.",
 
     'unbanned'		=>	"User has been unbanned.",
+    
+    'unauthorized' => "Your are not authorized to do that",
+    
+    'firstname' => "First Name",
+    
+    'lastname' => "Last Name",
+    
+    'email' => "Email Address",
+    
+    'password' => 'Password',
+    
+    'passwordconfirmed' => 'Password Confirmation',
+    
+    'create' => "Create User"
 
 );

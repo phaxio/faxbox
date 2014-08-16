@@ -75,7 +75,7 @@
 	</div>
 		
 
-    {{ Form::submit(trans('setting.updateAppearance'), array('class' => 'btn btn-primary')) }}
+    {{ Form::submit(trans('general.update'), array('class' => 'btn btn-primary')) }}
 
     {{ Form::close() }}
 </div>

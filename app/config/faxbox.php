@@ -64,15 +64,15 @@ return [
         'static'  => [
             [
                 // Sending Faxes
-                'id'          => 'superuser',
-                'name'        => 'Administrator',
-                'description' => 'Has unrestricted access to everything'
-            ],
-            [
-                // Sending Faxes
                 'id'          => 'send_fax',
                 'name'        => 'Send Faxes',
                 'description' => 'Can send faxes.'
+            ],
+            [
+                // Purchase Numbers
+                'id'          => 'purchase_numbers',
+                'name'        => 'Purchase Numbers',
+                'description' => 'Can purchase phone numbers from Phaxio.'
             ],
             [
                 // Updating application settings
@@ -81,11 +81,11 @@ return [
                 'description' => 'Can update application settings (ie. API Key, SMTP, etc).'
             ],
             [
-                // Purchase Numbers
-                'id'          => 'purchase_numbers',
-                'name'        => 'Purchase Numbers',
-                'description' => 'Can purchase phone numbers from Phaxio.'
-            ]
+                // Sending Faxes
+                'id'          => 'superuser',
+                'name'        => 'Administrator',
+                'description' => 'Has unrestricted access to everything'
+            ],
         ],
         'dynamic' => [
             [

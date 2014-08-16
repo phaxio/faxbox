@@ -269,7 +269,7 @@ class SentryUser implements UserInterface {
         }else
         {
             $result['success'] = false;
-            $result['message'] = trans('users.generalproblem');
+            $result['message'] = trans('users.problem');
         }
     }
 
