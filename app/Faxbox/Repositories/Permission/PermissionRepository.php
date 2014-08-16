@@ -36,14 +36,6 @@ class PermissionRepository implements PermissionInterface {
 
         foreach ($available['static'] as &$permission)
         {
-            // override the default for just these 2 permissions
-            if($permission['id'] == 'send_fax' || $permission['id'] == 'purchase_numbers'){
-                $permission['value'] = 1;
-            } else
-            {
-                $permission['value'] = $default;
-            }
-                
             if (isset($checkedPermissions[$permission['id']]))
                 $permission['value'] = $checkedPermissions[$permission['id']];
         }
