@@ -36,7 +36,7 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $app->bind(
             'Faxbox\Repositories\Setting\SettingInterface',
-            'Faxbox\Repositories\Setting\EloquentSettingRepository'
+            'Faxbox\Repositories\Setting\LaravelConfigSettingRepository'
         );
 
         $this->app['setting'] = $this->app->share(function($app)

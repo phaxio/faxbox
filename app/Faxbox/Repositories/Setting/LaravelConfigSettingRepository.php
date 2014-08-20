@@ -4,7 +4,7 @@ use Faxbox\Repositories\EloquentAbstractRepository;
 //use October\Rain\Config\Repository;
 use Illuminate\Config\Repository;
 
-class EloquentSettingRepository extends EloquentAbstractRepository implements SettingInterface {
+class LaravelConfigSettingRepository extends EloquentAbstractRepository implements SettingInterface {
 
     protected $config;
     
