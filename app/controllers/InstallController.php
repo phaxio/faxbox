@@ -25,18 +25,18 @@ class InstallController extends BaseController {
         $this->beforeFilter('checkInstalled', ['only' => ['store', 'index']]);
     }
 
-    
+
     public function index()
     {
         return View::make('install.index');
     }
 
-    
+
     public function store()
     {
         $data = Input::all();
         Input::flash();
-        
+
         if( !($this->checkVersion()->getData()->status &&
             $this->checkDBCredentials($data)->getData()->status &&
             $this->checkExtension('mcrypt')->getData()->status &&
@@ -47,7 +47,7 @@ class InstallController extends BaseController {
             Session::flash('error', 'There was a problem. Make sure all of the server checks are showing green to continue.');
             return Redirect::action('InstallController@index');
         }
-        
+
         //setup our DB stuff
         $driver = $data['database']['default'];
         unset($data['database']['default']);
@@ -66,23 +66,24 @@ class InstallController extends BaseController {
             $this->config->write($key, $value);
         }
 
-        
+
         // Run our migrations
-        exec('php artisan migrate --package=cartalyst/sentry --force');
-        exec('php artisan migrate --force');
+        $artisan = base_path('artisan');
+        exec("php $artisan migrate --package=cartalyst/sentry --force");
+        exec("php $artisan migrate --force");
 
         // Create our user
         $data['admin']['permissions']['superuser'] = 1;
         $data['admin']['activate']                 = true;
         $result                                    = $this->registerForm->save($data['admin']);
-        
+
         if(!$result['success'])
         {
             Session::set('error', trans('install.generalerror'));
             return Redirect::action('InstallController@index')->withErrors($this->registerForm->errors());
         }
 
-        
+
         // write our other settings
         $this->settings->write('app.key', Str::random(32));
         $this->settings->write('app.url', $data['app']['url']);
@@ -90,7 +91,7 @@ class InstallController extends BaseController {
         $this->settings->write('services.phaxio.public', $data['services']['phaxio']['public']);
         $this->settings->write('services.phaxio.secret', $data['services']['phaxio']['secret']);
         $this->settings->write('faxbox.installed', true);
-        
+
         Session::flash('success', "Faxbox successfully installed. Please Login below with the account you just created.");
         return Redirect::to('login');
     }
@@ -98,16 +99,16 @@ class InstallController extends BaseController {
     public function checkVersion()
     {
         return Response::json([
-            'status' => phpversion() > 5.4
+            'status' => phpversion() >= 5.4
         ]);
     }
 
     public function checkExtension($name = null)
     {
         $name = Input::get('ext-name') ?: $name;
-        
+
         $status = true;
-        
+
         if(extension_loaded($name) === false)
         {
             $status = false;
@@ -120,38 +121,44 @@ class InstallController extends BaseController {
 
     public function checkPermissions()
     {
-        $dirs = [];
-        
-        $dirs[] = storage_path();
-        $dirs[] = app_path('config');
-        $dirs[] = app_path('database');
-        
+        $files = [];
+
+        $files[] = storage_path();
+        $files[] = app_path('config');
+        $files[] = app_path('database');
+
         foreach(scandir(storage_path()) as $path)
         {
-            $dirs[] = $path;
+            $files[] = storage_path($path);
         }
 
-        $dirs = array_diff($dirs, ['..', '.', '.gitignore']);
-        
+        foreach(scandir(app_path('config')) as $path)
+        {
+            $files[] = app_path('config/'.$path);
+        }
+
+        foreach(scandir(app_path('database')) as $path)
+        {
+            $files[] = app_path('database/'.$path);
+        }
+
+        $files = array_diff($files, ['..', '.', '.gitignore']);
+
         $result['status'] = true;
         $result['message'] = [];
 
-        foreach($dirs as $dir)
+        foreach($files as $file)
         {
-            $dir = storage_path($dir);
-            
-            $writable = is_writable($dir);
-            
-            if(is_dir($dir) && !$writable && !chmod($dir, 0755))
+            if(!is_writable($file) && !chmod($file, 0755))
             {
                 $result['status'] = false;
-                $result['message'][] = "Could not make $dir writable. Please make it writable by entering this in the command line:<br><b>chmod -R 755 $dir</b>";
+                $result['message'][] = "Could not make $file writable. Please make it writable by entering this in the command line:<br><b>chmod -R 755 $file</b>";
             }
         }
-        
+
         return Response::json($result);
     }
-    
+
     public function checkDBCredentials($data = null)
     {
         $data = Input::all() ?: $data;
@@ -171,14 +178,14 @@ class InstallController extends BaseController {
             return Response::json([
                 'status' => true,
             ]);
-                
+
         } catch (PDOException $e) {
             return Response::json([
                 'status' => false,
                 'message' => $e->getMessage()
             ]);
         }
-        
+
     }
 
 }
