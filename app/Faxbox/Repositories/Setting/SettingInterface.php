@@ -2,9 +2,9 @@
 
 interface SettingInterface {
 
-    public function get($keys, $forceDb = false);
+    public function get($keys);
 
     public function write($key, $value);
 
-    public function writeArray($keyValue, $forceDb = false);
+    public function writeArray($keyValue);
 }

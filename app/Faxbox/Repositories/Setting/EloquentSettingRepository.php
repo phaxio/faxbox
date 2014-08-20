@@ -1,7 +1,8 @@
 <?php namespace Faxbox\Repositories\Setting;
 
 use Faxbox\Repositories\EloquentAbstractRepository;
-use October\Rain\Config\Repository;
+//use October\Rain\Config\Repository;
+use Illuminate\Config\Repository;
 
 class EloquentSettingRepository extends EloquentAbstractRepository implements SettingInterface {
 
@@ -12,14 +13,14 @@ class EloquentSettingRepository extends EloquentAbstractRepository implements Se
         $this->config = $config;
     }
     
-    public function get($keys, $forceDb = false)
+    public function get($keys)
     {
-        if(is_string($keys)) return $this->findKeyValue($keys, $forceDb);
+        if(is_string($keys)) return $this->findKeyValue($keys);
         
         $result = [];
         foreach($keys as $key)
         {
-            $result[$key] = $this->findKeyValue($key, $forceDb);
+            $result[$key] = $this->findKeyValue($key);
         }
         
         return $result;
@@ -32,11 +33,28 @@ class EloquentSettingRepository extends EloquentAbstractRepository implements Se
 
     public function write($key, $value)
     {
-        $this->config->write($key, $value);
+        list($namespace, $group, $item) = $this->config->parseKey($key);
+
+        $path = app_path("config/".\App::environment()."/$group.php");
+        $content = '';
+
+        if(file_exists($path))
+            $content = file_get_contents($path);
+        
+        $array = eval('?>'.$content);
+        
+        array_set($array, $item, $value);
+        
+        $string = "<?php\n\nreturn ".var_export($array, true).";";
+        
+        file_put_contents($path, $string);
+        
+        // todo force refresh for config
     }
 
-    public function writeArray($keyValue, $forceDb = false)
+    public function writeArray($keyValue)
     {
+        // sometimes passed in by forms
         unset($keyValue['_token']);
         unset($keyValue['_method']);
         
@@ -44,7 +62,7 @@ class EloquentSettingRepository extends EloquentAbstractRepository implements Se
         
         foreach($keyValue as $key => $value)
         {
-            $this->write($key, $value, $forceDb);
+            $this->write($key, $value);
         }
     }
 }

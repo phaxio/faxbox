@@ -17,8 +17,3 @@ sed -i 's,;listen.user = www-data,listen.user = nginx,g' /etc/php5/fpm/pool.d/ww
 sed -i 's,;listen.group = www-data,listen.group = nginx,g' /etc/php5/fpm/pool.d/www.conf
 /etc/init.d/nginx restart
 /etc/init.d/php5-fpm restart
-
-
-
-
-

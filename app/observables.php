@@ -23,11 +23,10 @@ Event::listen('update.mailgun.route', function(){
     $settings = App::make('Faxbox\Repositories\Setting\SettingInterface');
     
     # Instantiate the client.
-    $mgClient = new Mailgun(Config::get('services.mailgun.secret'));
-
-    $domain = explode( '@', Config::get('mail.from.address') )[1];
+    $mgClient = new Mailgun($settings->get('services.mailgun.secret'));
+    $domain = explode( '@', $settings->get('mail.from.address') )[1];
     
-    $notifyUrl = \Config::get('faxbox.notify.send') . "/\\g<phone>";  
+    $notifyUrl = $settings->get('faxbox.notify.send') . "/\\g<phone>";  
     
     if($id = $settings->get('services.mailgun.routeId')){
         $id = "/".$id;

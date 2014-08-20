@@ -90,8 +90,7 @@ class InstallController extends BaseController {
         $this->settings->write('faxbox.name', $data['name']);
         $this->settings->write('services.phaxio.public', $data['services']['phaxio']['public']);
         $this->settings->write('services.phaxio.secret', $data['services']['phaxio']['secret']);
-        $this->settings->write('faxbox.installed', true);
-
+        
         Session::flash('success', "Faxbox successfully installed. Please Login below with the account you just created.");
         return Redirect::to('login');
     }
@@ -124,22 +123,12 @@ class InstallController extends BaseController {
         $files = [];
 
         $files[] = storage_path();
-        $files[] = app_path('config');
+        $files[] = app_path('config/'.App::environment());
         $files[] = app_path('database');
 
         foreach(scandir(storage_path()) as $path)
         {
             $files[] = storage_path($path);
-        }
-
-        foreach(scandir(app_path('config')) as $path)
-        {
-            $files[] = app_path('config/'.$path);
-        }
-
-        foreach(scandir(app_path('database')) as $path)
-        {
-            $files[] = app_path('database/'.$path);
         }
 
         $files = array_diff($files, ['..', '.', '.gitignore']);

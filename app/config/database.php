@@ -48,7 +48,7 @@ return array(
 
 		'sqlite' => array(
 			'driver'   => 'sqlite',
-			'database' => '',
+			'database' => '/Users/nickv/Projects/faxbox/web/app/database/production.sqlite',
 			'prefix'   => '',
 		),
 

@@ -35,14 +35,14 @@ class SettingController extends BaseController {
     public function updateMail()
     {
         $data = Input::all();
-        
+
+        $this->settings->writeArray($data);
+
         if($data['mail']['driver'] == 'mailgun')
         {
             Event::fire('update.mailgun.route');
         }
-
-        $this->settings->writeArray($data);
-
+        
         Session::flash('success', "Mail settings successfully updated");
         return Redirect::action('SettingController@editMail');
     }
