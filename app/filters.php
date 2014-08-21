@@ -136,13 +136,19 @@ Route::filter('csrf', function()
 });
 
 Route::filter('checkInstalled', function($route, $request){
+
+    $exists = file_exists(app_path('config/'.App::environment().'/app.php'));
     
-    if( !file_exists(app_path('config/'.App::environment().'/app.php')) &&
-        $request->getRequestUri() != '/install'
-    )
+    if( !$exists && $request->getRequestUri() != '/install' )
     {
         return Redirect::action('InstallController@index');
-    } else
+        
+    } else 
+    if( !$exists && $request->getRequestUri() == '/install' )
+    {
+        return;
+        
+    }else
     {
         return Redirect::route('login');
     }
