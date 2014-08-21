@@ -63,7 +63,7 @@ class InstallController extends BaseController {
         foreach ($db as $key => $value)
         {
             if (!$value) continue;
-            $this->config->write($key, $value);
+            $this->settings->write($key, $value);
         }
 
 
