@@ -80,6 +80,15 @@
 
 </div>
 
+<!-- jQuery Version 1.11.0 -->
+<script src="{{ asset('js/jquery-1.11.0.js') }}"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="{{ asset('js/sb-admin-2.js') }}"></script>
+
 @include('partials.footer')
 
 </body>
