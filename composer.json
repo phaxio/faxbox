@@ -3,12 +3,6 @@
 	"description": "The Laravel Framework.",
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
-    "repositories": [
-        {
-            "url": "https://github.com/greatwitenorth/laravel-config-writer.git",
-            "type": "git"
-        }
-    ],
 	"require": {
 		"laravel/framework": "4.2.*",
         "cartalyst/sentry": "2.1.*",
@@ -18,7 +12,6 @@
         "ext-intl": "*",
         "ext-readline" : "*",
         "ext-pcntl" : "*",
-        "october/config": "dev-master",
         "guzzlehttp/guzzle": "~4.0",
 		"mailgun/mailgun-php": "~1.7.1"
 	},
