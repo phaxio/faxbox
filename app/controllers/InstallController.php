@@ -120,28 +120,29 @@ class InstallController extends BaseController {
 
     public function checkPermissions()
     {
-        $files = [];
+        $dirs = [];
 
-        $files[] = storage_path();
-        $files[] = app_path('config/'.App::environment());
-        $files[] = app_path('database');
+        $dirs[] = storage_path();
+        $dirs[] = storage_path('cache');
+        $dirs[] = storage_path('docs');
+        $dirs[] = storage_path('logs');
+        $dirs[] = storage_path('meta');
+        $dirs[] = storage_path('sessions');
+        $dirs[] = storage_path('views');
+        $dirs[] = app_path('config/'.App::environment());
+        $dirs[] = app_path('database');
 
-        foreach(scandir(storage_path()) as $path)
-        {
-            $files[] = storage_path($path);
-        }
-
-        $files = array_diff($files, ['..', '.', '.gitignore']);
+        $dirs = array_diff($dirs, ['..', '.', '.gitignore']);
 
         $result['status'] = true;
         $result['message'] = [];
 
-        foreach($files as $file)
+        foreach($dirs as $dir)
         {
-            if(!is_writable($file) && !chmod($file, 0755))
+            if(!is_writable($dir))
             {
                 $result['status'] = false;
-                $result['message'][] = "Could not make $file writable. Please make it writable by entering this in the command line:<br><b>chmod -R 755 $file</b>";
+                $result['message'][] = "Could not make $dir writable. Please make it writable by entering this in the command line:<br><b>chmod -R 777 $dir</b>";
             }
         }
 
