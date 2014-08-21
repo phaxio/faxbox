@@ -86,9 +86,6 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 
-<!-- Custom Theme JavaScript -->
-<script src="{{ asset('js/sb-admin-2.js') }}"></script>
-
 @include('partials.footer')
 
 </body>
