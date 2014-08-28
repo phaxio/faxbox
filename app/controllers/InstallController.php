@@ -1,9 +1,6 @@
 <?php
 
-use Faxbox\Repositories\Session\SessionInterface;
-use Faxbox\Service\Form\Login\LoginForm;
 use Faxbox\Repositories\Setting\SettingInterface;
-use October\Rain\Config\Repository;
 use Faxbox\Service\Form\Register\RegisterForm;
 
 class InstallController extends BaseController {
@@ -15,12 +12,11 @@ class InstallController extends BaseController {
     /**
      * Constructor
      */
-    public function __construct(SettingInterface $settings, Repository $config, RegisterForm $registerForm)
+    public function __construct(SettingInterface $settings, RegisterForm $registerForm)
     {
         parent::__construct();
 
         $this->settings = $settings;
-        $this->config = $config;
         $this->registerForm = $registerForm;
         $this->beforeFilter('checkInstalled', ['only' => ['store', 'index']]);
     }
