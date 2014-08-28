@@ -106,7 +106,7 @@ class NotifyController extends BaseController {
         {
             // create a unique name and move it
             $data['fileNames'][] = $name = Str::random('32') . "." . $file->getClientOriginalExtension();
-            $file->move(storage_path('docs'), $name);
+            $file->move(base_path('userdata/public/docs'), $name);
         }
         
         

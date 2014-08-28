@@ -96,7 +96,7 @@ class FaxController extends BaseController {
         {
             // create a unique name and move it
             $names[] = $name = Str::random('32') . "." . $file->getClientOriginalExtension();
-            $file->move(storage_path('docs'), $name);
+            $file->move(base_path('userdata/public/docs'), $name);
         }
 
         return $names;

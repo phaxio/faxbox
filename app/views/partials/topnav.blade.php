@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
     </button>
     @if($logo = Config::get('faxbox.logo'))
-    <img src="{{ asset('images/'.$logo) }}" width="100px" class="pull-left">
+    <img src="{{ asset('userdata/images/'.$logo) }}" width="100px" class="pull-left">
     @endif
     <a class="navbar-brand" href="/">{{ Config::get('faxbox.name') }}</a>
 </div>

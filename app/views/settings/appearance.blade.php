@@ -36,7 +36,7 @@
 		<div class="col-md-4">
 			<div class="form-group {{ ($errors->has('faxbox[logo]')) ? 'has-error' : '' }}">
 				@if($settings['faxbox.logo'])
-				<img style="max-width:200px;" src="{{ asset('images/'.$settings['faxbox.logo']) }}"><br>
+				<img style="max-width:200px;" src="{{ asset('userdata/images/'.$settings['faxbox.logo']) }}"><br>
 				@endif
 				<label>Logo</label>
 				{{ Form::file('logo', ['accept' => 'image/jpeg,image/png']) }}
