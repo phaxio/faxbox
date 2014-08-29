@@ -62,7 +62,6 @@ class InstallController extends BaseController {
             $this->settings->write($key, $value);
         }
 
-
         // Run our migrations
         $artisan = base_path('artisan');
         exec("php $artisan migrate --package=cartalyst/sentry --force");
@@ -76,6 +75,7 @@ class InstallController extends BaseController {
         if(!$result['success'])
         {
             Session::set('error', trans('install.generalerror'));
+            var_dump($this->registerForm->errors()); die();
             return Redirect::action('InstallController@index')->withErrors($this->registerForm->errors());
         }
 

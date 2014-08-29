@@ -1,14 +1,15 @@
-<?
-$config = array();
+<?php
 
-$config['database'] = array(
-    'default' => $_ENV['database.type'],
+require_once('safeenv.php');
+
+return array(
+    'default' => 'main',
+
     'connections' => array(
-        $_ENV['database.type'] => array(
-            'database' => $_ENV['database.database']
+        'main' => array(
+            'driver'   => safe_getenv('database.type'),
+            'database' => safe_getenv('database.database')
         )
     )
+
 );
-
-
-return $config;

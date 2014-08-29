@@ -9,3 +9,4 @@ atlassian-ide-plugin.xml
 .idea
 /bootstrap/compiled.php
 _ide_helper.php
+userdata/*

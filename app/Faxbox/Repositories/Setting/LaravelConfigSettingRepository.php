@@ -48,8 +48,12 @@ class LaravelConfigSettingRepository extends EloquentAbstractRepository implemen
         $string = "<?php\n\nreturn ".var_export($array, true).";";
         
         file_put_contents($path, $string);
-        
-        // todo force refresh for config
+
+        //put the value into the environment at run time
+        $_ENV[$key] = $value;
+
+        //reload the configuration with the changes to the environment
+        \App::getConfigLoader()->load(\App::environment(), $group);
     }
 
     public function writeArray($keyValue)
