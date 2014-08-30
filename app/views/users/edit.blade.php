@@ -26,6 +26,7 @@
         </div>
     </div>
 
+	@if($user->isSuperUser())
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
@@ -38,30 +39,13 @@
                             @foreach($permissions['static'] as $p)
                             <div class="checkbox">
                                 <label>
-                                    {{ Form::select("permissions[".$p['id']."]", [0 => 'Inherit', 1 => 'Allow', -1 => 'Deny'], $p['value']) }} {{ $p['name'] }} <span style="font-style: italic; color: #b7b7b7; font-weight: 200">{{ $p['description'] }}</span>
+                                    {{ Form::select("permissions[".$p['id']."]", [0 => '', 1 => 'Allow', -1 => 'Deny'], $p['value']) }} {{ $p['name'] }} <span style="font-style: italic; color: #b7b7b7; font-weight: 200">{{ $p['description'] }}</span>
                                 </label>
                             </div>
                             @endforeach
                         </div>
                     </div>
                 </div>
-
-                @foreach($permissions['dynamic'] as $resource)
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>{{ $resource['name'] }} Permissions</label>
-                            @foreach($resource['permissions'] as $p)
-                            <div class="checkbox">
-                                <label>
-                                    {{ Form::select("permissions[".$p['id']."]", [0 => 'Inherit', 1 => 'Allow', -1 => 'Deny'], $p['value']) }} {{ $p['name'] }}
-                                </label>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-                @endforeach
             </div>
         </div>
     </div>
@@ -81,6 +65,7 @@
         </div>
     </div>
     @endif
+    @endif
 
     <div class="row">
         <div class="col-md-4">
@@ -90,7 +75,7 @@
                 <h5>Sent Faxes</h5>
                 <div class="checkbox">
                     <label>
-                        {{ Form::select('sent_notification', ['never' => 'Never notify me', 'failed' => 'Only on failed attempts', 'always' => 'Always notify me of successful and failed attempts'], $user['sent_notification']) }}
+                        {{ Form::select('sent_notification', ['never' => 'Never', 'always' => 'Always', 'failed' => 'Only on failed faxes'], $user['sent_notification']) }}
                     </label>
                 </div>
             </div>
@@ -99,7 +84,7 @@
                 <h5>Received Faxes</h5>
                 <div class="checkbox">
                     <label>
-                        {{ Form::select('received_notification', ['never' => 'Never notify me', 'groups' => 'Only for groups I\'m a part of', 'mine' => 'Only for numbers I manage', 'always' => 'Always notify me of incoming faxes'], $user['received_notification']) }}
+                        {{ Form::select('received_notification', ['never' => 'Never', 'always' => 'Always', 'mine' => 'Only for numbers I own'], $user['received_notification']) }}
                     </label>
                 </div>
             </div>
@@ -111,23 +96,23 @@
             <div class="form-group">
                 <h4>Change Password</h4>
             </div>
-            <div class="form-group {{ ($errors->has('last_name')) ? 'has-error' : '' }}">
-                {{ Form::password('oldpassword', array('class' => 'form-control', 'placeholder' => trans('users.currentpassword'))) }}
-                {{ ($errors->has('last_name') ? $errors->first('last_name') : '') }}
+            <div class="form-group {{ ($errors->has('old_password')) ? 'has-error' : '' }}">
+                {{ Form::password('old_password', array('class' => 'form-control', 'placeholder' => trans('users.currentpassword'))) }}
+                {{ ($errors->has('old_password') ? $errors->first('old_password') : '') }}
             </div>
-            <div class="form-group {{ ($errors->has('last_name')) ? 'has-error' : '' }}">
+            <div class="form-group {{ ($errors->has('password')) ? 'has-error' : '' }}">
                 {{ Form::password('password', array('class' => 'form-control', 'placeholder' => trans('users.newpassword'))) }}
-                {{ ($errors->has('last_name') ? $errors->first('last_name') : '') }}
+                {{ ($errors->has('password') ? $errors->first('password') : '') }}
             </div>
-            <div class="form-group {{ ($errors->has('last_name')) ? 'has-error' : '' }}">
-                {{ Form::password('password_confirmed', array('class' => 'form-control', 'placeholder' => trans('users.newpasswordconfirm'))) }}
-                {{ ($errors->has('last_name') ? $errors->first('last_name') : '') }}
+            <div class="form-group {{ ($errors->has('password_confirmation')) ? 'has-error' : '' }}">
+                {{ Form::password('password_confirmation', array('class' => 'form-control', 'placeholder' => trans('users.newpasswordconfirm'))) }}
+                {{ ($errors->has('password_confirmation') ? $errors->first('password_confirmation') : '') }}
             </div>
         </div>
     </div>
 
     {{ Form::hidden('id', $user['id']) }}
-    {{ Form::submit(trans('users.update'), array('class' => 'btn btn-primary')) }}
+    {{ Form::submit(trans('general.update'), array('class' => 'btn btn-primary')) }}
 
     {{ Form::close() }}
     

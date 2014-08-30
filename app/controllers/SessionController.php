@@ -27,6 +27,8 @@ class SessionController extends BaseController {
      */
     public function create()
     {
+        if (Sentry::check()) return Redirect::route('home');
+        
         return View::make('sessions.login');
     }
 
@@ -48,7 +50,7 @@ class SessionController extends BaseController {
             ));
 
             // Success!
-            return Redirect::intended('dashboard');
+            return Redirect::intended();
 
         } else {
             Session::flash('error', $result['message']);

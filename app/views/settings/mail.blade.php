@@ -83,7 +83,7 @@
 		<div class="row">
 			<div class="col-md-4">
 				<div class="form-group {{ ($errors->has('services.mailgun.secret')) ? 'has-error' : '' }}">
-					{{ Form::text('services[mailgun][secret]', $settings['services.mailgun.secret'], ['class' => 'form-control', 'placeholder' => 'Mailgun Secret']) }}
+					{{ Form::text('services[mailgun][secret]', $settings['services.mailgun.secret'], ['class' => 'form-control', 'placeholder' => 'Mailgun API Key']) }}
 					{{ ($errors->has('services.mailgun.secret') ? $errors->first('services.mailgun.secret') : '') }}
 				</div>
 			</div>

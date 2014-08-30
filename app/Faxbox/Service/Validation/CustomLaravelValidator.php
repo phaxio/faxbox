@@ -2,6 +2,8 @@
 
 use Illuminate\Validation\Validator;
 use libphonenumber\PhoneNumberUtil;
+use Mailgun\Connection\Exceptions\GenericHTTPError;
+use Mailgun\Mailgun;
 use Symfony\Component\HttpFoundation\File\File;
 
 class CustomLaravelValidator extends Validator {
@@ -25,7 +27,7 @@ class CustomLaravelValidator extends Validator {
 
     /**
      * @param $attribute
-     * @param $value \Symfony\Component\HttpFoundation\File\File
+     * @param $value \Symfony\Component\HttpFoundation\File\UploadedFile|array
      * @param $parameters
      */
     public function validateFileType($attribute, $value, $parameters)
@@ -34,10 +36,11 @@ class CustomLaravelValidator extends Validator {
         $allowedMimes = array_column($allowed, 'mime');
         $allowedExts = array_column($allowed, 'ext');
 
+        $ext = $value->guessExtension();
         if(!$value instanceof File)
             $value = new File(storage_path('docs/' . $value));
 
-        return in_array($value->getMimeType(), $allowedMimes) && in_array($value->getExtension(), $allowedExts);
+        return in_array($value->getMimeType(), $allowedMimes) && in_array($value->guessExtension(), $allowedExts);
     }
     
     public function validatePhone($attribute, $value, $parameters)
@@ -59,6 +62,36 @@ class CustomLaravelValidator extends Validator {
         
         return in_array(strtolower($value), $allowed);
         
+    }
+    
+    public function validateCheckOldPassword($attribute, $value, $parameters)
+    {
+        return \Sentry::getUser()->checkPassword(\Input::get('old_password', null));
+    }
+    
+    public function validateRequiredForUpdate($attribute, $value, $parameters)
+    {
+        if(\Input::get('password', null)) return true;
+        
+        return false;
+    }
+    
+    public function validateMailgun($attribute, $value, $parameters)
+    {
+        $mgClient = new Mailgun($value);
+
+        try
+        {
+            $result = $mgClient->get("domains");
+        } catch(\Mailgun\Connection\Exceptions\InvalidCredentials $e)
+        {
+            return false;
+        } catch(GenericHTTPError $e)
+        {
+            return false;
+        }
+        
+        return true;
     }
 
     /**

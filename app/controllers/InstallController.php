@@ -125,6 +125,7 @@ class InstallController extends BaseController {
         $dirs[] = storage_path('meta');
         $dirs[] = storage_path('sessions');
         $dirs[] = storage_path('views');
+        $dirs[] = public_path('images');
         $dirs[] = app_path('config/'.App::environment());
         $dirs[] = app_path('database');
 

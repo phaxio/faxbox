@@ -79,7 +79,6 @@ class GroupController extends BaseController {
 
         } else
         {
-            dd($this->groupForm->errors());
             Session::flash('error', $result['message']);
 
             return Redirect::action('GroupController@index')

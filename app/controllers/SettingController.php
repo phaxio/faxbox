@@ -1,16 +1,19 @@
 <?php
 
 use Faxbox\Repositories\Setting\SettingInterface;
+use Faxbox\Service\Form\MailSettings\MailForm;
 
 class SettingController extends BaseController {
 
     protected $settings;
-    
-	public function __construct(SettingInterface $settings)
+    protected $mailForm;
+
+    public function __construct(SettingInterface $settings, MailForm $mailForm)
 	{
         parent::__construct();
         
         $this->settings = $settings;
+        $this->mailForm = $mailForm;
 
         $this->beforeFilter('auth');
         $this->beforeFilter('hasAccess:superuser');
@@ -36,11 +39,18 @@ class SettingController extends BaseController {
     {
         $data = Input::all();
 
-        $this->settings->writeArray($data);
-
-        if($data['mail']['driver'] == 'mailgun')
+//        $this->settings->writeArray($data);
+        
+        $result = $this->mailForm->save($data);
+        $err = $this->mailForm->errors();
+        
+        if ($err = $this->mailForm->errors())
         {
-            Event::fire('update.mailgun.route');
+            Session::flash('error', 'There was a problem updating your settings');
+
+            return Redirect::action('SettingController@editMail')
+                           ->withInput()
+                           ->withErrors($err);
         }
         
         Session::flash('success', "Mail settings successfully updated");

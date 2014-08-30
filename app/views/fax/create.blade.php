@@ -75,6 +75,7 @@
                     @endforeach
                 @endif
             </div>
+            {{ ($errors->has('fileNames') ? $errors->first('fileNames') : '') }}
         </div>
     </div>
 
@@ -152,7 +153,7 @@
             dataType: 'json',
             done: function (e, data) {
                 $.each(data.files, function (index, file) {
-                    $('<p/>').text(file.name).appendTo('#files');
+                    $('<p/>').html("<i class='fa fa-check text-success'></i> " + file.name).appendTo('#files');
                     $('<input type="hidden">')
                         .attr('name', 'fileNames[]')
                         .attr('type', 'hidden')
@@ -160,17 +161,37 @@
                         .appendTo('#faxform');
                 });
             },
+            error: function(data){
+				alert(data.responseJSON.files[0]);   
+				$('#progress .progress-bar').css(
+					'width',
+					 '0%'
+				);				         
+            },
             progressall: function (e, data) {
                 var progress = parseInt(data.loaded / data.total * 100, 10);
                 $('#progress .progress-bar').css(
                     'width',
                     progress + '%'
                 );
+//                if(progress == 100){
+//					$('#progress .progress-bar').css(
+//						'width',
+//						'0%'
+//					);
+//                }
             },
             formData: [
                 { name: '_token', value: $('meta[name="csrf-token"]').attr('content') }
             ]
-        }).prop('disabled', !$.support.fileInput)
+        })
+        	.bind('fileuploadstart', function (e) {
+				$('#progress .progress-bar').css(
+					'width',
+					'0%'
+				);
+        	})
+        	.prop('disabled', !$.support.fileInput)
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
     });
 </script>

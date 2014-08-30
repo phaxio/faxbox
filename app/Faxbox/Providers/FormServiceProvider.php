@@ -4,8 +4,12 @@ namespace Faxbox\Providers;
 
 use Faxbox\Service\Form\Fax\FaxForm;
 use Faxbox\Service\Form\Fax\FaxFormLaravelValidator;
+use Faxbox\Service\Form\File\FileForm;
+use Faxbox\Service\Form\File\FileFormLaravelValidator;
 use Faxbox\Service\Form\Group\GroupForm;
 use Faxbox\Service\Form\Group\GroupFormLaravelValidator;
+use Faxbox\Service\Form\MailSettings\MailForm;
+use Faxbox\Service\Form\MailSettings\MailFormLaravelValidator;
 use Illuminate\Support\ServiceProvider;
 use Faxbox\Service\Form\Login\LoginForm;
 use Faxbox\Service\Form\Login\LoginFormLaravelValidator;
@@ -114,6 +118,22 @@ class FormServiceProvider extends ServiceProvider
             return new FaxForm(
                 new FaxFormLaravelValidator( $app['validator'] ),
                 $app->make('Faxbox\Repositories\Fax\FaxInterface')
+            );
+        });
+
+        $app->bind('Faxbox\Service\Form\File\FileForm', function($app)
+        {
+            return new FileForm(
+                new FileFormLaravelValidator( $app['validator'] ),
+                $app->make('Faxbox\Repositories\File\FileInterface')
+            );
+        });
+
+        $app->bind('Faxbox\Service\Form\MailSettings\MailForm', function($app)
+        {
+            return new MailForm(
+                new MailFormLaravelValidator( $app['validator'] ),
+                $app->make('Faxbox\Repositories\Mail\MailInterface')
             );
         });
 

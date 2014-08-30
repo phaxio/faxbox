@@ -21,6 +21,7 @@ class FaxFormLaravelValidator extends AbstractLaravelValidator {
      * @var Array
      */
     protected $messages = array(
-        'file_type' => 'Incorrect file type.'
+        'file_type' => 'Incorrect file type.',
+        'fileNames.required' => 'You need at least 1 file to send a fax.'
     );
 }

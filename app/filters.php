@@ -53,7 +53,7 @@ Route::filter('hasAccess', function($route, $request, $value)
         if( $user->hasAccess($value) || $userId == $user->getId()) return;
     
         Session::flash('error', trans('users.noaccess'));
-        return Redirect::route('dashboard');
+        return Redirect::route('home');
     }
     catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
     {
@@ -84,7 +84,7 @@ Route::filter('accessResource', function($route, $request, $value)
         ) return;
 
         Session::flash('error', trans('users.noaccess'));
-        return Redirect::route('dashboard');
+        return Redirect::route('home');
     }
     catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
     {
@@ -148,9 +148,10 @@ Route::filter('checkInstalled', function($route, $request){
     {
         return;
         
-    }else
+    }else if( $exists && $request->getRequestUri() == '/install' )
     {
-        return Redirect::route('login');
+        return Redirect::route('home');
+        
     }
     
 });

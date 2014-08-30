@@ -38,12 +38,23 @@ Event::listen('update.mailgun.route', function(){
     }
     
     # Issue the call to the client.
-    $result = $mgClient->$method("routes".$id, array(
-        'priority'    => 0,
-        'expression'  => "match_recipient(\"(?P<phone>.*?)@$domain\")",
-        'action'      => array("forward(\"".$notifyUrl.'")', 'stop()'),
-        'description' => 'Faxbox Send Fax Route',
-    ));
+    try
+    {
+        $result = $mgClient->$method("routes" . $id,
+        [
+            'priority'    => 0,
+            'expression'  => "match_recipient(\"(?P<phone>.*?)@$domain\")",
+            'action'      => ["forward(\"" . $notifyUrl . '")', 'stop()'],
+            'description' => 'Faxbox Send Fax Route',
+        ]);
+    } catch(\Mailgun\Connection\Exceptions\InvalidCredentials $e)
+    {
+        Session::flash('error', 'There was a problem with your Mailgun API Key');
+        Session::remove('success');
+        
+        return Redirect::action('SettingController@editMail')
+                ->withErrors($e->getMessage());
+    }
 
     $id = substr($id, 1);
     $settings->write('services.mailgun.routeId', $id ?: $result->http_response_body->route->id);

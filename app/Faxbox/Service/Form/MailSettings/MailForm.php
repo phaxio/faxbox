@@ -1,9 +1,9 @@
-<?php namespace Faxbox\Service\Form\Fax;
+<?php namespace Faxbox\Service\Form\MailSettings;
 
-use Faxbox\Repositories\Fax\FaxInterface;
+use Faxbox\Repositories\Mail\MailInterface;
 use Faxbox\Service\Validation\ValidableInterface;
 
-class FaxForm {
+class MailForm {
 
     /**
      * Form Data
@@ -22,14 +22,14 @@ class FaxForm {
     /**
      * Fax Repository
      *
-     * @var \Faxbox\Repositories\Fax\FaxInterface
+     * @var \Faxbox\Repositories\Mail\MailInterface
      */
-    protected $fax;
+    protected $mail;
 
-    public function __construct(ValidableInterface $validator, FaxInterface $fax)
+    public function __construct(ValidableInterface $validator, MailInterface $mail)
     {
         $this->validator = $validator;
-        $this->fax = $fax;
+        $this->mail = $mail;
 
     }
 
@@ -45,7 +45,7 @@ class FaxForm {
             return false;
         }
 
-        return $this->fax->store($input);
+        return $this->mail->store($input);
     }
 
     /**
@@ -65,7 +65,14 @@ class FaxForm {
      */
     protected function valid(array $input)
     {
-
+        // not pretty, but we have to put it here until php will allow closures in property defaults
+//        $v = $this->validator->resolve();
+//
+//        $v->sometimes('mail.host', 'required|max:500', function($input)
+//        {
+//            return $input->games >= 100;
+//        });
+        
         return $this->validator->with($input)->passes();
 
     }

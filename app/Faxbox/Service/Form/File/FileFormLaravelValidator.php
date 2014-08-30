@@ -1,8 +1,8 @@
-<?php namespace Faxbox\Service\Form\Login;
+<?php namespace Faxbox\Service\Form\File;
 
 use Faxbox\Service\Validation\AbstractLaravelValidator;
 
-class LoginFormLaravelValidator extends AbstractLaravelValidator {
+class FileFormLaravelValidator extends AbstractLaravelValidator {
 
     /**
      * Validation rules
@@ -10,8 +10,7 @@ class LoginFormLaravelValidator extends AbstractLaravelValidator {
      * @var Array
      */
     protected $rules = array(
-        'email' => 'required|min:4|max:255|email',
-        'password' => 'required'
+        'files' => 'required|fileTypeOrArray'
     );
 
     /**
@@ -20,6 +19,6 @@ class LoginFormLaravelValidator extends AbstractLaravelValidator {
      * @var Array
      */
     protected $messages = array(
-        //'email.required' => 'An email address is required.'
+        'file_type' => 'Incorrect file type.'
     );
 }

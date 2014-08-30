@@ -127,6 +127,7 @@ return array(
         'Faxbox\Providers\RepositoryServiceProvider',
         'Faxbox\Providers\FormServiceProvider',
         'Faxbox\Providers\FaxServiceProvider',
+        'Faxbox\Providers\ValidatorServiceProvider',
 	),
 
 	/*

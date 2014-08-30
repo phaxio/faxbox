@@ -10,7 +10,7 @@ class PhoneFormLaravelValidator extends AbstractLaravelValidator {
      * @var Array
      */
     protected $rules = array(
-        'description' => 'required|max:255',
+        'description' => 'max:255',
         'area' => 'numeric'
     );
 

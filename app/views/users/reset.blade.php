@@ -50,7 +50,7 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">{{trans('users.change_password')}}</h3>
+                        <h3 class="panel-title">{{trans('users.changePassword')}}</h3>
                     </div>
                     <div class="panel-body">
                         {{ Form::open(array('method' => 'post')) }}
@@ -66,7 +66,7 @@
                             </div>
                             {{ Form::hidden('id', $id) }}
                             {{ Form::hidden('code', $code) }}
-                            {{ Form::submit(trans('users.change_password'), array('class' => 'btn btn-primary'))}}
+                            {{ Form::submit(trans('users.changePassword'), array('class' => 'btn btn-primary'))}}
                         </fieldset>
                         {{ Form::close() }}
                     </div>

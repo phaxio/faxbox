@@ -121,7 +121,7 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
     public function store($data)
     {
         $files = [];
-
+        
         $data['number'] = $this->sanitizePhone($data['fullNumber']);
         $fax            = $this->model->newInstance();
 

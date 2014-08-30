@@ -48,9 +48,6 @@ class UserController extends BaseController {
         $this->permissions          = $permissions;
         $this->resetPasswordForm    = $resetPasswordForm;
         
-        //Check CSRF token on POST
-        $this->beforeFilter('csrf', ['on' => 'post']);
-
         // Set up Auth Filters
         $this->beforeFilter('auth', ['except' => ['activate', 'forgot', 'resetForm', 'reset']]);
         $this->beforeFilter('hasAccess:superuser',
@@ -187,13 +184,13 @@ class UserController extends BaseController {
             // Success!
             Session::flash('success', $result['message']);
 
-            return Redirect::action('UserController@index');
+            return Redirect::action('UserController@edit', ['id' => $id]);
 
         } else
         {
             Session::flash('error', $result['message']);
 
-            return Redirect::action('UserController@edit', [$id])
+            return Redirect::action('UserController@edit', ['id' => $id])
                            ->withInput()
                            ->withErrors($this->userForm->errors());
         }
@@ -252,7 +249,7 @@ class UserController extends BaseController {
         }
         else if($this->user->isActivated($id))
         {
-            return Redirect::route('dashboard');
+            return Redirect::route('home');
         }
         
         // activate the user
@@ -386,7 +383,7 @@ class UserController extends BaseController {
             // Success!
             Session::flash('success', $result['message']);
 
-            return Redirect::route('dashboard');
+            return Redirect::route('home');
 
         } else
         {

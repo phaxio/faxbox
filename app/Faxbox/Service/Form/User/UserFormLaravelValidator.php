@@ -14,8 +14,9 @@ class UserFormLaravelValidator extends AbstractLaravelValidator {
         'last_name' => 'alpha|required',
         'email' => 'required|unique:users,email,:current|email',
         'sent_notification' => 'in:never,failed,always',
-        'received_notification' => 'in:never,groups,mine,always'
-        //'password' => 'required|confirmed|min:6',
+        'received_notification' => 'in:never,groups,mine,always',
+        'old_password' => 'requiredForUpdate',
+        'password' => 'min:6|confirmed|checkOldPassword',
 	);
 
 	/**
@@ -24,6 +25,7 @@ class UserFormLaravelValidator extends AbstractLaravelValidator {
 	 * @var Array 
 	 */
 	protected $messages = array(
-		//'email.required' => 'An email address is required.'
+		'matches' => 'That is not your current password',
+        'check_old_password' => 'Your current password is incorrect'
 	);
 }

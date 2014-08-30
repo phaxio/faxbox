@@ -1,9 +1,9 @@
-<?php namespace Faxbox\Service\Form\Fax;
+<?php namespace Faxbox\Service\Form\File;
 
-use Faxbox\Repositories\Fax\FaxInterface;
+use Faxbox\Repositories\File\FileInterface;
 use Faxbox\Service\Validation\ValidableInterface;
 
-class FaxForm {
+class FileForm {
 
     /**
      * Form Data
@@ -20,16 +20,16 @@ class FaxForm {
     protected $validator;
 
     /**
-     * Fax Repository
+     * File Repository
      *
-     * @var \Faxbox\Repositories\Fax\FaxInterface
+     * @var \Faxbox\Repositories\File\FileInterface
      */
-    protected $fax;
+    protected $file;
 
-    public function __construct(ValidableInterface $validator, FaxInterface $fax)
+    public function __construct(ValidableInterface $validator, FileInterface $file)
     {
         $this->validator = $validator;
-        $this->fax = $fax;
+        $this->file = $file;
 
     }
 
@@ -45,7 +45,7 @@ class FaxForm {
             return false;
         }
 
-        return $this->fax->store($input);
+        return $this->file->store($input);
     }
 
     /**

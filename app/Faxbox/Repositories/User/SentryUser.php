@@ -131,8 +131,12 @@ class SentryUser implements UserInterface {
             // Update the user details
             $user->first_name = e($data['first_name']);
             $user->last_name = e($data['last_name']);
+            $user->email = e($data['email']);
             $user->sent_notification = e($data['sent_notification']);
             $user->received_notification = e($data['received_notification']);
+            
+            if(isset($data['password']) && $data['password'] !== '')
+                $user->password = $data['password'];
 
             // Only Admins should be able to change group memberships. 
             $operator = $this->sentry->getUser();

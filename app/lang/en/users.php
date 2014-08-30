@@ -73,10 +73,14 @@ return array(
     'create' => "Create User",
     
     'forgot' => "Forgot your password",
+
+    'forgotSubmit' => "Reset Password",
     
     'pword' => "Password",
     
-    'remember' => "Remember Me"
+    'remember' => "Remember Me",
+    
+    'changePassword' => "Change Password"
     
     
 

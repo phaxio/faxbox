@@ -10,7 +10,16 @@
     @if($logo = Config::get('faxbox.logo'))
     <img src="{{ asset('images/'.$logo) }}" width="100px" class="pull-left">
     @endif
-    <a class="navbar-brand" href="/">{{ Config::get('faxbox.name') }}</a>
+    
+    
+    <a class="navbar-brand" href="/">
+    @if(Config::get('faxbox.name'))
+    {{ Config::get('faxbox.name') }}
+    @else
+	Faxbox
+    </a>
+
+    @endif
 </div>
 <!-- /.navbar-header -->
 

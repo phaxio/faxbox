@@ -49,6 +49,16 @@ class RepositoryServiceProvider extends ServiceProvider
             'Faxbox\Repositories\Permission\PermissionRepository'
         );
 
+        $app->bind(
+            'Faxbox\Repositories\File\FileInterface',
+            'Faxbox\Repositories\File\FileRepository'
+        );
+
+        $app->bind(
+            'Faxbox\Repositories\Mail\MailInterface',
+            'Faxbox\Repositories\Mail\MailRepository'
+        );
+
         $this->app['permission'] = $this->app->share(function($app)
         {
             return \App::make('Faxbox\Repositories\Permission\PermissionInterface');

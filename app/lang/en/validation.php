@@ -72,6 +72,7 @@ return array(
 	"unique"               => "The :attribute has already been taken.",
 	"url"                  => "The :attribute format is invalid.",
     'permission_available' => "Your are trying to set an invalid permission. Please try again.",
+    "phone" => "The phone number is invalid",
 
 	/*
 	|--------------------------------------------------------------------------

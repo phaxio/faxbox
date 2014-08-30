@@ -2,9 +2,6 @@
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
             <li>
-                <a class="active" href="{{ route('dashboard') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-            </li>
-            <li>
                 <a href="{{ action('FaxController@index') }}"><i class="fa fa-fax fa-fw"></i> Faxes</a>
             </li>
             @if (Sentry::check() && Sentry::getUser()->hasAccess('purchase_numbers'))
@@ -28,7 +25,7 @@
                 <a href="#"><i class="fa fa-wrench fa-fw"></i> Settings<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ action('SettingController@editFaxApi') }}">Pahxio API Keys</a>
+                        <a href="{{ action('SettingController@editFaxApi') }}">Phaxio API Keys</a>
                     </li>
                     <li>
                         <a href="{{ action('SettingController@editAppearance') }}">Appearance</a>

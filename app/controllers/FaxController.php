@@ -4,21 +4,28 @@ use Faxbox\Repositories\User\UserInterface as Users;
 use Faxbox\Repositories\Fax\FaxInterface;
 use Faxbox\Service\Form\Fax\FaxForm;
 use Symfony\Component\HttpFoundation\File\File;
+use Faxbox\Service\Form\File\FileForm;
 
 class FaxController extends BaseController {
 
     protected $cc;
+    protected $users;
+    protected $faxes;
+    protected $faxForm;
+    protected $fileForm;
 
     public function __construct(
         FaxInterface $faxes,
         Users $users,
-        FaxForm $faxForm
+        FaxForm $faxForm,
+        FileForm $fileForm
     ) {
         parent::__construct();
 
         $this->users   = $users;
         $this->faxes   = $faxes;
         $this->faxForm = $faxForm;
+        $this->fileForm = $fileForm;
 
         $this->beforeFilter('auth');
         $this->beforeFilter('hasAccess:send_fax',
@@ -53,10 +60,13 @@ class FaxController extends BaseController {
     {
         $data = Input::all();
         
-        // todo validate files keys exists
-        foreach ($data['fileNames'] as &$file)
+        
+        if(isset($data['fileNames']) && $data['fileNames'])
         {
-            $file = new File(storage_path('docs/' . $file));
+            foreach ($data['fileNames'] as &$file)
+            {
+                $file = new File(storage_path('docs/' . $file));
+            }
         }
 
         $data['direction'] = 'sent';
@@ -89,17 +99,16 @@ class FaxController extends BaseController {
 
     public function upload()
     {
-        //todo validate before moving
-        $names = [];
+        $input['files'] = Input::file('files');
 
-        foreach (Input::file('files') as $file)
+        $result = $this->fileForm->save($input);
+        
+        if ($this->fileForm->errors())
         {
-            // create a unique name and move it
-            $names[] = $name = Str::random('32') . "." . $file->getClientOriginalExtension();
-            $file->move(storage_path('docs'), $name);
+            return Response::json($this->fileForm->errors(), 400);
         }
-
-        return $names;
+        
+        return $result;
     }
 
     public function download($id, $type = 'l')
