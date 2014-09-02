@@ -13,6 +13,7 @@
         <div class="col-md-4">
             <h4>{{ $phone['number'] }}</h4>
             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
+            	<label for="description" class="control-label">Description</label>
                 {{ Form::text('description', $phone['description'], array('class' => 'form-control', 'placeholder' => trans('phones.description'))) }}
                 {{ ($errors->has('description') ? $errors->first('description') : '') }}
             </div>

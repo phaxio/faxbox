@@ -12,14 +12,17 @@
 
         <div class="col-md-4">
             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
+            	<label for="email" class="control-label">Email</label>
                 {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => trans('users.email'))) }}
                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
             </div>
             <div class="form-group {{ ($errors->has('first_name')) ? 'has-error' : '' }}">
+            	<label for="first_name" class="control-label">First Name</label>
                 {{ Form::text('first_name', null, array('class' => 'form-control', 'placeholder' => trans('users.firstname'))) }}
                 {{ ($errors->has('first_name') ? $errors->first('first_name') : '') }}
             </div>
             <div class="form-group {{ ($errors->has('last_name')) ? 'has-error' : '' }}">
+            	<label for="last_name" class="control-label">Last Name</label>
                 {{ Form::text('last_name', null, array('class' => 'form-control', 'placeholder' => trans('users.lastname'))) }}
                 {{ ($errors->has('last_name') ? $errors->first('last_name') : '') }}
             </div>

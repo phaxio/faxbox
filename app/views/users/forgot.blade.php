@@ -41,7 +41,9 @@
 <body>
 
 <div id="wrapper">
-
+	<!-- Notifications -->
+	@include('partials.notifications')
+	<!-- ./ notifications -->
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
@@ -53,11 +55,13 @@
                         {{ Form::open(array('action' => 'UserController@forgot')) }}
                         <fieldset>
                             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
+                            	<label for="email" class="control-label">Email</label>
                                 {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => trans('users.email'), 'autofocus')) }}
                                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
                             </div>
                             {{ Form::submit(trans('users.forgotSubmit'), array('class' => 'btn btn-primary'))}}
                         </fieldset>
+                        <a href="{{ action('SessionController@create') }}" class="pull-right">Back to Login</a>
                         {{ Form::close() }}
                     </div>
                 </div>

@@ -57,6 +57,13 @@ class SentryUser implements UserInterface {
         return null;
         
     }
+    
+    public function hasAccess($id, $level)
+    {
+        $user = $this->byId($id);
+        
+        return $user->hasAccess($level);
+    }
 
     /**
      * Store a newly created resource in storage.

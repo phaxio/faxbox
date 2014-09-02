@@ -12,6 +12,7 @@
 
         <div class="col-md-4 ">
             <div class="form-group {{ ($errors->has('name')) ? 'has-error' : '' }}">
+            	<label for="name" class="control-label">Name</label>
                 {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => trans('groups.name'))) }}
                 {{ ($errors->has('name') ? $errors->first('name') : '') }}
             </div>

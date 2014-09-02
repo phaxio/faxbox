@@ -24,7 +24,7 @@ return array(
 
     'activated'		=>	"Activation complete. Please create a new password",
 
-    'notactivated'	=>	"Activation could not be completed.",
+    'notactivated'	=>	"Activation could not be completed. This might be due to an expired or incorrect activation link.",
 
     'alreadyactive'	=>	"That account has already been activated.",
 
@@ -80,7 +80,9 @@ return array(
     
     'remember' => "Remember Me",
     
-    'changePassword' => "Change Password"
+    'changePassword' => "Change Password",
+    
+    'deactivated' => "You've been deactivated, please contact support."
     
     
 

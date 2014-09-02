@@ -12,10 +12,12 @@
 
         <div class="col-md-4">
             <div class="form-group {{ ($errors->has('area')) ? 'has-error' : '' }}">
+            	<label for="area" class="control-label">Area Code</label>
                 {{ Form::select('area', $area, array('class' => 'form-control', 'placeholder' => trans('phones.area'))) }}
                 {{ ($errors->has('area') ? $errors->first('area') : '') }}
             </div>
             <div class="form-group {{ ($errors->has('description')) ? 'has-error' : '' }}">
+            	<label for="description" class="control-label">Description</label>
                 {{ Form::text('description', null, array('class' => 'form-control', 'placeholder' => trans('phones.description'))) }}
                 {{ ($errors->has('description') ? $errors->first('description') : '') }}
             </div>

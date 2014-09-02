@@ -18,7 +18,7 @@
 
         <div class="form-group">
             <div class="col-md-4">
-            <label for="toName" class="control-label sr-only">Recipient's
+            <label for="toName" class="control-label">Recipient's
                 Fax Number</label>
 
             <div class="input-group">

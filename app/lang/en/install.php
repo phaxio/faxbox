@@ -23,4 +23,8 @@ return [
     'dbpassword' => "Password",
 
     'submit' => "Install Faxbox",
+    
+    'url' => "URL",
+    
+    'dbhost' => "Host"
 ];

@@ -128,6 +128,7 @@ return array(
         'Faxbox\Providers\FormServiceProvider',
         'Faxbox\Providers\FaxServiceProvider',
         'Faxbox\Providers\ValidatorServiceProvider',
+        'Faxbox\Providers\NavigationServiceProvider',
 	),
 
 	/*
@@ -177,6 +178,7 @@ return array(
 		'Lang'              => 'Illuminate\Support\Facades\Lang',
 		'Log'               => 'Illuminate\Support\Facades\Log',
 		'Mail'              => 'Illuminate\Support\Facades\Mail',
+        'Navigation'        => 'Faxbox\Facades\Navigation',
 		'Paginator'         => 'Illuminate\Support\Facades\Paginator',
 		'Password'          => 'Illuminate\Support\Facades\Password',
 		'Queue'             => 'Illuminate\Support\Facades\Queue',

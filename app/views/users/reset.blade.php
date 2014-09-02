@@ -56,12 +56,14 @@
                         {{ Form::open(array('method' => 'post')) }}
                         <fieldset>
                             <div class="form-group {{ ($errors->has('password')) ? 'has-error' : '' }}">
-                                {{ Form::password('password', null, array('class' => 'form-control', 'placeholder' => trans('users.newpassword'), 'autofocus')) }}
+                            	<label for="password" class="control-label">{{ trans('users.newpassword') }}</label>
+                                {{ Form::password('password', array('class' => 'form-control', 'placeholder' => trans('users.newpassword'), 'autofocus')) }}
                                 {{ ($errors->has('password') ? $errors->first('password') : '') }}
                             </div>
 
                             <div class="form-group {{ ($errors->has('password_confirmation')) ? 'has-error' : '' }}">
-                                {{ Form::password('password_confirmation', null, array('class' => 'form-control', 'placeholder' => trans('users.newpassword_confirmation'), 'autofocus')) }}
+                            	<label for="password_confirmation" class="control-label">{{trans('users.passwordconfirmed')}}</label>
+                                {{ Form::password('password_confirmation', array('class' => 'form-control', 'placeholder' => trans('users.passwordconfirmed'), 'autofocus')) }}
                                 {{ ($errors->has('password_confirmation') ? $errors->first('password_confirmation') : '') }}
                             </div>
                             {{ Form::hidden('id', $id) }}

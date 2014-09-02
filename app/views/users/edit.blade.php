@@ -12,14 +12,17 @@
 
         <div class="col-md-4">
             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
+            	<label for="email" class="control-label">Email</label>
                 {{ Form::text('email', $user['email'], array('class' => 'form-control', 'placeholder' => trans('users.email'))) }}
                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
             </div>
             <div class="form-group {{ ($errors->has('first_name')) ? 'has-error' : '' }}">
+            	<label for="first_name" class="control-label">First Name</label>
                 {{ Form::text('first_name', $user['first_name'], array('class' => 'form-control', 'placeholder' => trans('users.firstname'))) }}
                 {{ ($errors->has('first_name') ? $errors->first('first_name') : '') }}
             </div>
             <div class="form-group {{ ($errors->has('last_name')) ? 'has-error' : '' }}">
+            	<label for="last_name" class="control-label">Last Name</label>
                 {{ Form::text('last_name', $user['last_name'], array('class' => 'form-control', 'placeholder' => trans('users.lastname'))) }}
                 {{ ($errors->has('last_name') ? $errors->first('last_name') : '') }}
             </div>
@@ -97,14 +100,17 @@
                 <h4>Change Password</h4>
             </div>
             <div class="form-group {{ ($errors->has('old_password')) ? 'has-error' : '' }}">
+            	<label for="old_password" class="control-label">Current Password</label>
                 {{ Form::password('old_password', array('class' => 'form-control', 'placeholder' => trans('users.currentpassword'))) }}
                 {{ ($errors->has('old_password') ? $errors->first('old_password') : '') }}
             </div>
             <div class="form-group {{ ($errors->has('password')) ? 'has-error' : '' }}">
+            	<label for="password" class="control-label">New Password</label>
                 {{ Form::password('password', array('class' => 'form-control', 'placeholder' => trans('users.newpassword'))) }}
                 {{ ($errors->has('password') ? $errors->first('password') : '') }}
             </div>
             <div class="form-group {{ ($errors->has('password_confirmation')) ? 'has-error' : '' }}">
+            	<label for="password_confirmation" class="control-label">New Password Confirm</label>
                 {{ Form::password('password_confirmation', array('class' => 'form-control', 'placeholder' => trans('users.newpasswordconfirm'))) }}
                 {{ ($errors->has('password_confirmation') ? $errors->first('password_confirmation') : '') }}
             </div>

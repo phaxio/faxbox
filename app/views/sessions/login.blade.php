@@ -55,11 +55,13 @@
                         {{ Form::open(array('action' => 'SessionController@store')) }}
                         <fieldset>
                             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
+                            	<label for="email" class="control-label">Email</label>
                                 {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => trans('users.email'), 'autofocus')) }}
                                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
                             </div>
 
                             <div class="form-group {{ ($errors->has('password')) ? 'has-error' : '' }}">
+                            	<label for="password" class="control-label">Password</label>
                                 {{ Form::password('password', array('class' => 'form-control', 'placeholder' => trans('general.password')))}}
                                 {{ ($errors->has('password') ?  $errors->first('password') : '') }}
                             </div>

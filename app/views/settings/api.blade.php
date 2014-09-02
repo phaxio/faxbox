@@ -26,7 +26,8 @@
 		{{ Form::open(array('action' => 'SettingController@updateFaxApi')) }}
 		<div class="col-md-5">
 			<div class="form-group {{ ($errors->has('services[phaxio][public]')) ? 'has-error' : '' }}">
-				{{ Form::text('services[phaxio][public]', $settings['services.phaxio.public'], ['class' => 'form-control', 'placeholder' => 'Api Public']) }}
+				<label for="services[phaxio][public]" class="control-label">Key</label>
+				{{ Form::text('services[phaxio][public]', $settings['services.phaxio.public'], ['class' => 'form-control', 'placeholder' => 'Key']) }}
 				{{ ($errors->has('services[phaxio][public]') ? $errors->first('services[phaxio][public]') : '') }}
 			</div>
 		</div>
@@ -34,7 +35,8 @@
 	<div class="row">
 		<div class="col-md-5">
 			<div class="form-group {{ ($errors->has('services[phaxio][secret]')) ? 'has-error' : '' }}">
-				{{ Form::text('services[phaxio][secret]', $settings['services.phaxio.secret'], ['class' => 'form-control', 'placeholder' => 'Api Secret']) }}
+				<label for="services[phaxio][secret]" class="control-label">Secret</label>
+				{{ Form::text('services[phaxio][secret]', $settings['services.phaxio.secret'], ['class' => 'form-control', 'placeholder' => 'Secret']) }}
 				{{ ($errors->has('services[phaxio][secret]') ? $errors->first('services[phaxio][secret]') : '') }}
 			</div>
 		</div>

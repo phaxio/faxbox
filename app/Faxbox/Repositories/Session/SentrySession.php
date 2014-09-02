@@ -50,7 +50,16 @@ class SentrySession implements SessionInterface {
         {
             $result['success'] = false;
             $url = route('resendActivationForm');
-            $result['message'] = trans('sessions.notactive', array('url' => $url));
+            
+            $user = \Sentry::findUserByLogin($data['email']);
+            if($user->activated_at)
+            {
+                $result['message'] = trans('users.deactivated', array('url' => $url));
+            } else 
+            {
+                $result['message'] = trans('sessions.notactive', array('url' => $url));
+            }
+            
         }
         catch (\Cartalyst\Sentry\Throttling\UserBannedException $e)
         {

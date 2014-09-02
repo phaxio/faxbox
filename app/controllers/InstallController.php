@@ -34,13 +34,37 @@ class InstallController extends BaseController {
         Input::flash();
 
         if( !($this->checkVersion()->getData()->status &&
-            $this->checkDBCredentials($data)->getData()->status &&
             $this->checkExtension('mcrypt')->getData()->status &&
             $this->checkExtension('intl')->getData()->status &&
             $this->checkPermissions()->getData()->status)
         )
         {
             Session::flash('error', 'There was a problem. Make sure all of the server checks are showing green to continue.');
+            return Redirect::action('InstallController@index');
+        }
+
+        if(!$data['services']['phaxio']['public'])
+        {
+            Session::flash('error', 'Your Phaxio api keys are required. Please get them from <a href="http://www.phaxio.com/apiSettings">your account</a> to continue.');
+            return Redirect::action('InstallController@index')->withErrors(['services.phaxio.public' => 'Your public and secret key are required.']);
+        }
+
+        if(!$data['services']['phaxio']['secret'])
+        {
+            Session::flash('error', 'Your Phaxio api keys are required. Please get them from <a href="http://www.phaxio.com/apiSettings">your account</a> to continue.');
+            return Redirect::action('InstallController@index')->withErrors(['services.phaxio.secret' => 'Your public and secret key are required.']);
+        }
+
+        if(!$data['app']['url'])
+        {
+            Session::flash('error', 'The Site URL is required.');
+            return Redirect::action('InstallController@index')->withErrors(['app.url' => 'The Site URL is required']);
+        }
+        
+        $dbresult = $this->checkDBCredentials($data)->getData();
+        if($dbresult->message)
+        {
+            Session::flash('error', 'Your database credentials are incorrect:<br>' . $dbresult->message);
             return Redirect::action('InstallController@index');
         }
 
@@ -164,6 +188,7 @@ class InstallController extends BaseController {
 
             return Response::json([
                 'status' => true,
+                'message' => ''
             ]);
 
         } catch (PDOException $e) {

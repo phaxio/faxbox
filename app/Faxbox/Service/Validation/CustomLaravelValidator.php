@@ -69,13 +69,6 @@ class CustomLaravelValidator extends Validator {
         return \Sentry::getUser()->checkPassword(\Input::get('old_password', null));
     }
     
-    public function validateRequiredForUpdate($attribute, $value, $parameters)
-    {
-        if(\Input::get('password', null)) return true;
-        
-        return false;
-    }
-    
     public function validateMailgun($attribute, $value, $parameters)
     {
         $mgClient = new Mailgun($value);

@@ -68,12 +68,13 @@
 					   </div>
                         <div class="row">
 							<div class="col-sm-12">
-								<h4>Site Name</h4>
+								<h4>Site Name <small>(optional)</small></h4>
 								<p>This name is used in the header. Usually your business name.</p>
 								<fieldset>
 									<div class="form-group">
-									  <label class="sr-only" for="name">{{ trans('install.name') }}</label>
+									  <label for="name">{{ trans('install.name') }}</label>
 									  {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => trans('install.name'))) }}
+									  {{ ($errors->has('name') ? $errors->first('name') : '') }}
 									</div>
 								</fieldset>
 								<hr>
@@ -82,12 +83,13 @@
                         
                         <div class="row">
 							<div class="col-sm-12">
-								<h4>Site Url</h4>
-								<p>What is the url you will use to access the site?</p>
+								<h4>Site Url <small>(Required)</small></h4>
+								<p>What is the base url you will use to access the site?</p>
 								<fieldset>
-									<div class="form-group">
-									  <label class="sr-only" for="app[url]">{{ trans('install.url') }}</label>
+									<div class="form-group {{ ($errors->has('app.url')) ? 'has-error' : '' }}">
+									  <label for="app[url]">{{ trans('install.url') }}</label>
 									  {{ Form::text('app[url]', 'http://', array('class' => 'form-control', 'placeholder' => trans('install.url'))) }}
+									  {{ ($errors->has('app.url') ? $errors->first('app.url') : '') }}
 									</div>
 								</fieldset>
 								<hr>
@@ -96,16 +98,18 @@
                         
                         <div class="row">
 							<div class="col-sm-12">
-								<h4>Phaxio API Keys</h4>
+								<h4>Phaxio API Keys <small>(Required)</small></h4>
 								<p>Your Phaxio api keys can be found in your <a href="http://www.phaxio.com/apiSettings" target="_blank">Phaxio account page</a>.</p>
 								<fieldset>
-									<div class="form-group">
-									  <label class="sr-only" for="services[phaxio][public]">{{ trans('install.apiPublic') }}</label>
+									<div class="form-group {{ ($errors->has('services.phaxio.public')) ? 'has-error' : '' }}">
+									  <label for="services[phaxio][public]">{{ trans('install.apiPublic') }}</label>
 									  {{ Form::text('services[phaxio][public]', null, array('class' => 'form-control', 'placeholder' => trans('install.apiPublic'))) }}
+									  {{ ($errors->has('services.phaxio.public') ? $errors->first('services.phaxio.public') : '') }}
 									</div>
-									<div class="form-group">
-									  <label class="sr-only" for="services[phaxio][secret]">{{ trans('install.apiSecret') }}</label>
+									<div class="form-group {{ ($errors->has('services.phaxio.secret')) ? 'has-error' : '' }}">
+									  <label for="services[phaxio][secret]">{{ trans('install.apiSecret') }}</label>
 									  {{ Form::text('services[phaxio][secret]', null, array('class' => 'form-control', 'placeholder' => trans('install.apiSecret'))) }}
+									  {{ ($errors->has('services.phaxio.secret') ? $errors->first('services.phaxio.secret') : '') }}
 									</div>
 								</fieldset>
 								<hr>
@@ -114,25 +118,30 @@
 						
 						<div class="row">
 							<div class="col-sm-12">
-								<h4>Create Admin</h4>
+								<h4>Create Admin <small>(Required)</small></h4>
 								<p>This user will have access to everything.</p>
 								<fieldset>
-									<div class="form-group">
-									  <label class="sr-only" for="first_name">{{ trans('users.firstname') }}</label>
+									<div class="form-group {{ ($errors->has('first_name')) ? 'has-error' : '' }}">
+									  <label for="first_name">{{ trans('users.firstname') }}</label>
 									  {{ Form::text('admin[first_name]', null, array('class' => 'form-control', 'placeholder' => trans('users.firstname'))) }}
+									  {{ ($errors->has('first_name') ? $errors->first('first_name') : '') }}
 									</div>
-									<div class="form-group">
-									  <label class="sr-only" for="last_name">{{ trans('users.lastname') }}</label>
+									<div class="form-group {{ ($errors->has('last_name')) ? 'has-error' : '' }}">
+									  <label for="last_name">{{ trans('users.lastname') }}</label>
 									  {{ Form::text('admin[last_name]', null, array('class' => 'form-control', 'placeholder' => trans('users.lastname'))) }}
+									  {{ ($errors->has('last_name') ? $errors->first('last_name') : '') }}
 									</div>
-									<div class="form-group">
-									  <label class="sr-only" for="email">{{ trans('users.email') }}</label>
+									<div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
+									  <label for="email">{{ trans('users.email') }}</label>
 									  {{ Form::text('admin[email]', null, array('class' => 'form-control', 'placeholder' => trans('users.email'))) }}
+									  {{ ($errors->has('email') ? $errors->first('email') : '') }}
 									</div>
-									<div class="form-group">
-									  <label class="sr-only" for="password">{{ trans('users.password') }}</label>
+									<div class="form-group {{ ($errors->has('password_confirmation')) ? 'has-error' : '' }}">
+									  <label for="password">{{ trans('users.password') }}</label>
 									  {{ Form::password('admin[password]', array('class' => 'form-control', 'placeholder' => trans('users.password'))) }}
+									  {{ ($errors->has('password') ? $errors->first('password') : '') }}
 									  {{ Form::password('admin[password_confirmation]', array('class' => 'form-control', 'placeholder' => trans('users.passwordconfirmed'))) }}
+									  {{ ($errors->has('password_confirmation') ? $errors->first('password_confirmation') : '') }}
 									</div>
 								</fieldset>
 								<hr>
@@ -147,29 +156,34 @@
 									<p>For simplicity we'll use SQLite by default (which requires no configuration). If you want to specify another database driver you may do that here. Please make sure you've created the database first before clicking install.</p>
 									
 									<div class="form-group">
-								    	<label class="sr-only" for="database[driver]">{{ trans('install.dbdriver') }}</label>
+								    	<label for="database[driver]">{{ trans('install.dbdriver') }}</label>
 										{{ Form::select('database[default]', ['sqlite' => 'SQLite', 'mysql' => 'MySQL'], 'sqlite', array('class' => 'form-control', 'placeholder' => trans('install.dbdriver'))) }}
+										{{ ($errors->has('database.default') ? $errors->first('database.default') : '') }}
 									</div>
 									
 									<div class="form-group">
-										<label class="sr-only" for="database[database]">{{ trans('install.dbname') }}</label>
+										<label for="database[database]">{{ trans('install.dbname') }}</label>
 										{{ Form::text('database[database]', app_path('database/production.sqlite'), array('class' => 'form-control', 'placeholder' => trans('install.dbname'))) }}
+										{{ ($errors->has('database.database') ? $errors->first('database.database') : '') }}
 									</div>
 									
 									<div class="dbextras mysql" style="display:none">
 										<div class="form-group">
-											<label class="sr-only" for="database[host]">{{ trans('install.dbhost') }}</label>
+											<label for="database[host]">{{ trans('install.dbhost') }}</label>
 											{{ Form::text('database[host]', null, array('class' => 'form-control', 'placeholder' => trans('install.dbhost'))) }}
+											{{ ($errors->has('database.host') ? $errors->first('database.host') : '') }}
 										</div>
 										
 										<div class="form-group">
-											<label class="sr-only" for="database[username]">{{ trans('install.dbusername') }}</label>
+											<label for="database[username]">{{ trans('install.dbusername') }}</label>
 											{{ Form::text('database[username]', null, array('class' => 'form-control', 'placeholder' => trans('install.dbusername'))) }}
+											{{ ($errors->has('database.username') ? $errors->first('database.username') : '') }}
 										</div>
 										
 										<div class="form-group">
-											<label class="sr-only" for="database[password]">{{ trans('install.dbpassword') }}</label>
+											<label for="database[password]">{{ trans('install.dbpassword') }}</label>
 											{{ Form::text('database[password]', null, array('class' => 'form-control', 'placeholder' => trans('install.dbpassword'))) }}
+											{{ ($errors->has('database.password') ? $errors->first('database.password') : '') }}
 										</div>
 									</div>
 									<br>
@@ -212,6 +226,14 @@
 			e.preventDefault();
 			$("#advanced-settings").slideToggle();
 		});
+		
+		if($('select[name="database[default]"]').val() == 'mysql')
+		{
+			$("#advanced-settings").show();
+			
+			$('.dbextras').hide();
+			$('.dbextras.mysql').show();
+		}
 		
 		$("#testDB").click(function(e){
 			e.preventDefault();

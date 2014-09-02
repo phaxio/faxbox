@@ -9,6 +9,7 @@ use Faxbox\Service\Form\ForgotPassword\ForgotPasswordForm;
 use Faxbox\Service\Form\ChangePassword\ChangePasswordForm;
 use Faxbox\Repositories\Permission\PermissionInterface;
 use Faxbox\Service\Form\ResetPassword\ResetPasswordForm;
+use Faxbox\Repositories\Session\SessionInterface;
 
 class UserController extends BaseController {
 
@@ -21,6 +22,7 @@ class UserController extends BaseController {
     protected $changePasswordForm;
     protected $suspendUserForm;
     protected $permissions;
+    protected $session;
 
     /**
      * Instantiate a new UserController
@@ -34,7 +36,8 @@ class UserController extends BaseController {
         ForgotPasswordForm $forgotPasswordForm,
         ChangePasswordForm $changePasswordForm,
         PermissionInterface $permissions,
-        ResetPasswordForm $resetPasswordForm
+        ResetPasswordForm $resetPasswordForm,
+        SessionInterface $session
     ) {
         parent::__construct();
 
@@ -47,6 +50,7 @@ class UserController extends BaseController {
         $this->changePasswordForm   = $changePasswordForm;
         $this->permissions          = $permissions;
         $this->resetPasswordForm    = $resetPasswordForm;
+        $this->session = $session;
         
         // Set up Auth Filters
         $this->beforeFilter('auth', ['except' => ['activate', 'forgot', 'resetForm', 'reset']]);
@@ -188,7 +192,7 @@ class UserController extends BaseController {
 
         } else
         {
-            Session::flash('error', $result['message']);
+            Session::flash('error', $result['message'] ?: 'Please fix the errors ');
 
             return Redirect::action('UserController@edit', ['id' => $id])
                            ->withInput()
@@ -266,7 +270,7 @@ class UserController extends BaseController {
         {
             Session::flash('error', $result['message']);
 
-            return Redirect::route('home');
+            return Redirect::route('login');
         }
     }
     
@@ -383,6 +387,18 @@ class UserController extends BaseController {
             // Success!
             Session::flash('success', $result['message']);
 
+            $email = $this->user->byId($id)->email;
+            
+            $this->session->store([
+                'email' => $email, 
+                'password' => Input::get('password')
+            ]);
+            
+            Event::fire('user.login', [
+                'userId' => $id,
+                'email' => $email
+            ]);
+            
             return Redirect::route('home');
 
         } else
