@@ -27,17 +27,21 @@
                     <div class="table-responsive">
                         <table class="table">
                             <tbody>
-                            @if($fax['direction'] == 'sent')
                             <tr>
-                                <td>Status</td>
+								<td>Status</td>
+                            @if($fax['direction'] == 'sent')
                                 @if($fax['sent'])
-                                <td><span class="label label-success">Sent</span></tr>
+                                <td><span class="label label-success">Sent</span> on {{ $fax['completed_at'] }}</td>
                                 @elseif($fax['in_progress'])
                                 <td><span class="label label-info"><i class="fa fa-spinner fa-spin"></i> In Progress</span></td>
+                                @elseif($fax['message'])
+								<td><span class="label label-danger">Error</span> on {{ $fax['message'] }}</td>
                                 @endif
-                            </tr>
+                            @elseif($fax['direction'] == 'received')
+								<td><span class="label label-success">Received</span> on {{ $fax['completed_at'] }}</td>
                             @endif
-
+							</tr>
+							
                             <tr>
                                 <td>Direction</td>
                                 <td>{{ ucwords($fax['direction']) }}</td>
