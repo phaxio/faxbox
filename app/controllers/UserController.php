@@ -314,7 +314,7 @@ class UserController extends BaseController {
             // Success!
             Session::flash('success', $result['message']);
 
-            return Redirect::route('login');
+            return Redirect::back();
         } else
         {
             Session::flash('error', $result['message']);

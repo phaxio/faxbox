@@ -37,10 +37,7 @@
                             <span class='label label-danger'>Inactive</span>
                         </td>
                         <td class="text-right">
-                        	{{ Form::open(['action' => 'UserController@resend', 'method' => 'post']) }}
-							{{ Form::hidden('email', $user['email']) }}
-							{{ Form::submit(trans('users.resend'), array('class' => 'btn btn-link')) }}
-							{{ Form::close() }}
+                        	{{ link_to_route('resendActivationForm', trans('users.resend'), ['email' => $user['email']]) }}
                         </td>
                             @endif
                     </tr>
