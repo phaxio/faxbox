@@ -49,12 +49,12 @@ class SentrySession implements SessionInterface {
         catch (\Cartalyst\Sentry\Users\UserNotActivatedException $e)
         {
             $result['success'] = false;
-            $url = route('resendActivationForm');
+            $url = route('resendActivationForm', ['email' => $data['email']]);
             
             $user = \Sentry::findUserByLogin($data['email']);
             if($user->activated_at)
             {
-                $result['message'] = trans('users.deactivated', array('url' => $url));
+                $result['message'] = trans('users.deactivated');
             } else 
             {
                 $result['message'] = trans('sessions.notactive', array('url' => $url));

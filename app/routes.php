@@ -19,11 +19,12 @@ Route::resource('sessions', 'SessionController', array('only' => array('create',
 
 // User Routes
 Route::get('users/{id}/login/{code}', 'UserController@activate')->where('id', '[0-9]+');
-Route::get('resend', array('as' => 'resendActivationForm', function()
-{
-    return View::make('users.resend');
-}));
-Route::post('resend', 'UserController@resend');
+//Route::get('resend', array('as' => 'resendActivationForm', function()
+//{
+//    return View::make('users.resend');
+//}));
+//Route::post('resend', 'UserController@resend');
+Route::get('resend', array('as' => 'resendActivationForm', 'uses' => 'UserController@resend'));
 Route::get('forgot', array('as' => 'forgotPasswordForm', function()
 {
     return View::make('users.forgot');

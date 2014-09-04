@@ -53,9 +53,9 @@ class UserController extends BaseController {
         $this->session = $session;
         
         // Set up Auth Filters
-        $this->beforeFilter('auth', ['except' => ['activate', 'forgot', 'resetForm', 'reset']]);
+        $this->beforeFilter('auth', ['except' => ['activate', 'forgot', 'resetForm', 'reset', 'resend']]);
         $this->beforeFilter('hasAccess:superuser',
-            ['only' => ['show', 'index', 'destroy', 'edit', 'update', 'store', 'create', 'resend']]);
+            ['only' => ['show', 'index', 'destroy', 'edit', 'update', 'store', 'create']]);
     }
 
 
@@ -314,7 +314,7 @@ class UserController extends BaseController {
             // Success!
             Session::flash('success', $result['message']);
 
-            return Redirect::action('UserController@index');
+            return Redirect::route('login');
         } else
         {
             Session::flash('error', $result['message']);
