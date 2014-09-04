@@ -10,3 +10,4 @@ atlassian-ide-plugin.xml
 public/images/logo.*
 composer.lock
 /bootstrap/compiled.php
+_ide_helper.php
