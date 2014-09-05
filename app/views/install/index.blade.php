@@ -88,7 +88,7 @@
 								<fieldset>
 									<div class="form-group {{ ($errors->has('app.url')) ? 'has-error' : '' }}">
 									  <label for="app[url]">{{ trans('install.url') }}</label>
-									  {{ Form::text('app[url]', 'http://', array('class' => 'form-control', 'placeholder' => trans('install.url'))) }}
+									  {{ Form::text('app[url]', $url, array('class' => 'form-control', 'placeholder' => trans('install.url'))) }}
 									  {{ ($errors->has('app.url') ? $errors->first('app.url') : '') }}
 									</div>
 								</fieldset>
