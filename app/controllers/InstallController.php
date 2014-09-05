@@ -78,8 +78,8 @@ class InstallController extends BaseController {
         unset($data['database']['default']);
 
         // rearrange data
-        $db['database']['connections'][$driver] = $data['database'];
-        $db['database']['default']              = $driver;
+        $db['database']         = $data['database'];
+        $db['database']['type'] = $driver;
 
 
         $db = array_dot($db);
@@ -90,7 +90,6 @@ class InstallController extends BaseController {
             if (!$value) continue;
             $this->settings->write($key, $value);
         }
-
 
         // Run our migrations
         $artisan = base_path('artisan');
@@ -149,14 +148,11 @@ class InstallController extends BaseController {
 
         $dirs[] = storage_path();
         $dirs[] = storage_path('cache');
-        $dirs[] = storage_path('docs');
         $dirs[] = storage_path('logs');
         $dirs[] = storage_path('meta');
         $dirs[] = storage_path('sessions');
         $dirs[] = storage_path('views');
-        $dirs[] = public_path('images');
-        $dirs[] = app_path('config/'.App::environment());
-        $dirs[] = app_path('database');
+        $dirs[] = base_path('userdata');
 
         $dirs = array_diff($dirs, ['..', '.', '.gitignore']);
 
@@ -193,7 +189,6 @@ class InstallController extends BaseController {
 
             return Response::json([
                 'status' => true,
-                'message' => ''
             ]);
 
         } catch (PDOException $e) {

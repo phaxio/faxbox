@@ -15,6 +15,21 @@ $app = new Illuminate\Foundation\Application;
 
 /*
 |--------------------------------------------------------------------------
+| Bind Paths
+|--------------------------------------------------------------------------
+|
+| Here we are binding the paths configured in paths.php to the app. You
+| should not be changing these here. If you need to change these you
+| may do so within the paths.php file and they will be bound here.
+|
+*/
+
+$app->bindInstallPaths(require __DIR__ . '/paths.php');
+
+
+
+/*
+|--------------------------------------------------------------------------
 | Detect The Application Environment
 |--------------------------------------------------------------------------
 |
@@ -29,23 +44,19 @@ $env = $app->detectEnvironment(array(
 ));
 
 //allow environment variables to override environment detection
-if (getenv('ENVIRONMENT')){
-    $env = getenv('ENVIRONMENT');
+if (isset($_ENV['ENVIRONMENT'])){
+    $env = $_ENV['ENVIRONMENT'];
+}
+
+//see if we have an env file to load
+if (file_exists($app['path.base']. '/userdata/.env.php')){
+    $envVars = (include $app['path.base']. '/userdata/.env.php');
+    foreach($envVars as $key => $val){
+        $_ENV[$key] = $val;
+    }
 }
 
 
-/*
-|--------------------------------------------------------------------------
-| Bind Paths
-|--------------------------------------------------------------------------
-|
-| Here we are binding the paths configured in paths.php to the app. You
-| should not be changing these here. If you need to change these you
-| may do so within the paths.php file and they will be bound here.
-|
-*/
-
-$app->bindInstallPaths(require __DIR__ . '/paths.php');
 
 /*
 |--------------------------------------------------------------------------

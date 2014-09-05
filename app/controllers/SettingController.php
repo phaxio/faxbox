@@ -80,7 +80,7 @@ class SettingController extends BaseController {
             $logo = Input::file('logo');
             $ext = $logo->getClientOriginalExtension();
             $name = 'logo.'.$ext;
-            $logo->move(public_path('images'), $name);
+            $logo->move(base_path('userdata/public/images'), $name);
             
             $this->settings->write('faxbox.logo', $name);
         }
