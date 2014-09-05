@@ -38,11 +38,8 @@ class SettingController extends BaseController {
     public function updateMail()
     {
         $data = Input::all();
-
-//        $this->settings->writeArray($data);
         
         $result = $this->mailForm->save($data);
-        $err = $this->mailForm->errors();
         
         if ($err = $this->mailForm->errors())
         {
@@ -82,11 +79,11 @@ class SettingController extends BaseController {
             $name = 'logo.'.$ext;
             $logo->move(base_path('userdata/public/images'), $name);
             
-            $this->settings->write('faxbox.logo', $name);
+            $this->settings->write('faxbox.logo', $name, true);
         }
         
         
-        $this->settings->writeArray($data);
+        $this->settings->writeArray($data, true);
 
         Session::flash('success', "Appearance settings successfully updated");
         return Redirect::action('SettingController@editAppearance');

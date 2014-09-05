@@ -95,6 +95,7 @@ class InstallController extends BaseController {
         $artisan = base_path('artisan');
         exec("php $artisan migrate --package=cartalyst/sentry --force");
         exec("php $artisan migrate --force");
+        exec("php $artisan migrate --force");
 
         // Create our user
         $data['admin']['permissions']['superuser'] = 1;
@@ -111,7 +112,7 @@ class InstallController extends BaseController {
         // write our other settings
         $this->settings->write('app.key', Str::random(32));
         $this->settings->write('app.url', $data['app']['url']);
-        $this->settings->write('faxbox.name', $data['name']);
+        $this->settings->write('faxbox.name', $data['name'], true);
         $this->settings->write('services.phaxio.public', $data['services']['phaxio']['public']);
         $this->settings->write('services.phaxio.secret', $data['services']['phaxio']['secret']);
         
@@ -189,6 +190,7 @@ class InstallController extends BaseController {
 
             return Response::json([
                 'status' => true,
+                'message' => ''
             ]);
 
         } catch (PDOException $e) {

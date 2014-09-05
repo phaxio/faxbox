@@ -13,17 +13,6 @@
 
 use Faxbox\Repositories\Permission\PermissionRepository as Permissions;
 
-App::before(function($request)
-{
-	//
-});
-
-
-App::after(function($request, $response)
-{
-	//
-});
-
 /*
 |--------------------------------------------------------------------------
 | Authentication Filters
@@ -139,17 +128,9 @@ Route::filter('checkInstalled', function($route, $request){
 
     $exists = file_exists(base_path('userdata/.env.php'));
 
-    if( !$exists && $request->getRequestUri() != '/install' ){
+    if( !$exists && ($request->getRequestUri() != '/install') ){
         return Redirect::action('InstallController@index');
         
-    }
-    else if( !$exists && $request->getRequestUri() == '/install' )
-    {
-        return;
-        
-    }
-    else {
-        return Redirect::route('login');
     }
     
 });

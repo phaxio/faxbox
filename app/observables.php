@@ -18,48 +18,6 @@ Event::listen('user.logout', function()
 // Subscribe to User Mailer events
 Event::subscribe('Faxbox\Mailers\UserMailer');
 
-Event::listen('update.mailgun.route', function(){
-    
-    $settings = App::make('Faxbox\Repositories\Setting\SettingInterface');
-    
-    # Instantiate the client.
-    $mgClient = new Mailgun($settings->get('services.mailgun.secret'));
-    $domain = explode( '@', $settings->get('mail.from.address') )[1];
-    
-    $notifyUrl = $settings->get('faxbox.notify.send') . "/\\g<phone>";  
-    
-    if($id = $settings->get('services.mailgun.routeId')){
-        $id = "/".$id;
-        $method = "put";
-    } else 
-    {
-        $id = "";
-        $method = "post";
-    }
-    
-    # Issue the call to the client.
-    try
-    {
-        $result = $mgClient->$method("routes" . $id,
-        [
-            'priority'    => 0,
-            'expression'  => "match_recipient(\"(?P<phone>.*?)@$domain\")",
-            'action'      => ["forward(\"" . $notifyUrl . '")', 'stop()'],
-            'description' => 'Faxbox Send Fax Route',
-        ]);
-    } catch(\Mailgun\Connection\Exceptions\InvalidCredentials $e)
-    {
-        Session::flash('error', 'There was a problem with your Mailgun API Key');
-        Session::remove('success');
-        
-        return Redirect::action('SettingController@editMail')
-                ->withErrors($e->getMessage());
-    }
-
-    $id = substr($id, 1);
-    $settings->write('services.mailgun.routeId', $id ?: $result->http_response_body->route->id);
-});
-
 Event::listen('fax.processed', function($fax){
     
     if($fax['direction'] == 'sent')

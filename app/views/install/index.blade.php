@@ -11,17 +11,14 @@
 
     <title>Faxbox</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Custom CSS -->
+	<link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
     <link href="{{ asset('css/plugins/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
 
     <!-- Timeline CSS -->
     <link href="{{ asset('css/plugins/timeline.css') }}" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <link href="{{ asset('css/plugins/morris.css') }}" rel="stylesheet">

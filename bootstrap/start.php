@@ -40,7 +40,7 @@ $app->bindInstallPaths(require __DIR__ . '/paths.php');
 */
 
 $env = $app->detectEnvironment(array(
-	'local' => array('Nicks-MacbookPro-2.local', 'vagrant-centos65.vagrantup.com'),
+	'production' => array('Nicks-MacbookPro-2.local', 'vagrant-centos65.vagrantup.com'),
 ));
 
 //allow environment variables to override environment detection

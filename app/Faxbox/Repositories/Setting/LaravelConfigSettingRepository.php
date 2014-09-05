@@ -1,39 +1,52 @@
 <?php namespace Faxbox\Repositories\Setting;
 
 use Faxbox\Repositories\EloquentAbstractRepository;
+use Faxbox\Setting;
 use Illuminate\Config\Repository;
 
 class LaravelConfigSettingRepository extends EloquentAbstractRepository implements SettingInterface {
 
     protected $config;
-    
-    public function __construct(Repository $config)
+    protected $model;
+
+    public function __construct(Setting $setting, Repository $config)
     {
         $this->config = $config;
+        $this->model = $setting;
     }
     
-    public function get($keys)
+    public function get($keys, $forceDb = false)
     {
-        if(is_string($keys)){
-            return $this->findKeyValue($keys);
+        if(is_string($keys))
+        {
+            return $this->findKeyValue($keys, $forceDb);
         }
         
         $result = [];
         foreach($keys as $key)
         {
-            $result[$key] = $this->findKeyValue($key);
+            $result[$key] = $this->findKeyValue($key, $forceDb);
         }
         
         return $result;
     }
-    
-    private function findKeyValue($key)
+
+    private function findKeyValue($key, $forceDb)
     {
-        return $this->config->get($key);
+        // If this name exists in a config file, return that
+        $setting = $this->config->get($key);
+        if($setting && !$forceDb) return $setting;
+
+        // otherwise  we'll check the db
+        $result = $this->model->select('value')->where('name', '=', $key)->lists('value');
+
+        return isset($result[0]) ? $result[0] : null;
     }
 
-    public function write($key, $value)
+    public function write($key, $value, $forceDb = false)
     {
+        if($forceDb) return $this->writeToDb($key, $value);
+        
         list($namespace, $group, $item) = $this->config->parseKey($key);
 
         $path = base_path("userdata/.env.php");
@@ -56,7 +69,25 @@ class LaravelConfigSettingRepository extends EloquentAbstractRepository implemen
         \App::getConfigLoader()->load(\App::environment(), $group);
     }
 
-    public function writeArray($keyValue)
+    private function writeToDb($name, $value)
+    {
+        $setting = $this->model->newInstance();
+        return $setting->updateOrCreate(['name' => $name], ['value' => $value]);
+
+        // Lets instead only write existing values to db
+//        $result = $this->model->where('name', '=', $name)->first();
+//
+//        if($result)
+//        {
+//            $result->value = $value;
+//            return $result->save();
+//        }
+
+
+    }
+
+
+    public function writeArray($keyValue, $forceDb = false)
     {
         // sometimes passed in by forms
         unset($keyValue['_token']);
@@ -66,7 +97,7 @@ class LaravelConfigSettingRepository extends EloquentAbstractRepository implemen
         
         foreach($keyValue as $key => $value)
         {
-            $this->write($key, $value);
+            $this->write($key, $value, $forceDb);
         }
     }
 }

@@ -7,14 +7,14 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    @if($logo = Config::get('faxbox.logo'))
-    <img src="{{ asset('userdata/images/'.$logo) }}" width="100px" class="pull-left">
+    @if($logo = Setting::get('logo'))
+    <img src="{{ base_path('userdata/images/'.$logo) }}" width="100px" class="pull-left">
     @endif
     
     
-    <a class="navbar-brand" href="/">
-    @if(Config::get('faxbox.name'))
-    {{ Config::get('faxbox.name') }}
+    <a class="navbar-brand" href="{{ public_path() }}">
+    @if(Setting::get('faxbox.name'))
+    {{ Setting::get('faxbox.name') }}
     @else
 	Faxbox
     @endif
