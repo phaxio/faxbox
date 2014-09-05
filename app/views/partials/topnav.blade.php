@@ -17,9 +17,8 @@
     {{ Config::get('faxbox.name') }}
     @else
 	Faxbox
-    </a>
-
     @endif
+    </a>
 </div>
 <!-- /.navbar-header -->
 
