@@ -24,7 +24,12 @@ class InstallController extends BaseController {
 
     public function index()
     {
-        return View::make('install.index');
+        // Get the base url. We do it this way cause Request::getBaseUrl() 
+        // doesn't seem to work in all cases.
+        $fullUrl = Request::fullUrl();
+        $url = substr($fullUrl, 0, strpos($fullUrl, '/install'));
+        
+        return View::make('install.index', compact('url'));
     }
 
 
