@@ -95,7 +95,6 @@ class InstallController extends BaseController {
         $artisan = base_path('artisan');
         exec("php $artisan migrate --package=cartalyst/sentry --force");
         exec("php $artisan migrate --force");
-        exec("php $artisan migrate --force");
 
         // Create our user
         $data['admin']['permissions']['superuser'] = 1;

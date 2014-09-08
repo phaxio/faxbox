@@ -3,13 +3,25 @@
 require_once('safeenv.php');
 
 return array(
-    'default' => 'main',
+    'default' => safe_getenv('database.type'),
 
     'connections' => array(
-        'main' => array(
-            'driver'   => safe_getenv('database.type'),
-            'database' => safe_getenv('database.database')
-        )
+        'mysql' => array(
+            'driver'   => 'mysql',
+            'database' => safe_getenv('database.database'),
+            'host' => safe_getenv('database.host'),
+            'username'  => safe_getenv('database.username'),
+            'password'  => safe_getenv('database.password'),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ),
+
+        'sqlite' => array(
+            'driver'   => 'sqlite',
+            'database' => safe_getenv('database.database'),
+            'prefix'   => '',
+        ),
     )
 
 );
