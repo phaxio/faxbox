@@ -114,7 +114,13 @@ class InstallController extends BaseController {
         $this->settings->write('faxbox.name', $data['name'], true);
         $this->settings->write('services.phaxio.public', $data['services']['phaxio']['public']);
         $this->settings->write('services.phaxio.secret', $data['services']['phaxio']['secret']);
-        
+
+        // sensible mail settings
+        $this->settings->write('mail.driver', 'sendmail');
+        $this->settings->write('mail.from.address', 'admin@'.parse_url($data['app']['url'])['host']);
+        $this->settings->write('mail.from.name', $data['name']);
+
+
         Session::flash('success', "Faxbox successfully installed. Please Login below with the account you just created.");
         return Redirect::to('login');
     }
