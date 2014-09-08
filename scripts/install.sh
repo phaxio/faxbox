@@ -12,9 +12,10 @@ cd /var/www
 cd faxbox
 composer update
 chmod -R 777 app/storage
-chmod -R 777 app/config/production
-chmod -R 777 app/database
-chmod -R 777 public/images
+
+mkdir -p userdata/public/images
+chmod -R 777 userdata
+
 cp scripts/faxbox-nginx.conf /etc/nginx/sites-enabled/default
 sed -i 's,127.0.0.1:9000,/var/run/php5-fpm.sock,g' /etc/php5/fpm/pool.d/www.conf
 sed -i 's,;listen.user = www-data,listen.user = nginx,g' /etc/php5/fpm/pool.d/www.conf
