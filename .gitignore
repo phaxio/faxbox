@@ -10,3 +10,4 @@ atlassian-ide-plugin.xml
 /bootstrap/compiled.php
 _ide_helper.php
 userdata/*
+.vagrant
