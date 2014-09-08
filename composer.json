@@ -7,7 +7,7 @@
 		"laravel/framework": "4.2.*",
         "cartalyst/sentry": "2.1.*",
         "giggsey/libphonenumber-for-php": "~6.0",
-        "phaxio/phaxio": "dev-master",
+        "phaxio/phaxio": "1.0.1",
         "barryvdh/laravel-ide-helper": "1.*",
         "ext-intl": "*",
         "ext-readline" : "*",
