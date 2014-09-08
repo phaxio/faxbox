@@ -65,7 +65,7 @@ class FaxController extends BaseController {
         {
             foreach ($data['fileNames'] as &$file)
             {
-                $file = new File(storage_path('docs/' . $file));
+                $file = new File(base_path('userdata/docs/' . $file));
             }
         }
 

@@ -36,10 +36,6 @@ class CustomLaravelValidator extends Validator {
         $allowedMimes = array_column($allowed, 'mime');
         $allowedExts = array_column($allowed, 'ext');
 
-        $ext = $value->guessExtension();
-        if(!$value instanceof File)
-            $value = new File(storage_path('docs/' . $value));
-
         return in_array($value->getMimeType(), $allowedMimes) && in_array($value->guessExtension(), $allowedExts);
     }
     

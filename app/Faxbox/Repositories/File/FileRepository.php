@@ -26,9 +26,14 @@ class FileRepository extends EloquentAbstractRepository implements FileInterface
         foreach ($files['files'] as &$file)
         {
             $names[] = $name = $this->str->random('32') . "." . $file->guessExtension();
-            $file->move(storage_path('docs'), $name);
+            $file->move(base_path('userdata/docs'), $name);
         }
         
         return $names;
+    }
+    
+    public function getPath($name)
+    {
+        return base_path('userdata/docs/'.$name);
     }
 }

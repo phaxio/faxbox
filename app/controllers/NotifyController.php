@@ -31,7 +31,7 @@ class NotifyController extends BaseController {
 
         $fax = json_decode($input, true);
 
-        if ($fax['is_test'] && \App::environment() == 'production') return;
+        //if ($fax['is_test'] && \App::environment() == 'production') return Response::make("", 200);
 
         // Call back to the api to retrieve the data to make sure this is legit
         // todo uncomment this once the phaxio bug is fixed.

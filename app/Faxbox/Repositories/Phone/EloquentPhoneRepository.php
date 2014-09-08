@@ -7,6 +7,7 @@ use Faxbox\Repositories\Permission\PermissionInterface;
 use Faxbox\Repositories\User\UserInterface;
 use Phaxio;
 use Faxbox\Phone;
+use Faxbox\Repositories\Setting\SettingInterface;
 
 class EloquentPhoneRepository extends EloquentAbstractRepository implements PhoneInterface {
 
@@ -15,13 +16,15 @@ class EloquentPhoneRepository extends EloquentAbstractRepository implements Phon
         UserInterface $users,
         PermissionInterface $permissions,
         GroupInterface $groups,
-        FaxInterface $api
+        FaxInterface $api,
+        SettingInterface $setting
     ) {
         $this->phones      = $phone;
         $this->users       = $users;
         $this->permissions = $permissions;
         $this->groups      = $groups;
         $this->api         = $api;
+        $this->setting = $setting;
     }
 
     public function all()
@@ -38,7 +41,7 @@ class EloquentPhoneRepository extends EloquentAbstractRepository implements Phon
     {
         $apiResult = $this->api->createPhone(
             $data['area'],
-            \Config::get('faxbox.notify.fax')
+            $this->setting->get('faxbox.notify.fax')
         );
 
         $apiData = $apiResult->getData();
