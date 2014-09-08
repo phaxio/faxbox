@@ -1,6 +1,6 @@
 #!/bin/sh
 apt-get install -qq -y python-software-properties
-add-apt-repository ppa:ondrej/php5
+add-apt-repository ppa:ondrej/php5 > /dev/null 2>&1
 apt-get update
 apt-get upgrade
 apt-get install -qq -y php5-cli php5-fpm php5-intl php5-mcrypt php5-mysql php5-sqlite php5-curl git nginx
