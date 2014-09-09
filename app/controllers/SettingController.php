@@ -39,6 +39,12 @@ class SettingController extends BaseController {
     {
         $data = Input::all();
         
+        // hacky way to fix this for now.
+        if($data['mail']['driver'] != 'mailgun')
+        {
+            unset($data['services']['mailgun']['secret']);
+        }
+        
         $result = $this->mailForm->save($data);
         
         if ($err = $this->mailForm->errors())
