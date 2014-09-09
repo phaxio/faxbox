@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
     </button>
     @if($logo = Setting::get('logo'))
-    <img src="{{ base_path('userdata/images/'.$logo) }}" width="100px" class="pull-left">
+    <img src="{{ asset('userdata/images/'.$logo) }}" width="100px" class="pull-left">
     @endif
     
     
