@@ -105,7 +105,8 @@ class NotifyController extends BaseController {
         if($data['user_id'] === null)
             return Response::make("Unauthorized", 200); // mailgun will only shut up when we respond 200
 
-        $data['fileNames'] = $this->file->store(Input::file());
+        $input['files'] = Input::file();
+        $data['fileNames'] = $this->file->store($input);
         
         $data['direction'] = 'sent';
         $data['toPhoneCountry'] = '';
