@@ -29,7 +29,7 @@
         </div>
     </div>
 
-	@if($user->isSuperUser())
+	@if(Sentry::getUser()->isSuperUser())
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
