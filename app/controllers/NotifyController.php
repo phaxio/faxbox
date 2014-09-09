@@ -95,7 +95,7 @@ class NotifyController extends BaseController {
 
     public function sendFromEmail($number)
     {
-        \Log::info(print_r(Input::all(), true));
+//        \Log::info(print_r(Input::all(), true));
         
         $input = Input::all();
         $data = [];
