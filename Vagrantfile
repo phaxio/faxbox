@@ -39,7 +39,7 @@ $script = <<SCRIPT
     chmod +x /usr/local/bin/composer
 
     cd /var/www/faxbox
-    composer update
+    composer install
     chmod -R 777 app/storage
 
     mkdir -p userdata/public/images
