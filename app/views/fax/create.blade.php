@@ -159,6 +159,7 @@
         $('#fileupload').fileupload({
             url: url,
             dataType: 'json',
+            maxFileSize: {{ getMaximumFileUploadSize() }},
             done: function (e, data) {
                 $.each(data.files, function (index, file) {
                     $('<p/>').html("<div><i class='fa fa-check text-success'></i> " + file.name + " <small><a href='#' class='remove' data-file-id='" + data.result[index] + "'>remove</a></small></div>").appendTo('#files');
@@ -201,6 +202,10 @@
         	})
         	.prop('disabled', !$.support.fileInput)
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    });
+    
+    $('#fileupload').bind('fileuploadprocessfail', function (e, data) {
+        alert(data.files[data.index].error);
     });
 </script>
 @stop
