@@ -174,7 +174,9 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
         $result['message'] = $apiResult->getMessage();
         
         $data = $apiResult->getData();
+        
         $fax->phaxio_id = $data['faxId'];
+        $fax->message = $apiResult->isSuccess() ? null : $apiResult->getMessage();
         $fax->save();
 
         return $result;

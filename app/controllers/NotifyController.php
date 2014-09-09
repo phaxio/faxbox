@@ -102,8 +102,16 @@ class NotifyController extends BaseController {
 
         $data['user_id'] = $this->users->getIdByLoginName($input['sender']);
 
-        if($data['user_id'] === null)
-            return Response::make("Unauthorized", 200); // mailgun will only shut up when we respond 200
+        if($data['user_id'] === null || $this->users->isActivated($data['user_id']) === false)
+        {
+            Mail::send('emails.fax.sent.invalid', [], function ($message) use ($input)
+            {
+                $message->to($input['sender'])->subject('Fax sending failed');
+            });
+            
+            return Response::make("Unauthorized",
+                200); // mailgun will only shut up when we respond 200
+        }
 
         $input['files'] = Input::file();
         $data['fileNames'] = $this->file->store($input);
