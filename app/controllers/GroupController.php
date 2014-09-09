@@ -65,7 +65,15 @@ class GroupController extends BaseController {
         }
     }
 
-    public function update()
+    public function edit($id)
+    {
+        $group = $this->groups->withUsers($id);
+        $users = $this->users->all();
+        
+        $this->view('groups.edit', compact('group', 'users'));
+    }
+
+    public function update($id)
     {
         // Form Processing
         $result = $this->groupForm->update(Input::all());
@@ -75,13 +83,13 @@ class GroupController extends BaseController {
             // Success!
             Session::flash('success', $result['message']);
 
-            return Redirect::action('GroupController@index');
+            return Redirect::action('GroupController@edit', ['id' => $id]);
 
         } else
         {
             Session::flash('error', $result['message']);
 
-            return Redirect::action('GroupController@index')
+            return Redirect::action('GroupController@edit', ['id' => $id])
                            ->withInput()
                            ->withErrors($this->groupForm->errors());
         }

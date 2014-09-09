@@ -11,99 +11,27 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <!-- .panel-heading -->
-            <div class="panel-body">
-                <div class="panel-group" id="accordion">
-                    
-                    @foreach($groups as $group)
-                    
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse"
-                                   data-parent="#accordion" href="#collapse{{ $group['id'] }}">{{ $group['name'] }}</a>
-                            </h4>
-                        </div>
-                        <div id="collapse{{ $group['id'] }}" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                {{ Form::open(['action' => ['GroupController@update', $group['id']], 'method' => 'PUT']) }}
-                                <div class="row">
-                                    <div class="col-md-4 ">
-                                        <div class="form-group {{ ($errors->has('name')) ? 'has-error' : '' }}">
-                                        	<label for="name" class="control-label">Name</label>
-                                            {{ Form::text('name', $group['name'], array('class' => 'form-control', 'placeholder' => trans('groups.name'))) }}
-                                            {{ ($errors->has('name') ? $errors->first('name') : '') }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>General Permissions</label>
-
-                                                    @foreach($group['permissions']['static'] as $p)
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            {{ Form::select("permissions[".$p['id']."]", [1 => 'Allow', 0 => 'Deny'], $p['value']) }} {{ $p['name'] }} <span style="font-style: italic; color: #b7b7b7; font-weight: 200">{{ $p['description'] }}</span>
-                                                        </label>
-                                                    </div>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        @foreach($group['permissions']['dynamic'] as $resource)
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>{{ $resource['name'] }} Permissions</label>
-                                                    @foreach($resource['permissions'] as $p)
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            {{ Form::select("permissions[".$p['id']."]", [1 => 'Allow', 0 => 'Deny'], $p['value']) }} {{ $p['name'] }}
-                                                        </label>
-                                                    </div>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Users</label>
-                                        <div class="form-group">
-                                            @foreach($users as $user)
-                                            <div class="checkbox">
-                                                <label>
-                                                    {{ Form::hidden("users[".$user['id']."]", 0) }}
-                                                    {{ Form::checkbox("users[".$user['id']."]", 1, in_array($user['id'], $group['users'])) }} {{ $user['first_name'] }} {{ $user['last_name'] }}
-                                                </label>
-                                            </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                                {{ Form::hidden('id', $group['id'], array('class' => 'form-control', 'placeholder' => trans('groups.name'))) }}
-                                {{ Form::submit(trans('groups.update'), array('class' => 'btn btn-primary pull-left')) }}
-
-                                {{ Form::close() }}
-                                
-                                {{ Form::open(['action' => ['GroupController@destroy', $group['id']], 'method' => 'DELETE']) }}
-                                {{ Form::submit(trans('groups.delete'), array('class' => 'btn btn-sm btn-danger pull-right')) }}
-                                {{ Form::close() }}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    @endforeach
-                    
-                </div>
-            </div>
-            <!-- .panel-body -->
-        </div>
-        <!-- /.col-lg-12 -->
+			<div class="table-responsive">
+				<table class="table table-striped table-bordered table-hover" id="dataTables-fax">
+					<thead>
+					<tr>
+						<th class="col-sm-2"></th>
+						<th>Name</th>
+					</tr>
+					</thead>
+					<tbody>
+					@foreach($groups as $group)
+					<tr class="odd gradeX">
+						<td class="text-center"><a href="{{ action('GroupController@edit', ['id' => $group['id']]) }}"><i class="fa fa-edit"> Edit</i></a></td>
+						<td>{{ $group['name'] }}</td>
+					</tr>
+					@endforeach
+					</tbody>
+				</table>
+			</div>
+			<!-- /.table-responsive -->
+		</div>
+		<!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
 </div>
