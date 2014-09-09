@@ -163,7 +163,7 @@
 										{{ Form::text('database[database]', base_path('userdata/faxbox.sqlite'), array('class' => 'form-control', 'placeholder' => trans('install.dbname'))) }}
 									</div>
 									
-									<div class="dbextras mysql" style="display:none">
+									<div class="dbextras mysql">
 										<div class="form-group">
 											<label for="database[host]">{{ trans('install.dbhost') }}</label>
 											{{ Form::text('database[host]', null, array('class' => 'form-control', 'placeholder' => trans('install.dbhost'))) }}
@@ -248,7 +248,8 @@
 			var driver = $(this).val(); 
 			$('.dbextras').slideUp();
 			$('.dbextras' + '.' + driver).slideDown();
-		});
+		}).change();
+
 	});
 	
 	function doRequest(url, input, element)
