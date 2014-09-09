@@ -159,7 +159,7 @@
 									</div>
 									
 									<div class="form-group">
-										<label class="sr-only" for="database[database]">{{ trans('install.dbname') }}</label>
+										<label class="dbextras mysql" for="database[database]">{{ trans('install.dbname') }}</label>
 										{{ Form::text('database[database]', base_path('userdata/faxbox.sqlite'), array('class' => 'form-control', 'placeholder' => trans('install.dbname'))) }}
 									</div>
 									
