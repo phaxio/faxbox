@@ -1,6 +1,5 @@
 <?php
 
-require_once('production/safeenv.php');
 return [
 
     'version' => 0.1,

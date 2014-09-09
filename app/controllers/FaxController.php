@@ -18,7 +18,8 @@ class FaxController extends BaseController {
         FaxInterface $faxes,
         Users $users,
         FaxForm $faxForm,
-        FileForm $fileForm
+        FileForm $fileForm,
+        \Faxbox\Repositories\File\FileInterface $file
     ) {
         parent::__construct();
 
@@ -26,6 +27,7 @@ class FaxController extends BaseController {
         $this->faxes   = $faxes;
         $this->faxForm = $faxForm;
         $this->fileForm = $fileForm;
+        $this->file = $file;
 
         $this->beforeFilter('auth');
         $this->beforeFilter('hasAccess:send_fax',
@@ -65,7 +67,8 @@ class FaxController extends BaseController {
         {
             foreach ($data['fileNames'] as &$file)
             {
-                $file = new File(base_path('userdata/docs/' . $file));
+                $path = $this->file->getFilePath($file);
+                $file = new File($path);
             }
         }
 
@@ -82,7 +85,7 @@ class FaxController extends BaseController {
 
         } else
         {
-            Session::flash('error', $result['message']);
+            Session::flash('error', $result['message'] ?: 'Please fix the errors below and resend your fax');
             
             return Redirect::action('FaxController@create')
                            ->withInput()

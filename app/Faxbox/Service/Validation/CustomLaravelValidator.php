@@ -36,7 +36,10 @@ class CustomLaravelValidator extends Validator {
         $allowedMimes = array_column($allowed, 'mime');
         $allowedExts = array_column($allowed, 'ext');
 
-        return in_array($value->getMimeType(), $allowedMimes) && in_array($value->guessExtension(), $allowedExts);
+        $mime = $value->getClientMimeType();
+        $ext = $value->getExtension() ?: $value->guessExtension();
+        
+        return in_array($mime, $allowedMimes) && in_array($ext, $allowedExts);
     }
     
     public function validatePhone($attribute, $value, $parameters)

@@ -10,6 +10,7 @@
 | the IoC container for the system binding all of the various parts.
 |
 */
+require_once(__DIR__ . '/../app/helpers.php');
 
 $app = new Illuminate\Foundation\Application;
 
@@ -40,7 +41,7 @@ $app->bindInstallPaths(require __DIR__ . '/paths.php');
 */
 
 $env = $app->detectEnvironment(array(
-	'production' => array('Nicks-MacbookPro-2.local', 'vagrant-centos65.vagrantup.com'),
+	'local' => array('Nicks-MacbookPro-2.local', 'vagrant-centos65.vagrantup.com'),
 ));
 
 //allow environment variables to override environment detection

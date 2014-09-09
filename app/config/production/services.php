@@ -1,6 +1,5 @@
 <?php
 
-require_once('safeenv.php');
 return array (
   'phaxio' => 
   array (

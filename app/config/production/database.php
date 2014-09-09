@@ -1,7 +1,5 @@
 <?php
 
-require_once('safeenv.php');
-
 return array(
     'default' => safe_getenv('database.type'),
 
