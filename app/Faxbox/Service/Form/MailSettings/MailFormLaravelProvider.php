@@ -26,7 +26,8 @@ class MailFormLaravelValidator extends AbstractLaravelValidator {
         'fileNames.required' => 'You need at least 1 file to send a fax.',
         'mailgun' => 'Your Mailgun API credentials are incorrect',
         'mail.from.address.required' => "The from address is required",
-        'services.mailgun.secret' => 'The Mailgun api key is required.'
+        'mail.from.name.required' => "The from name is required",
+        'services.mailgun.secret.required' => 'The Mailgun api key is required.'
     );
     
 }
