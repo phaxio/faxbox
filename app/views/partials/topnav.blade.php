@@ -7,7 +7,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    @if($logo = Setting::get('logo'))
+    @if($logo = Setting::get('faxbox.logo', true))
     <img src="{{ asset('userdata/images/'.$logo) }}" width="100px" class="pull-left">
     @endif
     
