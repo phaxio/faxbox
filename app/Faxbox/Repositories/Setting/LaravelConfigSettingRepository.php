@@ -35,7 +35,7 @@ class LaravelConfigSettingRepository extends EloquentAbstractRepository implemen
     {
         // If this name exists in a config file, return that
         $setting = $this->config->get($key);
-        if($setting && !$forceDb) return $setting;
+        if($setting !== null && !$forceDb) return $setting;
 
         // otherwise  we'll check the db
         $result = $this->model->select('value')->where('name', '=', $key)->lists('value');
