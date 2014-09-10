@@ -19,6 +19,7 @@ class SentrySession implements SessionInterface {
     public function store($data)
     {
         $result = array();
+        $data['email'] = strtolower($data['email']);
         try
         {
             // Check for 'rememberMe' in POST data
