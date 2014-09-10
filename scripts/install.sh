@@ -2,9 +2,10 @@
 export DEBIAN_FRONTEND=noninteractive
 apt-get install -qq -y python-software-properties
 add-apt-repository -y ppa:ondrej/php5
+add-apt-repository -y ppa:ondrej/apache2
 apt-get update
 apt-get upgrade
-apt-get install -qq -y php5-cli php5-fpm php5-intl php5-mcrypt php5-mysql php5-sqlite php5-curl git nginx htop sendmail
+apt-get install -q -y php5-cli php5-fpm php5-intl php5-mcrypt php5-mysql php5-sqlite php5-curl git nginx htop sendmail
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 chmod +x /usr/local/bin/composer
 mkdir -p /var/www
