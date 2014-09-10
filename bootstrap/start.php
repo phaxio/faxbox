@@ -51,7 +51,9 @@ if (isset($_ENV['ENVIRONMENT'])){
 
 //see if we have an env file to load
 if (file_exists($app['path.base']. '/userdata/.env.php')){
-    $envVars = (include $app['path.base']. '/userdata/.env.php');
+    //$envVars = (include $app['path.base']. '/userdata/.env.php');
+    // We have to use eval since include will cache the file and cause redirects to have stale data
+    $envVars = eval('?>'.file_get_contents($app['path.base']. '/userdata/.env.php'));
     foreach($envVars as $key => $val){
         $_ENV[$key] = $val;
     }

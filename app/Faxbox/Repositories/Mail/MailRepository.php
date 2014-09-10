@@ -19,9 +19,8 @@ class MailRepository extends EloquentAbstractRepository implements MailInterface
     {
         $this->settings->writeArray($input);
 
-        $domain = explode('@', $input['mail']['from']['address'])[1];
         if( $input['mail']['driver'] == 'mailgun' 
-            && $routeId = $this->updateMailgun($input['services']['mailgun']['secret'], $domain)
+            && $routeId = $this->updateMailgun($input['services']['mailgun']['secret'], $input['services']['mailgun']['domain'])
         )
         {
             $this->settings->write('services.mailgun.routeId', $routeId, true);

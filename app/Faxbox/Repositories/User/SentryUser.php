@@ -73,6 +73,9 @@ class SentryUser implements UserInterface {
     public function store($data, $activate = false)
     {
         $result = [];
+        
+        $data['email'] = strtolower($data['email']);
+        
         try {
             //Attempt to register the user. 
             $user = $this->sentry->register(['email' => e($data['email']), 'password' => e($data['password'])], $activate);
@@ -130,6 +133,9 @@ class SentryUser implements UserInterface {
     public function update($data)
     {
         $result = [];
+        
+        $data['email'] = strtolower($data['email']);
+        
         try
         {
             // Find the user using the user id
@@ -292,9 +298,12 @@ class SentryUser implements UserInterface {
     public function resend($data)
     {
         $result = [];
+        
+        $data['email'] = strtolower($data['email']);
+        
         try {
             //Attempt to find the user. 
-            $user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
+            $user = $this->sentry->getUserProvider()->findByLogin(e(strtolower($data['email'])));
 
             if (!$user->isActivated())
             {
@@ -338,6 +347,9 @@ class SentryUser implements UserInterface {
     public function forgotPassword($data)
     {
         $result = [];
+        
+        $data['email'] = strtolower($data['email']);
+        
         try
         {
             $user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
