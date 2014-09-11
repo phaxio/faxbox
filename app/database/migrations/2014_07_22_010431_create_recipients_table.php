@@ -18,7 +18,7 @@ class CreateRecipientsTable extends Migration {
 			$table->integer('fax_id')->unsigned();
 			$table->string('name')->nullable();
 			$table->string('number', 25)->nullable();
-			$table->char('country_code', 2);
+			$table->char('country_code', 2)->nullable();
 			$table->timestamps();
 
             $table->foreign('fax_id')
