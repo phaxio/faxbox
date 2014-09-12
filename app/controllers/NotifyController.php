@@ -104,9 +104,23 @@ class NotifyController extends BaseController {
 
         $data['user_id'] = $this->users->getIdByLoginName($input['sender']);
 
-        if($data['user_id'] === null || $this->users->isActivated($data['user_id']) === false)
+        $reason = '';
+        if($data['user_id'] === null)
         {
-            Mail::send('emails.fax.sent.invalid', [], function ($message) use ($input, $number)
+            $reason = "This email address does not have an account with our service.";
+            
+        }else if($this->users->isActivated($data['user_id']) === false)
+        {
+            $reason = "Your account is not active.";
+            
+        }else if(!$this->users->hasAccess($data['user_id'], 'send_fax'))
+        {
+            $reason = "You do not have fax sending privileges.";
+        }
+
+        if($reason)
+        {
+            Mail::send('emails.fax.sent.invalid', compact('reason'), function ($message) use ($input, $number)
             {
                 $message->to($input['sender'])->subject('Fax sending failed to '.$number);
             });
@@ -114,6 +128,7 @@ class NotifyController extends BaseController {
             return Response::make("Unauthorized",
                 200); // mailgun will only shut up when we respond 200
         }
+        
 
         $input['files'] = Input::file();
         $data['fileNames'] = $this->file->store($input);
