@@ -71,9 +71,10 @@ class FaxController extends BaseController {
                 $file = new File($path);
             }
         }
-
-        $data['direction'] = 'sent';
-
+        
+        // clean up the phone number if necessary
+        $data['fullNumber'] = isset($data['fullNumber']) ? cleanPhone($data['fullNumber']) : '';
+        
         $result = $this->faxForm->save($data);
         
         if ($result['success'])

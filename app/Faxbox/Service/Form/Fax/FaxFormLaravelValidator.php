@@ -12,7 +12,7 @@ class FaxFormLaravelValidator extends AbstractLaravelValidator {
     protected $rules = array(
         'toPhoneCountry' => 'country',
         'fullNumber' => 'required|phone',
-        'fileNames' => 'required'
+        'fileNames' => 'required|fileTypeOrArray'
     );
 
     /**
