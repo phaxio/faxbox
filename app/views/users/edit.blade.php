@@ -122,8 +122,38 @@
 
     {{ Form::close() }}
     
-    {{--{{ Form::open(['action' => ['UserController@destroy', $user['id']], 'method' => 'delete', 'class' => 'pull-right']) }}--}}
-	{{--{{ Form::submit(trans('general.delete'), array('class' => 'btn btn-sm btn-danger')) }}--}}
-	{{--{{ Form::close() }}--}}
+    @if(!count($user['faxes']) && !Sentry::findUserById($user['id'])->isSuperUser())
+	
+	<button class="btn btn-danger pull-right" data-toggle="modal" data-target="#deleteModal">{{ trans('general.delete') }}</button>
+	
+	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            <p>One fine body&hellip;</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            {{ Form::open(['action' => ['UserController@destroy', $user['id']], 'method' => 'delete', 'class' => 'pull-left']) }}
+			{{ Form::submit(trans('users.delete'), array('class' => 'btn btn-danger')) }}
+			{{ Form::close() }}
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    
+	@endif
 </div>
+@stop
+
+@section('scripts')
+<script>
+$(function(){
+//	$('#deleteModal').modal()
+})
+</script>
 @stop
