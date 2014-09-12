@@ -19,7 +19,7 @@ Event::listen('user.logout', function()
 Event::subscribe('Faxbox\Mailers\UserMailer');
 
 Event::listen('fax.processed', function($fax){
-    
+
     if($fax['direction'] == 'sent')
     {
         $send = false;

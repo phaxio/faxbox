@@ -45,3 +45,25 @@ if( ! function_exists('getMaximumFileUploadSize'))
             convertPHPSizeToBytes(ini_get('upload_max_filesize')));
     }
 }
+
+if( ! function_exists('cleanPhone'))
+{
+    function cleanPhone($number)
+    {
+        $startsWithPlus = substr($number, 0, 1) === '+';
+        $number         = preg_replace('/[^\d]/', '', $number);
+
+        if ($startsWithPlus)
+        {
+            $number = '+' . $number;
+        } else if (strlen($number) == 10)
+        {
+            $number = '+1' . $number;
+        } else
+        {
+            $number = '+' . $number;
+        }
+
+        return $number;
+    }
+}

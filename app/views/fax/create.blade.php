@@ -89,6 +89,8 @@
         @endforeach
     @endif
     
+    {{ Form::hidden('direction', 'sent') }}
+
     {{ Form::submit(trans('fax.send'), ['class' => 'btn btn-primary']) }}
     {{ Form::close() }}
 </div>
@@ -132,6 +134,7 @@
             $("#toPhoneArea").val($("#cc").html());
 
             var number = $("#toPhoneArea").val() + $('input[name="number"]').val();
+            
             $('<input type="hidden">')
                 .attr('name', 'fullNumber')
                 .attr('type', 'hidden')

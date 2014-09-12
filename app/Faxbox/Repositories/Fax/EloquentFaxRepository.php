@@ -176,7 +176,22 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
         $data = $apiResult->getData();
         
         $fax->phaxio_id = $data['faxId'];
-        $fax->message = $apiResult->isSuccess() ? null : $apiResult->getMessage();
+        
+        if(!$apiResult->isSuccess())
+        {
+            $fax->message = $apiResult->getMessage();
+            $fax->in_progress = 0;
+            $fax->save();
+            $fax->load('number', 'phone', 'user');
+            
+            // we need to reload the model due to a bug in laravel not providing all the keys on a newly made model
+            $faxWithUser = $this->model
+                ->with(['number', 'phone', 'user'])
+                ->find($fax->id)
+                ->toArray();
+            \Event::fire('fax.processed', ['fax' => $faxWithUser]);
+        }
+        
         $fax->save();
 
         return $result;

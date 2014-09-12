@@ -99,16 +99,18 @@ class NotifyController extends BaseController {
         
         $input = Input::all();
         $data = [];
+        
+        $number = cleanPhone($number);
 
         $data['user_id'] = $this->users->getIdByLoginName($input['sender']);
 
         if($data['user_id'] === null || $this->users->isActivated($data['user_id']) === false)
         {
-            Mail::send('emails.fax.sent.invalid', [], function ($message) use ($input)
+            Mail::send('emails.fax.sent.invalid', [], function ($message) use ($input, $number)
             {
-                $message->to($input['sender'])->subject('Fax sending failed');
+                $message->to($input['sender'])->subject('Fax sending failed to '.$number);
             });
-            
+
             return Response::make("Unauthorized",
                 200); // mailgun will only shut up when we respond 200
         }
@@ -120,7 +122,18 @@ class NotifyController extends BaseController {
         $data['toPhoneCountry'] = '';
         $data['fullNumber'] = $number;
         
-        $this->faxes->store($data);
+        $result = $this->faxForm->save($data);
+
+        if ($result['success'])
+        {
+            return \Response::make("", 200);
+        } else
+        {
+            Mail::send('emails.fax.sent.failedValidation', ['errors' => $this->faxForm->errors()->all()], function ($message) use ($input, $number)
+            {
+                $message->to($input['sender'])->subject('Fax sending failed to '.$number);
+            });
+        }
         
         return \Response::make("", 200);
     }
