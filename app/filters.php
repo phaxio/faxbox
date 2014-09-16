@@ -130,15 +130,18 @@ Route::filter('checkInstalled', function($route, $request){
     {
         try
         {
-            Setting::get('faxbox.name', true);
+            $name = Setting::get('faxbox.name', true);
         } catch (PDOException $e)
         {
             // Make sure we only redirect to install if we're told by mysql the 
-            // DB doesn't exist. We don't want to accidentally get here if mysql 
-            // goes down
-            if ($e->getCode() == '1049' && ($request->getRequestUri() != '/install'))
+            // DB doesn't exist or table isn't found. We don't want to 
+            // accidentally get here if mysql goes down
+            if (($e->getCode() == '1049' || $e->getCode() == '42S02') && ($request->getRequestUri() != '/install'))
             {
                 return Redirect::action('InstallController@index');
+            }else
+            {
+                return;
             }
         }
     }else
