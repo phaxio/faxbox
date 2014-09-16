@@ -149,5 +149,7 @@ Route::filter('checkInstalled', function($route, $request){
             return Redirect::action('InstallController@index');
     }
     
+    // If we've gotten here, then the app is installed. send them to the dashboard
+    if($request->getRequestUri() == '/install') return Redirect::route('home');
     
 });
