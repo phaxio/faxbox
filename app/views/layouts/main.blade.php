@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ Session::token() }}">
 
-    <title>{{ Setting::get('faxbox.name', true) }}</title>
+    <title>{{ Setting::get('faxbox.name', true) ?: 'Faxbox' }}</title>
 
     <!-- Custom CSS -->
 	<link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
