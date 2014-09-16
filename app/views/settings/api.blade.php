@@ -46,11 +46,11 @@
 			</div>
 		</div>
 	</div>
-	@endif
 		
 
     {{ Form::submit(trans('general.update'), array('class' => 'btn btn-primary')) }}
 
     {{ Form::close() }}
+	@endif
 </div>
 @stop

@@ -67,3 +67,13 @@ if( ! function_exists('cleanPhone'))
         return $number;
     }
 }
+
+if( ! function_exists('isUsingLocalStorage'))
+{
+    function isUsingLocalStorage()
+    {
+        if (!isset($_ENV['USE_LOCAL_STORAGE'])) return true;
+
+        return $_ENV['USE_LOCAL_STORAGE'];
+    }
+}

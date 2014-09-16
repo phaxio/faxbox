@@ -126,11 +126,28 @@ Route::filter('csrf', function()
 
 Route::filter('checkInstalled', function($route, $request){
 
-    $exists = file_exists(base_path('userdata/.env.php'));
+    if(!isUsingLocalStorage())
+    {
+        try
+        {
+            Setting::get('faxbox.name', true);
+        } catch (PDOException $e)
+        {
+            // Make sure we only redirect to install if we're told by mysql the 
+            // DB doesn't exist. We don't want to accidentally get here if mysql 
+            // goes down
+            if ($e->getCode() == '1049' && ($request->getRequestUri() != '/install'))
+            {
+                return Redirect::action('InstallController@index');
+            }
+        }
+    }else
+    {
+        $exists = file_exists(base_path('userdata/.env.php'));
 
-    if( !$exists && ($request->getRequestUri() != '/install') ){
-        return Redirect::action('InstallController@index');
-        
+        if (!$exists && ($request->getRequestUri() != '/install'))
+            return Redirect::action('InstallController@index');
     }
+    
     
 });

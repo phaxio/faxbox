@@ -46,6 +46,12 @@ class LaravelConfigSettingRepository extends EloquentAbstractRepository implemen
     public function write($key, $value, $forceDb = false)
     {
         if($forceDb) return $this->writeToDb($key, $value);
+
+        if(isset($_ENV['USE_LOCAL_STORAGE']) && !$_ENV['USE_LOCAL_STORAGE'])
+        {
+            // should probably throw exception here. just leave it as false for now.
+            return false;
+        }
         
         list($namespace, $group, $item) = $this->config->parseKey($key);
 
