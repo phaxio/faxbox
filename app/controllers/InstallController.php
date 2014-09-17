@@ -35,7 +35,7 @@ class InstallController extends BaseController {
             $local = false;
             $keys = [
                 'database.database',
-                'database.type',
+                'database.default',
                 'database.host',
                 'database.username',
                 'database.password',
@@ -127,7 +127,7 @@ class InstallController extends BaseController {
                 return Redirect::action('InstallController@index');
             }
 
-            $db = $data['database'];
+            $db['database'] = $data['database'];
             $db = array_dot($db);
 
             // write our DB config
@@ -234,8 +234,8 @@ class InstallController extends BaseController {
         $data = Input::all() ?: $data;
 
         try {
-            if($data['database']['type'] == 'mysql'){
-                $dbh = new PDO($data['database']['type'] . ':host=' . $data['database']['host'] . ';dbname=' . $data['database']['database'],
+            if($data['database']['default'] == 'mysql'){
+                $dbh = new PDO($data['database']['default'] . ':host=' . $data['database']['host'] . ';dbname=' . $data['database']['database'],
                     $data['database']['username'],
                     $data['database']['password'],
                     [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]

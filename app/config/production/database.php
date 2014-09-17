@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'default' => safe_getenv('database.type'),
+    'default' => safe_getenv('database.default'),
 
     'connections' => array(
         'mysql' => array(

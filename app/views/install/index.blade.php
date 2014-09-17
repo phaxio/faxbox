@@ -166,9 +166,9 @@
 									<h4>Database Settings</h4>
 									<p>For simplicity we'll use SQLite by default (which requires no configuration). If you want to specify another database driver you may do that here. Please make sure you've created the database first before clicking install.</p>
 									<div class="form-group">
-								    	<label for="database[type]">{{ trans('install.dbdriver') }}</label>
-										{{ Form::select('database[type]', ['sqlite' => 'SQLite', 'mysql' => 'MySQL'], 'sqlite', array('class' => 'form-control', 'placeholder' => trans('install.dbdriver'))) }}
-										{{ ($errors->has('database.type') ? $errors->first('database.type') : '') }}
+								    	<label for="database[default]">{{ trans('install.dbdriver') }}</label>
+										{{ Form::select('database[default]', ['sqlite' => 'SQLite', 'mysql' => 'MySQL'], 'sqlite', array('class' => 'form-control', 'placeholder' => trans('install.dbdriver'))) }}
+										{{ ($errors->has('database.default') ? $errors->first('database.default') : '') }}
 									</div>
 									
 									<div class="form-group">
@@ -201,7 +201,7 @@
 								@else
 								<h4>Database Settings</h4>
 								<div class="alert alert-info">
-								$_ENV['database.type'] = {{$_ENV['database.type']}}<br>
+								$_ENV['database.default'] = {{$_ENV['database.default']}}<br>
 								$_ENV['database.database'] = {{$_ENV['database.database']}}<br>
 								$_ENV['database.host'] = {{$_ENV['database.host']}}<br>
 								$_ENV['database.username'] = {{$_ENV['database.username']}}<br>
@@ -246,7 +246,7 @@
 			$("#advanced-settings").slideToggle();
 		});
 		
-		if($('select[name="database[type]"]').val() == 'mysql')
+		if($('select[name="database[default]"]').val() == 'mysql')
 		{
 			$("#advanced-settings").show();
 			
@@ -267,7 +267,7 @@
 			doRequest(url, input, $this);
 		});
 		
-		$("select[name='database[type]']").change(function(){
+		$("select[name='database[default]']").change(function(){
 			var driver = $(this).val(); 
 			$('.dbextras').slideUp();
 			$('.dbextras' + '.' + driver).slideDown();
