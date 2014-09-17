@@ -148,8 +148,14 @@ Route::filter('checkInstalled', function($route, $request){
     {
         $exists = file_exists(base_path('userdata/.env.php'));
 
-        if (!$exists && ($request->getRequestUri() != '/install'))
-            return Redirect::action('InstallController@index');
+        if (!$exists){
+            if ($request->getRequestUri() == '/install'){
+                return;
+            }
+            else {
+                return Redirect::action('InstallController@index');
+            }
+        }
     }
     
     // If we've gotten here, then the app is installed. send them to the dashboard
