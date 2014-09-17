@@ -2,7 +2,6 @@
 namespace Faxbox\Repositories\User;
 
 use Cartalyst\Sentry\Sentry;
-//use Faxbox\Repositories\Permission\PermissionInterface as Permissions;
 use Faxbox\Repositories\Permission\PermissionInterface;
 use Illuminate\Support\Str;
 
@@ -73,6 +72,9 @@ class SentryUser implements UserInterface {
     public function store($data, $activate = false)
     {
         $result = [];
+        
+        $data['email'] = strtolower($data['email']);
+        
         try {
             //Attempt to register the user. 
             $user = $this->sentry->register(['email' => e($data['email']), 'password' => e($data['password'])], $activate);
@@ -130,6 +132,9 @@ class SentryUser implements UserInterface {
     public function update($data)
     {
         $result = [];
+        
+        $data['email'] = strtolower($data['email']);
+        
         try
         {
             // Find the user using the user id
@@ -206,7 +211,13 @@ class SentryUser implements UserInterface {
         {
             // Find the user using the user id
             $user = $this->sentry->findUserById($id);
-
+            
+            // Only delete user if they have no faxes.
+            if(count($user->faxes))
+            {
+                return false;
+            }
+            
             // Delete the user
             $user->delete();
         }
@@ -292,9 +303,12 @@ class SentryUser implements UserInterface {
     public function resend($data)
     {
         $result = [];
+        
+        $data['email'] = strtolower($data['email']);
+        
         try {
             //Attempt to find the user. 
-            $user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
+            $user = $this->sentry->getUserProvider()->findByLogin(e(strtolower($data['email'])));
 
             if (!$user->isActivated())
             {
@@ -338,6 +352,9 @@ class SentryUser implements UserInterface {
     public function forgotPassword($data)
     {
         $result = [];
+        
+        $data['email'] = strtolower($data['email']);
+        
         try
         {
             $user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
@@ -457,6 +474,7 @@ class SentryUser implements UserInterface {
         try
         {
             $user = $this->sentry->findUserById($id);
+            $user->load('faxes');
         }
         catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
         {
@@ -472,7 +490,6 @@ class SentryUser implements UserInterface {
         {
             // Get the current active/logged in user
             $user = \Sentry::findUserByLogin($username);
-            \Log::info(print_r($user, true));
             return $user->getId();
         }
         catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)

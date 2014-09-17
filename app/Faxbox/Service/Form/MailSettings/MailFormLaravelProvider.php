@@ -13,7 +13,7 @@ class MailFormLaravelValidator extends AbstractLaravelValidator {
         'mail.from.address' => 'required',
         'mail.from.name' => 'required',
         'mail.driver' => 'required|in:smtp,mail,sendmail,mailgun',
-        'services.mailgun.secret' => 'mailgun'
+        'services.mailgun.secret' => 'sometimes|required|mailgun'
     );
 
     /**
@@ -24,7 +24,10 @@ class MailFormLaravelValidator extends AbstractLaravelValidator {
     protected $messages = array(
         'file_type' => 'Incorrect file type.',
         'fileNames.required' => 'You need at least 1 file to send a fax.',
-        'mailgun' => 'Your Mailgun API credentials are incorrect'
+        'mailgun' => 'Your Mailgun API credentials are incorrect',
+        'mail.from.address.required' => "The from address is required",
+        'mail.from.name.required' => "The from name is required",
+        'services.mailgun.secret.required' => 'The Mailgun api key is required.'
     );
     
 }

@@ -1,18 +1,8 @@
 <?php
 
-return array(
+require_once('safeenv.php');
 
-	/*
-	|--------------------------------------------------------------------------
-	| Application Debug Mode
-	|--------------------------------------------------------------------------
-	|
-	| When your application is in debug mode, detailed error messages with
-	| stack traces will be shown on every error that occurs within your
-	| application. If disabled, a simple generic error page is shown.
-	|
-	*/
-
-	'debug' => true,
-
+return array (
+  'key' => safe_getenv('app.key'),
+  'url' => safe_getenv('app.url'),
 );

@@ -22,10 +22,10 @@ return array(
 	|
 	*/
 
-    'default' => 'pgsql',
+    'default' => 'main',
 
 	'connections' => array(
-		'pgsql' => array(
+		'main' => array(
 			'driver'   => 'pgsql',
 			'host'     => $databaseCredentials['host'],
                         'port'     => $databaseCredentials['port'],

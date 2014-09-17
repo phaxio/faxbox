@@ -24,7 +24,53 @@ class InstallController extends BaseController {
 
     public function index()
     {
-        return View::make('install.index');
+        // Get the base url. We do it this way cause Request::getBaseUrl() 
+        // doesn't seem to work in all cases.
+        $fullUrl = Request::fullUrl();
+        $url = substr($fullUrl, 0, strpos($fullUrl, '/install'));
+        
+        $local = true;
+        if(isset($_ENV['USE_LOCAL_STORAGE']) && !$_ENV['USE_LOCAL_STORAGE'])
+        {
+            $local = false;
+            $keys = [
+                'database.database',
+                'database.type',
+                'database.host',
+                'database.username',
+                'database.password',
+                'app.key',
+                'app.url',
+                'services.phaxio.public',
+                'services.phaxio.secret',
+                'mail.driver',
+                'mail.from.address',
+                'mail.from.name',
+                'mail.host',
+                'mail.port',
+                'mail.username',
+                'mail.password',
+                'services.mailgun.domain',
+                'services.mailgun.secret',
+            ];
+            
+            $envErrors = [];
+            foreach($keys as $key)
+            {
+                if(!isset($_ENV[$key]))
+                {
+                    $envErrors[] = "The key <strong>$key</strong> must be set in your environment variables";
+                }else
+                {
+                    $env[$key] = $_ENV[$key];
+                }
+            }
+
+            if($envErrors) return View::make('install.envErrors', compact('envErrors'));
+
+        }
+        
+        return View::make('install.index', compact('url', 'env', 'local'));
     }
 
 
@@ -43,49 +89,54 @@ class InstallController extends BaseController {
             return Redirect::action('InstallController@index');
         }
 
-        if(!$data['services']['phaxio']['public'])
+        if($this->isUsingLocalStorage())
         {
-            Session::flash('error', 'Your Phaxio api keys are required. Please get them from <a href="http://www.phaxio.com/apiSettings">your account</a> to continue.');
-            return Redirect::action('InstallController@index')->withErrors(['services.phaxio.public' => 'Your public and secret key are required.']);
+
+            if (!$data['services']['phaxio']['public'])
+            {
+                Session::flash('error',
+                    'Your Phaxio api keys are required. Please get them from <a href="http://www.phaxio.com/apiSettings">your account</a> to continue.');
+
+                return Redirect::action('InstallController@index')
+                               ->withErrors(['services.phaxio.public' => 'Your public and secret key are required.']);
+            }
+
+            if (!$data['services']['phaxio']['secret'])
+            {
+                Session::flash('error',
+                    'Your Phaxio api keys are required. Please get them from <a href="http://www.phaxio.com/apiSettings">your account</a> to continue.');
+
+                return Redirect::action('InstallController@index')
+                               ->withErrors(['services.phaxio.secret' => 'Your public and secret key are required.']);
+            }
+
+            if (!$data['app']['url'])
+            {
+                Session::flash('error', 'The Site URL is required.');
+
+                return Redirect::action('InstallController@index')
+                               ->withErrors(['app.url' => 'The Site URL is required']);
+            }
+
+            $dbresult = $this->checkDBCredentials($data)->getData();
+            if ($dbresult->message)
+            {
+                Session::flash('error',
+                    'Your database credentials are incorrect:<br>' . $dbresult->message);
+
+                return Redirect::action('InstallController@index');
+            }
+
+            $db = $data['database'];
+            $db = array_dot($db);
+
+            // write our DB config
+            foreach ($db as $key => $value)
+            {
+                if (!$value) continue;
+                $this->settings->write($key, $value);
+            }
         }
-
-        if(!$data['services']['phaxio']['secret'])
-        {
-            Session::flash('error', 'Your Phaxio api keys are required. Please get them from <a href="http://www.phaxio.com/apiSettings">your account</a> to continue.');
-            return Redirect::action('InstallController@index')->withErrors(['services.phaxio.secret' => 'Your public and secret key are required.']);
-        }
-
-        if(!$data['app']['url'])
-        {
-            Session::flash('error', 'The Site URL is required.');
-            return Redirect::action('InstallController@index')->withErrors(['app.url' => 'The Site URL is required']);
-        }
-        
-        $dbresult = $this->checkDBCredentials($data)->getData();
-        if($dbresult->message)
-        {
-            Session::flash('error', 'Your database credentials are incorrect:<br>' . $dbresult->message);
-            return Redirect::action('InstallController@index');
-        }
-
-        //setup our DB stuff
-        $driver = $data['database']['default'];
-        unset($data['database']['default']);
-
-        // rearrange data
-        $db['database']['connections'][$driver] = $data['database'];
-        $db['database']['default']              = $driver;
-
-
-        $db = array_dot($db);
-
-        // write our DB config
-        foreach ($db as $key => $value)
-        {
-            if (!$value) continue;
-            $this->settings->write($key, $value);
-        }
-
 
         // Run our migrations
         $artisan = base_path('artisan');
@@ -103,14 +154,25 @@ class InstallController extends BaseController {
             return Redirect::action('InstallController@index')->withErrors($this->registerForm->errors());
         }
 
+        if($this->isUsingLocalStorage())
+        {
+            // write our other settings
+            $this->settings->write('app.key', Str::random(32));
+            $this->settings->write('app.url', $data['app']['url']);
+            $this->settings->write('services.phaxio.public',
+                $data['services']['phaxio']['public']);
+            $this->settings->write('services.phaxio.secret',
+                $data['services']['phaxio']['secret']);
 
-        // write our other settings
-        $this->settings->write('app.key', Str::random(32));
-        $this->settings->write('app.url', $data['app']['url']);
-        $this->settings->write('faxbox.name', $data['name']);
-        $this->settings->write('services.phaxio.public', $data['services']['phaxio']['public']);
-        $this->settings->write('services.phaxio.secret', $data['services']['phaxio']['secret']);
-        
+            // sensible mail settings
+            $this->settings->write('mail.driver', 'sendmail');
+            $this->settings->write('mail.from.address',
+                'admin@' . parse_url($data['app']['url'])['host']);
+            $this->settings->write('mail.from.name', $data['name']);
+        }
+
+        $this->settings->write('faxbox.name', $data['name'], true);
+
         Session::flash('success', "Faxbox successfully installed. Please Login below with the account you just created.");
         return Redirect::to('login');
     }
@@ -144,14 +206,11 @@ class InstallController extends BaseController {
 
         $dirs[] = storage_path();
         $dirs[] = storage_path('cache');
-        $dirs[] = storage_path('docs');
         $dirs[] = storage_path('logs');
         $dirs[] = storage_path('meta');
         $dirs[] = storage_path('sessions');
         $dirs[] = storage_path('views');
-        $dirs[] = public_path('images');
-        $dirs[] = app_path('config/'.App::environment());
-        $dirs[] = app_path('database');
+        $dirs[] = base_path('userdata');
 
         $dirs = array_diff($dirs, ['..', '.', '.gitignore']);
 
@@ -175,8 +234,8 @@ class InstallController extends BaseController {
         $data = Input::all() ?: $data;
 
         try {
-            if($data['database']['default'] == 'mysql'){
-                $dbh = new PDO($data['database']['default'] . ':host=' . $data['database']['host'] . ';dbname=' . $data['database']['database'],
+            if($data['database']['type'] == 'mysql'){
+                $dbh = new PDO($data['database']['type'] . ':host=' . $data['database']['host'] . ';dbname=' . $data['database']['database'],
                     $data['database']['username'],
                     $data['database']['password'],
                     [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
@@ -198,6 +257,13 @@ class InstallController extends BaseController {
             ]);
         }
 
+    }
+    
+    private function isUsingLocalStorage()
+    {
+        if(!isset($_ENV['USE_LOCAL_STORAGE'])) return true;
+        
+        return $_ENV['USE_LOCAL_STORAGE'];
     }
 
 }

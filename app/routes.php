@@ -73,5 +73,7 @@ Route::post('notify/send/{number}', "NotifyController@sendFromEmail");
 
 // Our home route
 Route::get('/', ['as' => 'home', 'before' => ['checkInstalled', 'auth'], function(){
+    if($success = Session::get('success'))
+        Session::flash('success', $success);
     return Redirect::action('FaxController@index');
 }]);

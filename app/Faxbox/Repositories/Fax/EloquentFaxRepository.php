@@ -6,6 +6,7 @@ use Faxbox\Repositories\Phone\PhoneInterface;
 use Faxbox\Repositories\Number\NumberInterface;
 use Faxbox\Repositories\User\UserInterface;
 use Faxbox\External\Api\FaxInterface as FaxApi;
+use Faxbox\Repositories\Setting\SettingInterface;
 
 class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInterface {
 
@@ -14,19 +15,22 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
     protected $api;
     protected $number;
     protected $phone;
+    protected $setting;
 
     public function __construct(
         Fax $faxes,
         UserInterface $users,
         FaxApi $api,
         NumberInterface $number,
-        PhoneInterface $phone
+        PhoneInterface $phone,
+        SettingInterface $setting
     ) {
         $this->model  = $faxes;
         $this->users  = $users;
         $this->api    = $api;
         $this->number = $number;
         $this->phone  = $phone;
+        $this->setting = $setting;
     }
 
     public function all()
@@ -160,7 +164,7 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
         // Send it off to phaxio
         $options   = [
             'tags'         => ['id' => $fax->id],
-            'callback_url' => \Config::get('faxbox.notify.fax')
+            'callback_url' => $this->setting->get('faxbox.notify.fax')
         ];
         $apiResult = $this->api->sendFax($data['number'],
             $fax->files,
@@ -168,6 +172,27 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
 
         $result['success'] = $apiResult->isSuccess();
         $result['message'] = $apiResult->getMessage();
+        
+        $data = $apiResult->getData();
+        
+        $fax->phaxio_id = $data['faxId'];
+        
+        if(!$apiResult->isSuccess())
+        {
+            $fax->message = $apiResult->getMessage();
+            $fax->in_progress = 0;
+            $fax->save();
+            $fax->load('number', 'phone', 'user');
+            
+            // we need to reload the model due to a bug in laravel not providing all the keys on a newly made model
+            $faxWithUser = $this->model
+                ->with(['number', 'phone', 'user'])
+                ->find($fax->id)
+                ->toArray();
+            \Event::fire('fax.processed', ['fax' => $faxWithUser]);
+        }
+        
+        $fax->save();
 
         return $result;
     }

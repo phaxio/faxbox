@@ -209,6 +209,17 @@ class SentryGroup implements GroupInterface {
         return $groups;
     }
 
+    public function withUsers($id)
+    {
+        $group = $this->sentry->findGroupById($id);
+        
+        $group['users'] = $this->sentry->findAllUsersInGroup($group)->lists('id');
+        $group = $group->toArray();
+        $group['permissions'] = $this->permissions->allWithChecked($group['permissions'], 0);
+        
+        return $group;
+    }
+
     public function allWithChecked($resource = null)
     {
         $resourceGroups = [];

@@ -4,7 +4,8 @@ use Illuminate\Validation\Validator;
 use libphonenumber\PhoneNumberUtil;
 use Mailgun\Connection\Exceptions\GenericHTTPError;
 use Mailgun\Mailgun;
-use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\File as File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CustomLaravelValidator extends Validator {
 
@@ -27,7 +28,7 @@ class CustomLaravelValidator extends Validator {
 
     /**
      * @param $attribute
-     * @param $value \Symfony\Component\HttpFoundation\File\UploadedFile|array
+     * @param $value UploadedFile|File
      * @param $parameters
      */
     public function validateFileType($attribute, $value, $parameters)
@@ -36,18 +37,33 @@ class CustomLaravelValidator extends Validator {
         $allowedMimes = array_column($allowed, 'mime');
         $allowedExts = array_column($allowed, 'ext');
 
-        $ext = $value->guessExtension();
-        if(!$value instanceof File)
-            $value = new File(storage_path('docs/' . $value));
-
-        return in_array($value->getMimeType(), $allowedMimes) && in_array($value->guessExtension(), $allowedExts);
+        if(is_string($value))
+        {
+            $file = \App::make('Faxbox\Repositories\File\FileInterface');
+            $value = new File($file->getFilePath($value));
+        }
+        
+        if($value instanceof File)
+        {
+            $mime = $value->getMimeType();
+        }else if($value instanceof UploadedFile)
+        {
+            $mime = $value->getClientMimeType();    
+        }else
+        {
+            return false;
+        }
+        
+        $ext = $value->getExtension() ?: $value->guessExtension();
+        
+        return in_array($mime, $allowedMimes) && in_array($ext, $allowedExts);
     }
     
     public function validatePhone($attribute, $value, $parameters)
     {
         $phoneUtil = PhoneNumberUtil::getInstance();
         try {
-            $number = $phoneUtil->parse($value, strtoupper(\Input::get('toPhoneCountry')));
+            $number = $phoneUtil->parse($value, null);
         } catch (\libphonenumber\NumberParseException $e) {
             return false;
         }

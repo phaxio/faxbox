@@ -32,7 +32,7 @@ class Fax extends Eloquent {
         {
             foreach ($files as &$file)
             {
-                $file = storage_path('docs/' . $file);
+                $file = base_path('userdata/docs/' . $file);
             }
         }
         
@@ -46,7 +46,7 @@ class Fax extends Eloquent {
             if($file instanceof File){
                 $file = $file->getFilename();
             } else{
-                $file = str_replace(storage_path('docs/'), '', $file);
+                $file = str_replace(base_path('userdata/docs/'), '', $file);
             }
             
         }

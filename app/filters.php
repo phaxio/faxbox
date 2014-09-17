@@ -13,17 +13,6 @@
 
 use Faxbox\Repositories\Permission\PermissionRepository as Permissions;
 
-App::before(function($request)
-{
-	//
-});
-
-
-App::after(function($request, $response)
-{
-	//
-});
-
 /*
 |--------------------------------------------------------------------------
 | Authentication Filters
@@ -137,21 +126,33 @@ Route::filter('csrf', function()
 
 Route::filter('checkInstalled', function($route, $request){
 
-    $exists = file_exists(app_path('config/'.App::environment().'/app.php'));
-    
-    if( !$exists && $request->getRequestUri() != '/install' )
+    if(!isUsingLocalStorage())
     {
-        return Redirect::action('InstallController@index');
-        
-    } else 
-    if( !$exists && $request->getRequestUri() == '/install' )
+        try
+        {
+            $name = Setting::get('faxbox.name', true);
+        } catch (PDOException $e)
+        {
+            // Make sure we only redirect to install if we're told by mysql the 
+            // DB doesn't exist or table isn't found. We don't want to 
+            // accidentally get here if mysql goes down
+            if (($e->getCode() == '1049' || $e->getCode() == '42S02') && ($request->getRequestUri() != '/install'))
+            {
+                return Redirect::action('InstallController@index');
+            }else
+            {
+                return;
+            }
+        }
+    }else
     {
-        return;
-        
-    }else if( $exists && $request->getRequestUri() == '/install' )
-    {
-        return Redirect::route('home');
-        
+        $exists = file_exists(base_path('userdata/.env.php'));
+
+        if (!$exists && ($request->getRequestUri() != '/install'))
+            return Redirect::action('InstallController@index');
     }
+    
+    // If we've gotten here, then the app is installed. send them to the dashboard
+    if($request->getRequestUri() == '/install') return Redirect::route('home');
     
 });

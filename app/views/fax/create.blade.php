@@ -71,7 +71,7 @@
             <div id="files" class="files">
                 @if(Input::old('fileNames'))
                     @foreach(Input::old('fileNames') as $file)
-                    {{ $file }}
+                    <div id='{{$file}}'><i class='fa fa-check text-success'></i> {{ substr($file, 42) }} <small><a href='#' data-file-id='{{$file}}' class='remove'>remove</a></small></div><br>
                     @endforeach
                 @endif
             </div>
@@ -89,6 +89,8 @@
         @endforeach
     @endif
     
+    {{ Form::hidden('direction', 'sent') }}
+
     {{ Form::submit(trans('fax.send'), ['class' => 'btn btn-primary']) }}
     {{ Form::close() }}
 </div>
@@ -132,6 +134,7 @@
             $("#toPhoneArea").val($("#cc").html());
 
             var number = $("#toPhoneArea").val() + $('input[name="number"]').val();
+            
             $('<input type="hidden">')
                 .attr('name', 'fullNumber')
                 .attr('type', 'hidden')
@@ -139,6 +142,14 @@
                 .appendTo('#faxform');
             
             return true;
+        });
+        
+        $(document).on('click', '.remove', function(){
+        	var $this = $(this);
+        	var id = $this.data('file-id');
+        	$this.closest('div').slideUp();
+        	$('input[value="' + id + '"]').remove();
+        	
         });
 
     });
@@ -151,9 +162,10 @@
         $('#fileupload').fileupload({
             url: url,
             dataType: 'json',
+            maxFileSize: {{ getMaximumFileUploadSize() }},
             done: function (e, data) {
                 $.each(data.files, function (index, file) {
-                    $('<p/>').html("<i class='fa fa-check text-success'></i> " + file.name).appendTo('#files');
+                    $('<p/>').html("<div><i class='fa fa-check text-success'></i> " + file.name + " <small><a href='#' class='remove' data-file-id='" + data.result[index] + "'>remove</a></small></div>").appendTo('#files');
                     $('<input type="hidden">')
                         .attr('name', 'fileNames[]')
                         .attr('type', 'hidden')
@@ -174,12 +186,12 @@
                     'width',
                     progress + '%'
                 );
-//                if(progress == 100){
-//					$('#progress .progress-bar').css(
-//						'width',
-//						'0%'
-//					);
-//                }
+                if(progress == 100){
+					$('#progress .progress-bar').css(
+						'width',
+						'0%'
+					);
+                }
             },
             formData: [
                 { name: '_token', value: $('meta[name="csrf-token"]').attr('content') }
@@ -193,6 +205,10 @@
         	})
         	.prop('disabled', !$.support.fileInput)
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    });
+    
+    $('#fileupload').bind('fileuploadprocessfail', function (e, data) {
+        alert(data.files[data.index].error);
     });
 </script>
 @stop

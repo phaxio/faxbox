@@ -35,14 +35,14 @@
                             <td>{{ $fax['number']['number'] }}</td>
                             <td>{{ $fax['pages'] }}</td>
                             <td>{{ $fax['phone']['number'] ?: '-----'  }}</td>
-                            <td>
+                            <td class="status">
                             @if($fax['in_progress'])
                             <span class="label label-info"><i class="fa fa-spinner fa-spin"></i> In Progress</span>
                             @elseif($fax['sent'])
                             <span class="label label-success">Completed</span>
                             @elseif(!$fax['in_progress'] && !$fax['sent'])
                             <span class="label label-danger">Error</span>
-                            <small>{{ $fax['message'] }}</small>
+                            <small><a href="{{ action('FaxController@show', $fax['id'])}}">View Error</a></small>
                             @endif
                             </td>
                             <td>{{ $fax['completed_at'] ?: '-----' }}</td>

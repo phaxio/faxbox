@@ -11,17 +11,20 @@ class NotifyController extends BaseController {
     protected $api;
     protected $users;
     protected $faxForm;
+    protected $file;
 
     public function __construct(
         FaxInterface $faxes,
         FaxApi $api,
         Users $users,
-        FaxForm $faxForm
+        FaxForm $faxForm,
+        \Faxbox\Repositories\File\FileInterface $file
     ) {
         $this->faxes   = $faxes;
         $this->api     = $api;
         $this->users   = $users;
         $this->faxForm = $faxForm;
+        $this->file = $file;
     }
 
     public function fax()
@@ -31,7 +34,7 @@ class NotifyController extends BaseController {
 
         $fax = json_decode($input, true);
 
-        if ($fax['is_test'] && \App::environment() == 'production') return;
+        //if ($fax['is_test'] && \App::environment() == 'production') return Response::make("", 200);
 
         // Call back to the api to retrieve the data to make sure this is legit
         // todo uncomment this once the phaxio bug is fixed.
@@ -92,30 +95,60 @@ class NotifyController extends BaseController {
 
     public function sendFromEmail($number)
     {
-        \Log::info(print_r(Input::all(), true));
+//        \Log::info(print_r(Input::all(), true));
         
         $input = Input::all();
         $data = [];
+        
+        $number = cleanPhone($number);
 
         $data['user_id'] = $this->users->getIdByLoginName($input['sender']);
 
+        $reason = '';
         if($data['user_id'] === null)
-            return Response::make("Unauthorized", 200); // mailgun will only shut up when we respond 200
-
-        foreach (Input::file() as $file)
         {
-            // create a unique name and move it
-            $data['fileNames'][] = $name = Str::random('32') . "." . $file->getClientOriginalExtension();
-            $file->move(storage_path('docs'), $name);
+            $reason = "This email address does not have an account with our service.";
+            
+        }else if($this->users->isActivated($data['user_id']) === false)
+        {
+            $reason = "Your account is not active.";
+            
+        }else if(!$this->users->hasAccess($data['user_id'], 'send_fax'))
+        {
+            $reason = "You do not have fax sending privileges.";
+        }
+
+        if($reason)
+        {
+            Mail::send('emails.fax.sent.invalid', compact('reason'), function ($message) use ($input, $number)
+            {
+                $message->to($input['sender'])->subject('Fax sending failed to '.$number);
+            });
+
+            return Response::make("Unauthorized",
+                200); // mailgun will only shut up when we respond 200
         }
         
-        
+
+        $input['files'] = Input::file();
+        $data['fileNames'] = $this->file->store($input);
         
         $data['direction'] = 'sent';
         $data['toPhoneCountry'] = '';
         $data['fullNumber'] = $number;
         
-        $this->faxes->store($data);
+        $result = $this->faxForm->save($data);
+
+        if ($result['success'])
+        {
+            return \Response::make("", 200);
+        } else
+        {
+            Mail::send('emails.fax.sent.failedValidation', ['errors' => $this->faxForm->errors()->all()], function ($message) use ($input, $number)
+            {
+                $message->to($input['sender'])->subject('Fax sending failed to '.$number);
+            });
+        }
         
         return \Response::make("", 200);
     }

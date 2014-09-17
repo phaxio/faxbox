@@ -2,6 +2,7 @@
 
 use Faxbox\Repositories\EloquentAbstractRepository;
 use Faxbox\Repositories\Setting\SettingInterface;
+use Mailgun\Connection\Exceptions\MissingRequiredParameters;
 use Mailgun\Mailgun;
 
 class MailRepository extends EloquentAbstractRepository implements MailInterface{
@@ -16,16 +17,13 @@ class MailRepository extends EloquentAbstractRepository implements MailInterface
 
     public function store($input)
     {
-        
         $this->settings->writeArray($input);
 
-        $domain = explode('@', $input['mail']['from']['address'])[1];
-        if( $input['mail']['host'] == 'mailgun' 
-            && $routeId = $this->updateMailgun($input['mailgun']['secret'], $domain)
+        if( $input['mail']['driver'] == 'mailgun' 
+            && $routeId = $this->updateMailgun($input['services']['mailgun']['secret'], $input['services']['mailgun']['domain'])
         )
         {
-            $this->settings->write('services.mailgun.routeId',
-                $this->updateMailgun($routeId, $domain));
+            $this->settings->write('services.mailgun.routeId', $routeId, true);
         }
     }
     
@@ -35,7 +33,7 @@ class MailRepository extends EloquentAbstractRepository implements MailInterface
         $mgClient = new Mailgun($api);
 
         $notifyUrl = $this->settings->get('faxbox.notify.send') . "/\\g<phone>";
-
+        
         if($id = $this->settings->get('services.mailgun.routeId')){
             $id = "/".$id;
             $method = "put";
@@ -56,6 +54,9 @@ class MailRepository extends EloquentAbstractRepository implements MailInterface
                     'description' => 'Faxbox Send Fax Route',
                 ]);
         } catch(\Mailgun\Connection\Exceptions\InvalidCredentials $e)
+        {
+            return false;
+        } catch(MissingRequiredParameters $e)
         {
             return false;
         }

@@ -11,17 +11,14 @@
 
     <title>Faxbox</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Custom CSS -->
+	<link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
     <link href="{{ asset('css/plugins/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
 
     <!-- Timeline CSS -->
     <link href="{{ asset('css/plugins/timeline.css') }}" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <link href="{{ asset('css/plugins/morris.css') }}" rel="stylesheet">
@@ -85,13 +82,19 @@
 							<div class="col-sm-12">
 								<h4>Site Url <small>(Required)</small></h4>
 								<p>What is the base url you will use to access the site?</p>
+								@if($local)
 								<fieldset>
 									<div class="form-group {{ ($errors->has('app.url')) ? 'has-error' : '' }}">
 									  <label for="app[url]">{{ trans('install.url') }}</label>
-									  {{ Form::text('app[url]', 'http://', array('class' => 'form-control', 'placeholder' => trans('install.url'))) }}
+									  {{ Form::text('app[url]', $url, array('class' => 'form-control', 'placeholder' => trans('install.url'))) }}
 									  {{ ($errors->has('app.url') ? $errors->first('app.url') : '') }}
 									</div>
 								</fieldset>
+								@else
+								<div class="alert alert-info">
+								$_ENV['app.url'] = {{$_ENV['app.url']}}
+								</div>
+								@endif
 								<hr>
 							</div>
 						</div>
@@ -100,6 +103,7 @@
 							<div class="col-sm-12">
 								<h4>Phaxio API Keys <small>(Required)</small></h4>
 								<p>Your Phaxio api keys can be found in your <a href="http://www.phaxio.com/apiSettings" target="_blank">Phaxio account page</a>.</p>
+								@if($local)
 								<fieldset>
 									<div class="form-group {{ ($errors->has('services.phaxio.public')) ? 'has-error' : '' }}">
 									  <label for="services[phaxio][public]">{{ trans('install.apiPublic') }}</label>
@@ -112,6 +116,12 @@
 									  {{ ($errors->has('services.phaxio.secret') ? $errors->first('services.phaxio.secret') : '') }}
 									</div>
 								</fieldset>
+								@else
+								<div class="alert alert-info">
+								$_ENV['services.phaxio.public'] = {{$_ENV['services.phaxio.public']}}<br>
+								$_ENV['services.phaxio.secret'] = {{$_ENV['services.phaxio.secret']}}
+								</div>
+								@endif
 								<hr>
 							</div>
 						</div>
@@ -150,24 +160,23 @@
                         
                         <div class="row">
 							<div class="col-sm-12">
+								@if($local)
 								<a id="advanced" href="#">Advanced <i class="fa fa-plus-square-o"></i></a>
 								<fieldset id="advanced-settings" style="display:none">
 									<h4>Database Settings</h4>
 									<p>For simplicity we'll use SQLite by default (which requires no configuration). If you want to specify another database driver you may do that here. Please make sure you've created the database first before clicking install.</p>
-									
 									<div class="form-group">
-								    	<label for="database[driver]">{{ trans('install.dbdriver') }}</label>
-										{{ Form::select('database[default]', ['sqlite' => 'SQLite', 'mysql' => 'MySQL'], 'sqlite', array('class' => 'form-control', 'placeholder' => trans('install.dbdriver'))) }}
-										{{ ($errors->has('database.default') ? $errors->first('database.default') : '') }}
+								    	<label for="database[type]">{{ trans('install.dbdriver') }}</label>
+										{{ Form::select('database[type]', ['sqlite' => 'SQLite', 'mysql' => 'MySQL'], 'sqlite', array('class' => 'form-control', 'placeholder' => trans('install.dbdriver'))) }}
+										{{ ($errors->has('database.type') ? $errors->first('database.type') : '') }}
 									</div>
 									
 									<div class="form-group">
-										<label for="database[database]">{{ trans('install.dbname') }}</label>
-										{{ Form::text('database[database]', app_path('database/production.sqlite'), array('class' => 'form-control', 'placeholder' => trans('install.dbname'))) }}
-										{{ ($errors->has('database.database') ? $errors->first('database.database') : '') }}
+										<label class="dbextras mysql" for="database[database]">{{ trans('install.dbname') }}</label>
+										{{ Form::text('database[database]', base_path('userdata/faxbox.sqlite'), array('class' => 'form-control', 'placeholder' => trans('install.dbname'))) }}
 									</div>
 									
-									<div class="dbextras mysql" style="display:none">
+									<div class="dbextras mysql">
 										<div class="form-group">
 											<label for="database[host]">{{ trans('install.dbhost') }}</label>
 											{{ Form::text('database[host]', null, array('class' => 'form-control', 'placeholder' => trans('install.dbhost'))) }}
@@ -189,6 +198,16 @@
 									<br>
 									<a href="#" id="testDB" data-url="checkDBCredentials"><span class="spinner" style="display:none"><i class="fa fa-spinner fa-spin"></i></span> Test DB Settings</a>
 								</fieldset>
+								@else
+								<h4>Database Settings</h4>
+								<div class="alert alert-info">
+								$_ENV['database.type'] = {{$_ENV['database.type']}}<br>
+								$_ENV['database.database'] = {{$_ENV['database.database']}}<br>
+								$_ENV['database.host'] = {{$_ENV['database.host']}}<br>
+								$_ENV['database.username'] = {{$_ENV['database.username']}}<br>
+								$_ENV['database.password'] = {{$_ENV['database.password']}}
+								</div>
+								@endif
 								<br>
 								{{ Form::submit(trans('install.submit'), ['class' => 'btn btn-primary pull-right']) }}
 							</div>
@@ -227,7 +246,7 @@
 			$("#advanced-settings").slideToggle();
 		});
 		
-		if($('select[name="database[default]"]').val() == 'mysql')
+		if($('select[name="database[type]"]').val() == 'mysql')
 		{
 			$("#advanced-settings").show();
 			
@@ -248,11 +267,12 @@
 			doRequest(url, input, $this);
 		});
 		
-		$("select[name='database[default]']").change(function(){
+		$("select[name='database[type]']").change(function(){
 			var driver = $(this).val(); 
 			$('.dbextras').slideUp();
 			$('.dbextras' + '.' + driver).slideDown();
-		});
+		}).change();
+
 	});
 	
 	function doRequest(url, input, element)

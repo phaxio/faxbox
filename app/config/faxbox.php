@@ -2,30 +2,7 @@
 
 return [
 
-    'name' => '',
-    
-    'logo' => '',
-    
-    'colors' => [
-        'sidebar' => '',
-        'link' => '',
-        'text' => '',
-        'background' => '',
-    ],
-    
     'version' => 0.1,
-
-    /*
-	|--------------------------------------------------------------------------
-	| Installed
-	|--------------------------------------------------------------------------
-	|
-	| Pretty simple, whether or not the application has been installed. Setting
-    | this to true after installation poses a security risk. So don't change it
-    | unless you know what you're doing.
-	|
-	*/
-    'installed' => false,
 
     /*
 	|--------------------------------------------------------------------------
@@ -42,8 +19,8 @@ return [
 	|
 	*/
     'notify' => [
-        'fax' => action('NotifyController@fax'),
-        'send' => action('NotifyController@sendFromEmail', ['number' => null])
+        'fax' => safe_getenv('faxbox.notify.fax') ?: action('NotifyController@fax'),
+        'send' => safe_getenv('faxbox.notify.send') ?: action('NotifyController@sendFromEmail', ['number' => null])
     ],
     
     /*

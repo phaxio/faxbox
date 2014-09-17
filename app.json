@@ -1,0 +1,41 @@
+{
+    "name": "FaxBox",
+    "description": "A free, open source consumer fax service!",
+    "keywords": [
+        "fax",
+        "email",
+        "phaxio",
+        "mandrill",
+        "mailgun",
+        "sendgrid"
+    ],
+    "addons": [
+        "heroku-postgresql:dev"
+    ],
+    "env": {
+        "services.phaxio.public": {
+            "description": "Your Phaxio API Key"
+        },
+        "services.phaxio.secret": {
+            "description": "Your Phaxio API Secret"
+        },
+        "app.key": {
+            "description": "Laravel application key",
+            "generator" : "secret"
+        },
+        "app.url": {
+            "description": "The root URL of the application (e.g. http://yourinstall.com/)",
+            "required" : false
+        },
+        "ENVIRONMENT": {
+            "description": "The laravel environment to use",
+            "value" : "heroku"
+        },
+        "USE_LOCAL_STORAGE": {
+            "description": "Should the app configuration and uploaded files to local storage",
+            "value" : "false"
+        }
+    },
+    "repository" : "https://bitbucket.org/hackhouse/faxbox.git",
+    "logo" : "https://avatars3.githubusercontent.com/u/929026?v=2&s=200"
+}

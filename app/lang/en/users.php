@@ -82,7 +82,9 @@ return array(
     
     'changePassword' => "Change Password",
     
-    'deactivated' => "You've been deactivated, please contact support."
+    'deactivated' => "You've been deactivated, please contact support.",
+    
+    'delete' => "Yes, delete this user"
     
     
 
