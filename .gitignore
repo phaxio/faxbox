@@ -11,3 +11,4 @@ public/images/logo.*
 composer.lock
 /bootstrap/compiled.php
 _ide_helper.php
+.vagrant
