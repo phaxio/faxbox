@@ -74,7 +74,10 @@ if( ! function_exists('isUsingLocalStorage'))
     {
         if (!isset($_ENV['USE_LOCAL_STORAGE'])) return true;
 
-        return $_ENV['USE_LOCAL_STORAGE'];
+        if(!$_ENV['USE_LOCAL_STORAGE'] || $_ENV['USE_LOCAL_STORAGE'] === 'false')
+            return false;
+
+        return true;
     }
 }
 
