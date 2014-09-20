@@ -35,7 +35,7 @@
                                 @elseif($fax['in_progress'])
                                 <td><span class="label label-info"><i class="fa fa-spinner fa-spin"></i> In Progress</span></td>
                                 @elseif($fax['message'])
-								<td><span class="label label-danger">Error</span> on {{ $fax['message'] }}</td>
+								<td><span class="label label-danger">Error</span> {{ $fax['message'] }}</td>
                                 @endif
                             @elseif($fax['direction'] == 'received')
 								<td><span class="label label-success">Received</span> on {{ $fax['completed_at'] }}</td>
