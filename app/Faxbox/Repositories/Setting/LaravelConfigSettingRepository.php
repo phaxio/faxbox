@@ -47,7 +47,7 @@ class LaravelConfigSettingRepository extends EloquentAbstractRepository implemen
     {
         if($forceDb) return $this->writeToDb($key, $value);
 
-        if(isset($_ENV['USE_LOCAL_STORAGE']) && !$_ENV['USE_LOCAL_STORAGE'])
+        if(!isUsingLocalStorage())
         {
             // should probably throw exception here. just leave it as false for now.
             return false;
@@ -72,7 +72,7 @@ class LaravelConfigSettingRepository extends EloquentAbstractRepository implemen
         $_ENV[$key] = $value;
 
         //reload the configuration with the changes to the environment
-        \App::getConfigLoader()->load(\App::environment(), $group);
+        \Config::reload($group, $namespace);
     }
 
     private function writeToDb($name, $value)
