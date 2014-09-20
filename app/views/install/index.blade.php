@@ -43,7 +43,7 @@
 	<!-- ./ notifications -->
     <div class="container">
         <div class="row">
-        	{{ Form::open(['action' => 'InstallController@store']) }}
+        	{{ Form::open(['action' => 'InstallController@store', 'id' => 'installForm']) }}
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-default" style="margin-top:100px">
                     <div class="panel-heading">
@@ -146,10 +146,13 @@
 									  {{ Form::text('admin[email]', null, array('class' => 'form-control', 'placeholder' => trans('users.email'))) }}
 									  {{ ($errors->has('email') ? $errors->first('email') : '') }}
 									</div>
-									<div class="form-group {{ ($errors->has('password_confirmation')) ? 'has-error' : '' }}">
+									<div class="form-group {{ ($errors->has('password')) ? 'has-error' : '' }}">
 									  <label for="password">{{ trans('users.password') }}</label>
 									  {{ Form::password('admin[password]', array('class' => 'form-control', 'placeholder' => trans('users.password'))) }}
 									  {{ ($errors->has('password') ? $errors->first('password') : '') }}
+									</div>
+									<div class="form-group {{ ($errors->has('password_confirmation')) ? 'has-error' : '' }}">
+									  <label for="password">Password Confirmation</label>
 									  {{ Form::password('admin[password_confirmation]', array('class' => 'form-control', 'placeholder' => trans('users.passwordconfirmed'))) }}
 									  {{ ($errors->has('password_confirmation') ? $errors->first('password_confirmation') : '') }}
 									</div>
@@ -172,7 +175,7 @@
 									</div>
 									
 									<div class="form-group">
-										<label class="dbextras mysql" for="database[database]">{{ trans('install.dbname') }}</label>
+										<label id="dbname" for="database[database]">{{ trans('install.dbname') }}</label>
 										{{ Form::text('database[database]', base_path('userdata/faxbox.sqlite'), array('class' => 'form-control', 'placeholder' => trans('install.dbname'))) }}
 									</div>
 									
@@ -196,7 +199,7 @@
 										</div>
 									</div>
 									<br>
-									<a href="#" id="testDB" data-url="checkDBCredentials"><span class="spinner" style="display:none"><i class="fa fa-spinner fa-spin"></i></span> Test DB Settings</a>
+									<a href="#" id="testDB"><span class="spinner" style="display:none"><i class="fa fa-spinner fa-spin"></i></span> Test DB Settings</a>
 								</fieldset>
 								@else
 								<h4>Database Settings</h4>
@@ -209,7 +212,7 @@
 								</div>
 								@endif
 								<br>
-								{{ Form::submit(trans('install.submit'), ['class' => 'btn btn-primary pull-right']) }}
+								<button id="installFormSubmit" class="btn btn-primary pull-right">{{trans('install.submit')}}</button>
 							</div>
 						</div>
                         {{ Form::close() }}
@@ -250,30 +253,63 @@
 		{
 			$("#advanced-settings").show();
 			
+			$("#dbname").html('Database Name');
+			
 			$('.dbextras').hide();
 			$('.dbextras.mysql').show();
+		} else
+		{
+			$("#dbname").html('Database Location');
 		}
 		
 		$("#testDB").click(function(e){
 			e.preventDefault();
+			
 			$("#dbCheck").empty();
-			
+                			
 			$("#dbCheck").html("<i class='fa fa-spinner fa-spin'></i>");
-
-			var $this = $(this);
-			var url = $this.data('url');
-			var input = $('input[name^="database"], select[name^="database"]').serialize();
 			
-			doRequest(url, input, $this);
+			testDbCreds($(this));
+		});
+		
+		// We do this so that the db is created before we post the form
+		$("#installFormSubmit").click(function(e){
+			var $submitButton = $(this);
+			$submitButton.attr('disabled', 'disabled');
+			$submitButton.html('Installing...Please Wait');
+			
+			$.when(testDbCreds($submitButton)).done(function(){
+				console.log('done db testing...submitting form');
+				$("#installForm").submit();
+			});
+			
+			e.preventDefault();
+			return false;
 		});
 		
 		$("select[name='database[default]']").change(function(){
 			var driver = $(this).val(); 
 			$('.dbextras').slideUp();
 			$('.dbextras' + '.' + driver).slideDown();
+			
+			if($('select[name="database[default]"]').val() == 'mysql')
+			{
+				$("#dbname").html('Database Name');
+
+			} else
+			{
+				$("#dbname").html('Database Location');
+				
+			}
 		}).change();
 
 	});
+	
+	function testDbCreds($element){
+		var input = $('input[name^="database"], select[name^="database"]').serialize();
+		
+		return doRequest('checkDBCredentials', input, $element);
+	}
 	
 	function doRequest(url, input, element)
 	{
@@ -285,7 +321,7 @@
 			.addClass('fa fa-spinner fa-spin');
 		
 		
-		$.ajax({
+		return $.ajax({
 			url: "/install/" + url,
 			data: input
 		}).done(function(data){

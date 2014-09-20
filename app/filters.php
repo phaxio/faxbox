@@ -126,39 +126,31 @@ Route::filter('csrf', function()
 
 Route::filter('checkInstalled', function($route, $request){
 
-    if(!isUsingLocalStorage())
+    $installed = false;
+    
+    try
     {
-        try
-        {
-            $name = Setting::get('faxbox.name', true);
-        } catch (PDOException $e)
-        {
-            // Make sure we only redirect to install if we're told by mysql the 
-            // DB doesn't exist or table isn't found. We don't want to 
-            // accidentally get here if mysql goes down
-            if (($e->getCode() == '1049' || $e->getCode() == '42S02') && ($request->getRequestUri() != '/install'))
-            {
-                return Redirect::action('InstallController@index');
-            }else
-            {
-                return;
-            }
-        }
-    }else
+        $installed = Setting::get('faxbox.installed', true);
+        
+    } catch (PDOException $e)
     {
-        $exists = file_exists(base_path('userdata/.env.php'));
-
-        if (!$exists){
-            if ($request->getRequestUri() == '/install'){
-                return;
-            }
-            else {
-                return Redirect::action('InstallController@index');
-            }
+        if ($request->getRequestUri() == '/install')
+        {
+            return;
+            
+        }else
+        {
+            return Redirect::to('install');
+            
         }
     }
+
+
+    if(!$installed && ($request->getRequestUri() == '/install')) return;
+
+    if(!$installed) return Redirect::to('install');
     
     // If we've gotten here, then the app is installed. send them to the dashboard
-    if($request->getRequestUri() == '/install') return Redirect::route('home');
+    if($request->getRequestUri() == '/install' && $installed) return Redirect::route('home');
     
 });
