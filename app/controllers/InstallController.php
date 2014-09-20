@@ -173,7 +173,9 @@ class InstallController extends BaseController {
             $this->settings->write('mail.driver', 'sendmail');
             $this->settings->write( 'mail.from.address',
                                     'admin@' . parse_url($data['app']['url'])['host']);
-            $this->settings->write('mail.from.name', $data['name']);
+            // use site name or admin's first/last name
+            $from = $data['name'] ?: $data['admin']['first_name'] . ' ' . $data['admin']['last_name'];
+            $this->settings->write('mail.from.name', $from);
         }
 
         // Write these settings to the database
