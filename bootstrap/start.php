@@ -41,20 +41,23 @@ $app->bindInstallPaths(require __DIR__ . '/paths.php');
 */
 
 $env = $app->detectEnvironment(array(
-	'local' => array('Nicks-MacbookPro-2.local', 'vagrant-centos65.vagrantup.com'),
+	
 ));
 
 //allow environment variables to override environment detection
-if (isset($_ENV['ENVIRONMENT'])){
+if (isset($_ENV['ENVIRONMENT']))
+{
     $env = $_ENV['ENVIRONMENT'];
 }
 
 //see if we have an env file to load
-if (file_exists($app['path.base']. '/userdata/.env.php')){
-    //$envVars = (include $app['path.base']. '/userdata/.env.php');
+if (isUsingLocalStorage() && file_exists($app['path.base']. '/userdata/.env.php'))
+{
     // We have to use eval since include will cache the file and cause redirects to have stale data
     $envVars = eval('?>'.file_get_contents($app['path.base']. '/userdata/.env.php'));
-    foreach($envVars as $key => $val){
+    
+    foreach($envVars as $key => $val)
+    {
         $_ENV[$key] = $val;
     }
 }
