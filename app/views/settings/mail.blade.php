@@ -6,7 +6,7 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
-    @if(isset($_ENV['USE_LOCAL_STORAGE']) && !$_ENV['USE_LOCAL_STORAGE'])
+    @if(!isUsingLocalStorage())
     <div class="row">
 		<div class="alert alert-info">Phaxio mail settings are currently loaded via environment variables because local storage of configuration is disabled.</div>
 	</div>

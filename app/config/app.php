@@ -27,7 +27,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://localhost',
+	'url' => safe_getenv('app.url'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -79,7 +79,7 @@ return array(
 	|
 	*/
 
-	'key' => '',
+	'key' => safe_getenv('app.key'),
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -129,6 +129,7 @@ return array(
         'Faxbox\Providers\FaxServiceProvider',
         'Faxbox\Providers\ValidatorServiceProvider',
         'Faxbox\Providers\NavigationServiceProvider',
+        'Faxbox\Providers\ConfigServiceProvider',
 	),
 
 	/*

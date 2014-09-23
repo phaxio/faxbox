@@ -29,6 +29,11 @@ class SessionController extends BaseController {
     {
         if (Sentry::check()) return Redirect::route('home');
         
+        if(Input::get('installed'))
+        {
+            Session::flash('success', 'Faxbox successfully installed. Please Login below with the account you just created.');
+        }
+        
         return View::make('sessions.login');
     }
 

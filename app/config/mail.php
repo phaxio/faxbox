@@ -15,7 +15,7 @@ return array(
 	|
 	*/
 
-	'driver' => 'sendmail',
+    'driver' => safe_getenv('mail.driver'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'host' => 'smtp.mailgun.org',
+    'host' => safe_getenv('mail.host'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -41,7 +41,7 @@ return array(
 	|
 	*/
 
-	'port' => '587',
+    'port' => safe_getenv('mail.port'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => '', 'name' => ''),
+    'from' => array('address' => safe_getenv('mail.from.address'), 'name' => safe_getenv('mail.from.name')),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => '',
+    'username' => safe_getenv('mail.username'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-	'password' => '',
+    'password' => safe_getenv('mail.password'),
 
 	/*
 	|--------------------------------------------------------------------------

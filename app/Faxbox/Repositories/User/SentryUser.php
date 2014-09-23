@@ -2,7 +2,6 @@
 namespace Faxbox\Repositories\User;
 
 use Cartalyst\Sentry\Sentry;
-//use Faxbox\Repositories\Permission\PermissionInterface as Permissions;
 use Faxbox\Repositories\Permission\PermissionInterface;
 use Illuminate\Support\Str;
 
@@ -212,7 +211,13 @@ class SentryUser implements UserInterface {
         {
             // Find the user using the user id
             $user = $this->sentry->findUserById($id);
-
+            
+            // Only delete user if they have no faxes.
+            if(count($user->faxes))
+            {
+                return false;
+            }
+            
             // Delete the user
             $user->delete();
         }
@@ -469,6 +474,7 @@ class SentryUser implements UserInterface {
         try
         {
             $user = $this->sentry->findUserById($id);
+            $user->load('faxes');
         }
         catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
         {
@@ -484,7 +490,6 @@ class SentryUser implements UserInterface {
         {
             // Get the current active/logged in user
             $user = \Sentry::findUserByLogin($username);
-            \Log::info(print_r($user, true));
             return $user->getId();
         }
         catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)

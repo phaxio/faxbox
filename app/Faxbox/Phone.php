@@ -32,10 +32,12 @@ class Phone extends Eloquent {
     
     public function getNumberAttribute($value)
     {
+        $value = cleanPhone($value);
+        
         $phoneUtil = PhoneNumberUtil::getInstance();
 
         try {
-            $number = $phoneUtil->parse($value, $this->country_code ?: "US");
+            $number = $phoneUtil->parse($value, null);
         } catch (\libphonenumber\NumberParseException $e) {
             return $value;
         }

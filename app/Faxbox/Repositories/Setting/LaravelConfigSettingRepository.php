@@ -46,6 +46,12 @@ class LaravelConfigSettingRepository extends EloquentAbstractRepository implemen
     public function write($key, $value, $forceDb = false)
     {
         if($forceDb) return $this->writeToDb($key, $value);
+
+        if(!isUsingLocalStorage())
+        {
+            // should probably throw exception here. just leave it as false for now.
+            return false;
+        }
         
         list($namespace, $group, $item) = $this->config->parseKey($key);
 
@@ -66,7 +72,7 @@ class LaravelConfigSettingRepository extends EloquentAbstractRepository implemen
         $_ENV[$key] = $value;
 
         //reload the configuration with the changes to the environment
-        \App::getConfigLoader()->load(\App::environment(), $group);
+        \Config::reload($group, $namespace);
     }
 
     private function writeToDb($name, $value)

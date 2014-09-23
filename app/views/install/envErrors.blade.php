@@ -8,18 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <meta name="csrf-token" content="{{ Session::token() }}">
 
-    <title>{{ Setting::get('faxbox.name', true) ?: 'Faxbox' }}</title>
+    <title>Faxbox</title>
 
     <!-- Custom CSS -->
 	<link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
     <link href="{{ asset('css/plugins/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
-
-    <!-- DataTables CSS -->
-    <link href="{{ asset('css/plugins/dataTables.bootstrap.css') }}" rel="stylesheet">
 
     <!-- Timeline CSS -->
     <link href="{{ asset('css/plugins/timeline.css') }}" rel="stylesheet">
@@ -36,38 +32,23 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    @yield('head')
+
 </head>
 
 <body>
 
 <div id="wrapper">
+    <div class="container">
+        <div class="row">
+        	<div class="alert alert-danger">
+        		@foreach($envErrors as $e)
+        		{{ $e }}<br>
+        		@endforeach
+        	</div>
+        </div>
+    </div>
 
-<!-- Notifications -->
-@include('partials.notifications')
-<!-- ./ notifications -->
-
-@include('partials.topnav')
-
-@include('partials.sidebar')
-
-@yield('content')
-    
 </div>
-
-<!-- jQuery Version 1.11.0 -->
-<script src="{{ asset('js/jquery-1.11.0.js') }}"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
-
-<!-- Metis Menu Plugin JavaScript -->
-<script src="{{ asset('js/plugins/metisMenu/metisMenu.min.js') }}"></script>
-
-<!-- Custom Theme JavaScript -->
-<script src="{{ asset('js/sb-admin-2.js') }}"></script>
-
-@yield('scripts', '')
 
 @include('partials.footer')
 

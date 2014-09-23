@@ -28,8 +28,7 @@ class AddEmailPrefsToUsers extends Migration {
 	{
 		Schema::table('users', function(Blueprint $table)
 		{
-			$table->dropColumn('sent_notification');
-            $table->dropColumn('received_notification');
+            $table->dropColumn(['received_notification', 'sent_notification']);
 		});
 	}
 

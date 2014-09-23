@@ -22,32 +22,18 @@ class Number extends Eloquent {
 
     public function getNumberAttribute($value)
     {
+        if(!$value) return "Restricted";
+        
         $phoneUtil = PhoneNumberUtil::getInstance();
         
-        $value = $this->clean($value);
+        $value = cleanPhone($value);
         
         try {
-            $number = $phoneUtil->parse($value, $this->country_code ?: "");
+            $number = $phoneUtil->parse($value, null);
         } catch (\libphonenumber\NumberParseException $e) {
             return $value;
         }
         return $phoneUtil->format($number, PhoneNumberFormat::INTERNATIONAL);
     }
-
-    private function clean($number){
-        $startsWithPlus = substr($number, 0, 1) === '+';
-        $number = preg_replace ('/[^\d]/', '', $number);
-
-        if ($startsWithPlus){
-            $number = '+' . $number;
-        }
-        else if (strlen($number) == 10){
-            $number = '+1' . $number;
-        }
-        else {
-            $number = '+' . $number;
-        }
-
-        return $number;
-    }
+    
 }

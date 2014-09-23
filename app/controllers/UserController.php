@@ -276,6 +276,13 @@ class UserController extends BaseController {
     
     public function deactivate($id)
     {
+        if($this->user->isAdmin($id))
+        {
+            Session::flash('error', "You cannot deactivate the superuser");
+
+            return Redirect::action('UserController@index');
+        }
+        
         $result = $this->user->deactivate($id);
 
         if ($result['success'])

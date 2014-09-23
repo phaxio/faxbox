@@ -126,11 +126,31 @@ Route::filter('csrf', function()
 
 Route::filter('checkInstalled', function($route, $request){
 
-    $exists = file_exists(base_path('userdata/.env.php'));
-
-    if( !$exists && ($request->getRequestUri() != '/install') ){
-        return Redirect::action('InstallController@index');
+    $installed = false;
+    
+    try
+    {
+        $installed = Setting::get('faxbox.installed', true);
         
+    } catch (PDOException $e)
+    {
+        if ($request->getRequestUri() == '/install')
+        {
+            return;
+            
+        }else
+        {
+            return Redirect::to('install');
+            
+        }
     }
+
+
+    if(!$installed && ($request->getRequestUri() == '/install')) return;
+
+    if(!$installed) return Redirect::to('install');
+    
+    // If we've gotten here, then the app is installed. send them to the dashboard
+    if($request->getRequestUri() == '/install' && $installed) return Redirect::route('home');
     
 });

@@ -29,17 +29,22 @@
                         <td>{{ $user['email'] }}</td>
                         <td>{{ $user['first_name'] }} {{ $user['last_name'] }}</td>
                         
-                            @if($user['activated'])
+						@if(Sentry::findUserById($user['id'])->isSuperUser())
+						<td><span class='label label-success'>Activated</span></td>
+						<td></td>
+						
+						@elseif($user['activated'])
                         <td><span class='label label-success'>Activated</span></td>
                         <td class="text-right"><a href="{{ action('UserController@deactivate', ['id' => $user['id']]) }}">Deactivate</a></td>
-                            @else
+						
+						@else
                         <td>
                             <span class='label label-danger'>Inactive</span>
                         </td>
                         <td class="text-right">
                         	{{ link_to_route('resendActivationForm', trans('users.resend'), ['email' => $user['email']]) }}
                         </td>
-                            @endif
+						@endif
                     </tr>
                     @endforeach
                     </tbody>

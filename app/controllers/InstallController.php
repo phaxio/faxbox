@@ -29,7 +29,48 @@ class InstallController extends BaseController {
         $fullUrl = Request::fullUrl();
         $url = substr($fullUrl, 0, strpos($fullUrl, '/install'));
         
-        return View::make('install.index', compact('url'));
+        $local = true;
+        if(!isUsingLocalStorage())
+        {
+            $local = false;
+            $keys = [
+                'database.database',
+                'database.default',
+                'database.host',
+                'database.username',
+                'database.password',
+                'app.key',
+                'app.url',
+                'services.phaxio.public',
+                'services.phaxio.secret',
+                'mail.driver',
+                'mail.from.address',
+                'mail.from.name',
+                'mail.host',
+                'mail.port',
+                'mail.username',
+                'mail.password',
+                'services.mailgun.domain',
+                'services.mailgun.secret',
+            ];
+            
+            $envErrors = [];
+            foreach($keys as $key)
+            {
+                if(!isset($_ENV[$key]))
+                {
+                    $envErrors[] = "The key <strong>$key</strong> must be set in your environment variables";
+                }else
+                {
+                    $env[$key] = $_ENV[$key];
+                }
+            }
+
+            if($envErrors) return View::make('install.envErrors', compact('envErrors'));
+
+        }
+        
+        return View::make('install.index', compact('url', 'env', 'local'));
     }
 
 
@@ -38,6 +79,7 @@ class InstallController extends BaseController {
         $data = Input::all();
         Input::flash();
 
+        // Preliminary checks
         if( !($this->checkVersion()->getData()->status &&
             $this->checkExtension('mcrypt')->getData()->status &&
             $this->checkExtension('intl')->getData()->status &&
@@ -48,47 +90,55 @@ class InstallController extends BaseController {
             return Redirect::action('InstallController@index');
         }
 
-        if(!$data['services']['phaxio']['public'])
+        // General checks
+        if(isUsingLocalStorage())
         {
-            Session::flash('error', 'Your Phaxio api keys are required. Please get them from <a href="http://www.phaxio.com/apiSettings">your account</a> to continue.');
-            return Redirect::action('InstallController@index')->withErrors(['services.phaxio.public' => 'Your public and secret key are required.']);
-        }
 
-        if(!$data['services']['phaxio']['secret'])
-        {
-            Session::flash('error', 'Your Phaxio api keys are required. Please get them from <a href="http://www.phaxio.com/apiSettings">your account</a> to continue.');
-            return Redirect::action('InstallController@index')->withErrors(['services.phaxio.secret' => 'Your public and secret key are required.']);
-        }
+            if (!$data['services']['phaxio']['public'])
+            {
+                Session::flash('error',
+                    'Your Phaxio api keys are required. Please get them from <a href="http://www.phaxio.com/apiSettings" target="_blank">your account</a> to continue.');
 
-        if(!$data['app']['url'])
-        {
-            Session::flash('error', 'The Site URL is required.');
-            return Redirect::action('InstallController@index')->withErrors(['app.url' => 'The Site URL is required']);
-        }
-        
-        $dbresult = $this->checkDBCredentials($data)->getData();
-        if($dbresult->message)
-        {
-            Session::flash('error', 'Your database credentials are incorrect:<br>' . $dbresult->message);
-            return Redirect::action('InstallController@index');
-        }
+                return Redirect::action('InstallController@index')
+                               ->withErrors(['services.phaxio.public' => 'Your public and secret key are required.']);
+            }
 
-        //setup our DB stuff
-        $driver = $data['database']['default'];
-        unset($data['database']['default']);
+            if (!$data['services']['phaxio']['secret'])
+            {
+                Session::flash('error',
+                    'Your Phaxio api keys are required. Please get them from <a href="http://www.phaxio.com/apiSettings" target="_blank">your account</a> to continue.');
 
-        // rearrange data
-        $db['database']         = $data['database'];
-        $db['database']['type'] = $driver;
+                return Redirect::action('InstallController@index')
+                               ->withErrors(['services.phaxio.secret' => 'Your public and secret key are required.']);
+            }
 
+            if (!$data['app']['url'])
+            {
+                Session::flash('error', 'The Site URL is required.');
 
-        $db = array_dot($db);
+                return Redirect::action('InstallController@index')
+                               ->withErrors(['app.url' => 'The Site URL is required']);
+            }
 
-        // write our DB config
-        foreach ($db as $key => $value)
-        {
-            if (!$value) continue;
-            $this->settings->write($key, $value);
+            $dbresult = $this->checkDBCredentials($data)->getData();
+            if ($dbresult->message)
+            {
+                Session::flash('error',
+                    'Your database credentials are incorrect:<br>' . $dbresult->message);
+
+                return Redirect::action('InstallController@index');
+            }
+
+            // reformat data
+            $db['database'] = $data['database'];
+            $db = array_dot($db);
+
+            // write our DB config
+            foreach ($db as $key => $value)
+            {
+                if (!$value) continue;
+                $this->settings->write($key, $value);
+            }
         }
 
         // Run our migrations
@@ -96,33 +146,49 @@ class InstallController extends BaseController {
         exec("php $artisan migrate --package=cartalyst/sentry --force");
         exec("php $artisan migrate --force");
 
-        // Create our user
+        // Create our superuser
         $data['admin']['permissions']['superuser'] = 1;
         $data['admin']['activate']                 = true;
         $result                                    = $this->registerForm->save($data['admin']);
 
+        // Did the user get created? If not return with error
         if(!$result['success'])
         {
-            Session::set('error', trans('install.generalerror'));
+            Session::flash('error', trans('install.generalerror'));
             return Redirect::action('InstallController@index')->withErrors($this->registerForm->errors());
         }
+        
+        // Write our settings to the .env file
+        if(isUsingLocalStorage())
+        {
+            // write our other settings
+            $this->settings->write('app.key', Str::random(32));
+            $this->settings->write('app.url', $data['app']['url']);
+            $this->settings->write( 'services.phaxio.public',
+                                    $data['services']['phaxio']['public']);
+            $this->settings->write( 'services.phaxio.secret',
+                                    $data['services']['phaxio']['secret']);
 
+            // sensible mail settings
+            $this->settings->write('mail.driver', 'sendmail');
+            $this->settings->write( 'mail.from.address',
+                                    'admin@' . parse_url($data['app']['url'])['host']);
+            // use site name or admin's first/last name
+            $from = $data['name'] ?: $data['admin']['first_name'] . ' ' . $data['admin']['last_name'];
+            $this->settings->write('mail.from.name', $from);
+        }
 
-        // write our other settings
-        $this->settings->write('app.key', Str::random(32));
-        $this->settings->write('app.url', $data['app']['url']);
+        // Write these settings to the database
         $this->settings->write('faxbox.name', $data['name'], true);
-        $this->settings->write('services.phaxio.public', $data['services']['phaxio']['public']);
-        $this->settings->write('services.phaxio.secret', $data['services']['phaxio']['secret']);
-
-        // sensible mail settings
-        $this->settings->write('mail.driver', 'sendmail');
-        $this->settings->write('mail.from.address', 'admin@'.parse_url($data['app']['url'])['host']);
-        $this->settings->write('mail.from.name', $data['name']);
-
-
-        Session::flash('success', "Faxbox successfully installed. Please Login below with the account you just created.");
-        return Redirect::to('login');
+        $this->settings->write('faxbox.installed', 1, true);
+        
+        // installed=true is a workaround to make the success message display. Since we
+        // effectively change the app.key during install, laravel will make a 
+        // new session for the user. But it's currently writing to the old
+        // session, so we can't use Session::flash() here.
+        // For people using ENV vars this isn't an issue but we'll do it this 
+        // way all the same to keep it consistent.
+        return Redirect::route('login', ['installed' => 'true']);
     }
 
     public function checkVersion()
@@ -192,7 +258,9 @@ class InstallController extends BaseController {
             } else{
                 $dbh = new PDO("sqlite:".$data['database']['database']);
             }
-
+            
+            $dbh = null;
+            
             return Response::json([
                 'status' => true,
                 'message' => ''

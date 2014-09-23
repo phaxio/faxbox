@@ -6183,7 +6183,7 @@ body {
   #page-wrapper {
     position: inherit;
     margin: 0 0 0 250px;
-    padding: 0 30px;
+    padding: 0px 30px 50px 30px;
     border-left: 1px solid #e7e7e7;
   }
 }
@@ -6446,4 +6446,10 @@ img.faxImage {
   box-shadow: 1px 1px 1px black;
   -webkit-box-shadow: 1px 1px 1px black;
   -moz-box-shadow: 1px 1px 1px black;
+}
+td.status small {
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

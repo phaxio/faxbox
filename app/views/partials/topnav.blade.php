@@ -14,11 +14,7 @@
     @endif
     
     <a class="navbar-brand" href="{{ route('home') }}">
-    @if(Setting::get('faxbox.name'))
-    {{ Setting::get('faxbox.name') }}
-    @else
-	Faxbox
-    @endif
+    {{ Setting::get('faxbox.name', true) ?: 'Faxbox' }}
     </a>
 </div>
 <!-- /.navbar-header -->
