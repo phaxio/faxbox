@@ -47,12 +47,22 @@ class NotifyController extends BaseController {
             \Log::info(print_r($fax, true));
         }
 
-
+		// Check if we've already recorded this fax notification. If notify has 
+	    // recorded something the competed_at column will be non-null
+	    $data['id']           = isset($fax['tags']['id']) ? $fax['tags']['id'] : null;
+	    
+	    $storedFax = $this->faxes->byId($data['id'], false);
+	    if($storedFax && $storedFax->completed_at != null)
+	    {
+		    \Log::info('this notification has already been recorded: '.$storedFax->id);
+		    return Response::make('', 200);
+	    }
+	    
+	    
 //        if ($response->isSuccess())
 //        {
-        $data['id']           = isset($fax['tags']['id']) ? $fax['tags']['id'] : null;
-        $data['phaxio_id']    = $fax['id'];
-        $data['pages']        = $fax['num_pages'];
+	    $data['phaxio_id']    = $fax['id'];
+	    $data['pages']        = $fax['num_pages'];
         $data['direction']    = $fax['direction'];
         $data['completed_at'] = isset($fax['completed_at']) ?
                                 date('Y-m-d H:i:s', $fax['completed_at']) :
@@ -73,7 +83,7 @@ class NotifyController extends BaseController {
 
         if ($data['direction'] == 'sent')
         {
-            $faxItem = $this->faxes->update($data);
+	        $faxItem = $this->faxes->update($data);
         } else
         {
             $data['number'] = $fax['from_number'];
