@@ -49,15 +49,17 @@ class NotifyController extends BaseController {
 
 		// Check if we've already recorded this fax notification. If notify has 
 	    // recorded something the competed_at column will be non-null
-	    $data['id']           = isset($fax['tags']['id']) ? $fax['tags']['id'] : null;
+	    $data['id'] = isset($fax['tags']['id']) ? $fax['tags']['id'] : null;
 	    
-	    $storedFax = $this->faxes->byId($data['id'], false);
-	    if($storedFax && $storedFax->completed_at != null)
-	    {
-		    \Log::info('this notification has already been recorded: '.$storedFax->id);
-		    return Response::make('', 200);
-	    }
-	    
+        if($data['id'])
+        {
+            $storedFax = $this->faxes->byId($data['id'], false);
+            if($storedFax && $storedFax->completed_at != null)
+            {
+                \Log::info('this notification has already been recorded: '.$storedFax->id);
+                return Response::make('', 200);
+            }    
+        }
 	    
 //        if ($response->isSuccess())
 //        {
