@@ -199,7 +199,7 @@ class NotifyController extends BaseController {
         return $error;
     }
     
-    public function alreadySeen($id)
+    private function alreadySeen($id)
     {
         \Log::info('this notification has already been recorded: '.$id);
         return Response::make('', 200);
