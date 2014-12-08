@@ -209,27 +209,31 @@ class NotifyController extends BaseController {
     {
         $id = isset($fax['tags']['id']) ? $fax['tags']['id'] : null;
 
-        try
+        if($id)
         {
-            $storedFax = $this->faxes->byId($id, false);
+            try
+            {
+                $storedFax = $this->faxes->byId($id, false);
 
-            if($storedFax->completed_at != null)
-                return true;
+                if($storedFax && $storedFax->completed_at != null)
+                    return true;
 
-        } catch(ModelNotFoundException $e)
+            } catch(ModelNotFoundException $e)
+            {
+                return false;
+            }
+        } else 
         {
-            // do nothing, continue on to record this fax
-        }
+            try
+            {
+                $receivedFax = $this->faxes->byRemoteId($fax['id'], false);
 
-        try
-        {
-            $receivedFax = $this->faxes->byRemoteId($fax['id'], false);
-
-            if($receivedFax)
-                return true;
-        } catch(ModelNotFoundException $e)
-        {
-            // do nothing, continue on to record this fax
+                if($receivedFax)
+                    return true;
+            } catch(ModelNotFoundException $e)
+            {
+                return false;
+            }
         }
         
         return false;
