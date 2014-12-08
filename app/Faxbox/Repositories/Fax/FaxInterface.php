@@ -14,6 +14,8 @@ interface FaxInterface {
     public function findByUserId($userId);
 
     public function byId($id, $checkAccess = true);
+    
+    public function byRemoteId($id, $checkAccess = true);
 
     public function download($id, $type = 'l');
 
