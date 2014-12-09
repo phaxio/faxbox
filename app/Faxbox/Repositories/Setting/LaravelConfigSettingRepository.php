@@ -62,6 +62,10 @@ class LaravelConfigSettingRepository extends EloquentAbstractRepository implemen
             $content = file_get_contents($path);
         
         $array = eval('?>'.$content);
+        
+        // convert . to _ since some configs don't like . in env vars
+        $key = str_replace('.', '_', $key);
+        
         $array[$key] = $value;
 
         $string = "<?php\n\nreturn ".var_export($array, true).";";
