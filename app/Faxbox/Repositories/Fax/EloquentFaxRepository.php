@@ -90,6 +90,22 @@ class EloquentFaxRepository extends EloquentAbstractRepository implements FaxInt
         return $fax;
     }
 
+    public function byRemoteId($id, $checkAccess = true)
+    {
+        $fax = $this->model
+            ->with(['number', 'phone', 'user'])
+            ->where('phaxio_id', '=', $id)
+            ->first();
+
+        if ($checkAccess)
+        {
+            $userId = $this->users->loggedInUserId();
+            $this->canAccess($fax, $userId);
+        }
+
+        return $fax;
+    }
+
     protected function canAccess(Fax $fax, $userId)
     {
         if ($this->users->isAdmin($userId)) return true;

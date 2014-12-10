@@ -3,6 +3,7 @@ if( ! function_exists('safe_getenv'))
 {
     function safe_getenv($name)
     {
+        $name = str_replace('.', '_', $name);
         return isset($_ENV[$name]) ? $_ENV[$name] : null;
     }
 }

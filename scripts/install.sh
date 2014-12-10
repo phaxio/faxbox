@@ -10,7 +10,7 @@ curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
 chmod +x /usr/local/bin/composer
 mkdir -p /var/www
 cd /var/www
-[ -d faxbox ] || git clone https://jnankin@bitbucket.org/hackhouse/faxbox.git
+[ -d faxbox ] || git clone https://bitbucket.org/hackhouse/faxbox.git
 cd faxbox
 composer install
 chmod -R 777 app/storage

@@ -4,6 +4,7 @@ use Faxbox\External\Api\FaxInterface as FaxApi;
 use Faxbox\Repositories\Fax\FaxInterface;
 use Faxbox\Repositories\User\UserInterface as Users;
 use Faxbox\Service\Form\Fax\FaxForm;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class NotifyController extends BaseController {
 
@@ -47,12 +48,17 @@ class NotifyController extends BaseController {
             \Log::info(print_r($fax, true));
         }
 
-
+		// Check if we've already recorded this fax notification. If notify has 
+	    // recorded something the competed_at column will be non-null
+	    if($this->hasBeenRecorded($fax))
+            return $this->alreadySeen($fax['id']);
+             
+	    
 //        if ($response->isSuccess())
 //        {
         $data['id']           = isset($fax['tags']['id']) ? $fax['tags']['id'] : null;
-        $data['phaxio_id']    = $fax['id'];
-        $data['pages']        = $fax['num_pages'];
+	    $data['phaxio_id']    = $fax['id'];
+	    $data['pages']        = $fax['num_pages'];
         $data['direction']    = $fax['direction'];
         $data['completed_at'] = isset($fax['completed_at']) ?
                                 date('Y-m-d H:i:s', $fax['completed_at']) :
@@ -73,7 +79,7 @@ class NotifyController extends BaseController {
 
         if ($data['direction'] == 'sent')
         {
-            $faxItem = $this->faxes->update($data);
+	        $faxItem = $this->faxes->update($data);
         } else
         {
             $data['number'] = $fax['from_number'];
@@ -191,6 +197,46 @@ class NotifyController extends BaseController {
         }
 
         return $error;
+    }
+    
+    private function alreadySeen($id)
+    {
+        \Log::info('this notification has already been recorded: '.$id);
+        return Response::make('', 200);
+    }
+    
+    private function hasBeenRecorded($fax)
+    {
+        $id = isset($fax['tags']['id']) ? $fax['tags']['id'] : null;
+
+        if($id)
+        {
+            try
+            {
+                $storedFax = $this->faxes->byId($id, false);
+
+                if($storedFax && $storedFax->completed_at != null)
+                    return true;
+
+            } catch(ModelNotFoundException $e)
+            {
+                return false;
+            }
+        } else 
+        {
+            try
+            {
+                $receivedFax = $this->faxes->byRemoteId($fax['id'], false);
+
+                if($receivedFax)
+                    return true;
+            } catch(ModelNotFoundException $e)
+            {
+                return false;
+            }
+        }
+        
+        return false;
     }
 
 }
