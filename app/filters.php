@@ -162,9 +162,10 @@ App::before(function($request)
     try
     {
         $settings = Faxbox\Setting::all();
+        $config = App::make('Faxbox\Repositories\Setting\ConfigRepository');
         
         foreach($settings as $setting)
-            Config::set($setting->name, $setting->value);
+            $config->set($setting->name, $setting->value);
         
     } catch ( \Illuminate\Database\QueryException $e )
     {
