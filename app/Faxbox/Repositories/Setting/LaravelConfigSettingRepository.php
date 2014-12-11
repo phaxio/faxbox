@@ -35,15 +35,14 @@ class LaravelConfigSettingRepository extends EloquentAbstractRepository implemen
     private function findKeyValue($key, $forceEnvFile)
     {
         // If this name exists in a config file, return that
-        //$setting = $this->config->get($key);
-        $setting = \Config::get($key); // Need to use Config cause the filter will not write to this instance.
-        if($setting !== null && !$forceEnvFile) return $setting;
+        $setting = $this->config->get($key);
+        if($setting !== null && !$forceEnvFile) 
+            return $setting;
+        elseif($forceEnvFile)
+            return safe_getenv($key);
+        else
+            return $this->model->select('value')->where('name', '=', $key)->pluck('value');
 
-        // otherwise  we'll check env file
-        return safe_getenv($key);
-        
-//        $result = $this->model->select('value')->where('name', '=', $key)->lists('value');
-//        return isset($result[0]) ? $result[0] : null;
     }
 
     public function write($key, $value, $forceEnvFile = false)
