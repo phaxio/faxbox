@@ -15,7 +15,7 @@ return array(
 	|
 	*/
 
-    'driver' => '', // This will be fetched from the settings table
+    'driver' => null, // This will be fetched from the settings table
 
 	/*
 	|--------------------------------------------------------------------------
@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-    'host' => '', // This will be fetched from the settings table
+    'host' => null, // This will be fetched from the settings table
 
 	/*
 	|--------------------------------------------------------------------------
@@ -41,7 +41,7 @@ return array(
 	|
 	*/
 
-    'port' => '', // This will be fetched from the settings table
+    'port' => null, // This will be fetched from the settings table
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-    'from' => array('address' => safe_getenv('mail.from.address'), 'name' => safe_getenv('mail.from.name')),
+    'from' => null, // This will be fetched from the settings table
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-    'username' => '', // This will be fetched from the settings table
+    'username' => null, // This will be fetched from the settings table
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-    'password' => '', // This will be fetched from the settings table
+    'password' => null, // This will be fetched from the settings table
 
 	/*
 	|--------------------------------------------------------------------------

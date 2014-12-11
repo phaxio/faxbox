@@ -27,7 +27,7 @@ return array(
 	|
 	*/
 
-	'url' => '', // This will be fetched from the settings table
+	'url' => null, // This will be fetched from the settings table
 
 	/*
 	|--------------------------------------------------------------------------
@@ -79,7 +79,7 @@ return array(
 	|
 	*/
 
-	'key' => '', // This will be fetched from the settings table
+	'key' => null, // This will be fetched from the settings table
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 

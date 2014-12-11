@@ -15,12 +15,12 @@ return [
     */
 
     'phaxio'   => [
-        'public' => '', // This will be fetched from the settings table
-        'secret' => '', // This will be fetched from the settings table
+        'public' => null, // This will be fetched from the settings table
+        'secret' => null, // This will be fetched from the settings table
     ],
     
     'mailgun'  => [
-        'domain' => '', // This will be fetched from the settings table
-        'secret' => '', // This will be fetched from the settings table
+        'domain' => null, // This will be fetched from the settings table
+        'secret' => null, // This will be fetched from the settings table
     ],
 ];
