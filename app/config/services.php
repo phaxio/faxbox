@@ -15,12 +15,12 @@ return [
     */
 
     'phaxio'   => [
-        'public' => safe_getenv('services.phaxio.public'),
-        'secret' => safe_getenv('services.phaxio.secret'),
+        'public' => '', // This will be fetched from the settings table
+        'secret' => '', // This will be fetched from the settings table
     ],
     
     'mailgun'  => [
-        'domain' => safe_getenv('services.mailgun.domain'),
-        'secret' => safe_getenv('services.mailgun.secret'),
+        'domain' => '', // This will be fetched from the settings table
+        'secret' => '', // This will be fetched from the settings table
     ],
 ];

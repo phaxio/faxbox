@@ -4,7 +4,8 @@ use Faxbox\Repositories\EloquentAbstractRepository;
 use Faxbox\Setting;
 use Illuminate\Config\Repository;
 
-class LaravelConfigSettingRepository extends EloquentAbstractRepository implements SettingInterface {
+class LaravelConfigSettingRepository extends EloquentAbstractRepository implements SettingInterface
+{
 
     protected $config;
     protected $model;
@@ -15,44 +16,39 @@ class LaravelConfigSettingRepository extends EloquentAbstractRepository implemen
         $this->model = $setting;
     }
     
-    public function get($keys, $forceDb = false)
+    public function get($keys, $forceEnvFile = false)
     {
         if(is_string($keys))
         {
-            return $this->findKeyValue($keys, $forceDb);
+            return $this->findKeyValue($keys, $forceEnvFile);
         }
         
         $result = [];
         foreach($keys as $key)
         {
-            $result[$key] = $this->findKeyValue($key, $forceDb);
+            $result[$key] = $this->findKeyValue($key, $forceEnvFile);
         }
         
         return $result;
     }
 
-    private function findKeyValue($key, $forceDb)
+    private function findKeyValue($key, $forceEnvFile)
     {
         // If this name exists in a config file, return that
         $setting = $this->config->get($key);
-        if($setting !== null && !$forceDb) return $setting;
+        if($setting !== null && !$forceEnvFile) return $setting;
 
-        // otherwise  we'll check the db
-        $result = $this->model->select('value')->where('name', '=', $key)->lists('value');
-
-        return isset($result[0]) ? $result[0] : null;
+        // otherwise  we'll check env file
+        return safe_getenv($key);
+        
+//        $result = $this->model->select('value')->where('name', '=', $key)->lists('value');
+//        return isset($result[0]) ? $result[0] : null;
     }
 
-    public function write($key, $value, $forceDb = false)
+    public function write($key, $value, $forceEnvFile = false)
     {
-        if($forceDb) return $this->writeToDb($key, $value);
+        if(!$forceEnvFile) return $this->writeToDb($key, $value);
 
-        if(!isUsingLocalStorage())
-        {
-            // should probably throw exception here. just leave it as false for now.
-            return false;
-        }
-        
         list($namespace, $group, $item) = $this->config->parseKey($key);
 
         $path = base_path("userdata/.env.php");
@@ -97,7 +93,7 @@ class LaravelConfigSettingRepository extends EloquentAbstractRepository implemen
     }
 
 
-    public function writeArray($keyValue, $forceDb = false)
+    public function writeArray($keyValue, $forceEnvFile = false)
     {
         // sometimes passed in by forms
         unset($keyValue['_token']);
@@ -107,7 +103,7 @@ class LaravelConfigSettingRepository extends EloquentAbstractRepository implemen
         
         foreach($keyValue as $key => $value)
         {
-            $this->write($key, $value, $forceDb);
+            $this->write($key, $value, $forceEnvFile);
         }
     }
 }

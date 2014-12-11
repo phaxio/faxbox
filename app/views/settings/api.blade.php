@@ -22,11 +22,6 @@
         <!-- /.col-lg-12 -->
     </div>
 
-	@if(!isUsingLocalStorage())
-	<div class="row">
-		<div class="alert alert-info">Phaxio API keys are currently loaded via environment variables because local storage of configuration is disabled.</div>
-	</div>
-	@else
 	<div class="row">
 		{{ Form::open(array('action' => 'SettingController@updateFaxApi')) }}
 		<div class="col-md-5">
@@ -51,6 +46,5 @@
     {{ Form::submit(trans('general.update'), array('class' => 'btn btn-primary')) }}
 
     {{ Form::close() }}
-	@endif
 </div>
 @stop

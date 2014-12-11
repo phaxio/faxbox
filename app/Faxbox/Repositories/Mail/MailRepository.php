@@ -23,7 +23,7 @@ class MailRepository extends EloquentAbstractRepository implements MailInterface
             && $routeId = $this->updateMailgun($input['services']['mailgun']['secret'], $input['services']['mailgun']['domain'])
         )
         {
-            $this->settings->write('services.mailgun.routeId', $routeId, true);
+            $this->settings->write('services.mailgun.routeId', $routeId);
         }
     }
     

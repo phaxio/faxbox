@@ -27,7 +27,7 @@ return array(
 	|
 	*/
 
-	'url' => safe_getenv('app.url'),
+	'url' => '', // This will be fetched from the settings table
 
 	/*
 	|--------------------------------------------------------------------------
@@ -79,7 +79,7 @@ return array(
 	|
 	*/
 
-	'key' => safe_getenv('app.key'),
+	'key' => '', // This will be fetched from the settings table
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 

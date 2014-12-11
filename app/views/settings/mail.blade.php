@@ -6,11 +6,6 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
-    @if(!isUsingLocalStorage())
-    <div class="row">
-		<div class="alert alert-info">Phaxio mail settings are currently loaded via environment variables because local storage of configuration is disabled.</div>
-	</div>
-	@else
     <div class="row">
         {{ Form::open(array('action' => 'SettingController@updateMail')) }}
 		<div class="col-md-12">
@@ -106,7 +101,6 @@
     {{ Form::submit(trans('general.update'), array('class' => 'btn btn-primary')) }}
 
     {{ Form::close() }}
-    @endif
 </div>
 @stop
 

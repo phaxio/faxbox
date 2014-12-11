@@ -130,7 +130,7 @@ Route::filter('checkInstalled', function($route, $request){
     
     try
     {
-        $installed = Setting::get('faxbox.installed', true);
+        $installed = Setting::get('faxbox.installed');
         
     } catch (PDOException $e)
     {
@@ -152,5 +152,26 @@ Route::filter('checkInstalled', function($route, $request){
     
     // If we've gotten here, then the app is installed. send them to the dashboard
     if($request->getRequestUri() == '/install' && $installed) return Redirect::route('home');
+    
+});
+
+// Initialize our DB settings in the app
+App::before(function($request)
+{
+    // Set our config from the DB
+    try
+    {
+        $settings = Faxbox\Setting::all();
+        
+        foreach($settings as $setting)
+            Config::set($setting->name, $setting->value);
+        
+    } catch ( \Illuminate\Database\QueryException $e )
+    {
+        // fail silently since the DB probably isn't setup 
+    } catch ( PDOException $e )
+    {
+        // fail silently since the DB probably isn't setup
+    }
     
 });

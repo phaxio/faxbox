@@ -82,7 +82,6 @@
 							<div class="col-sm-12">
 								<h4>Site Url <small>(Required)</small></h4>
 								<p>What is the base url you will use to access the site?</p>
-								@if($local)
 								<fieldset>
 									<div class="form-group {{ ($errors->has('app.url')) ? 'has-error' : '' }}">
 									  <label for="app[url]">{{ trans('install.url') }}</label>
@@ -90,11 +89,6 @@
 									  {{ ($errors->has('app.url') ? $errors->first('app.url') : '') }}
 									</div>
 								</fieldset>
-								@else
-								<div class="alert alert-info">
-								$_ENV['app.url'] = {{$_ENV['app.url']}}
-								</div>
-								@endif
 								<hr>
 							</div>
 						</div>
@@ -103,7 +97,6 @@
 							<div class="col-sm-12">
 								<h4>Phaxio API Keys <small>(Required)</small></h4>
 								<p>Your Phaxio api keys can be found in your <a href="http://www.phaxio.com/apiSettings" target="_blank">Phaxio account page</a>.</p>
-								@if($local)
 								<fieldset>
 									<div class="form-group {{ ($errors->has('services.phaxio.public')) ? 'has-error' : '' }}">
 									  <label for="services[phaxio][public]">{{ trans('install.apiPublic') }}</label>
@@ -116,12 +109,6 @@
 									  {{ ($errors->has('services.phaxio.secret') ? $errors->first('services.phaxio.secret') : '') }}
 									</div>
 								</fieldset>
-								@else
-								<div class="alert alert-info">
-								$_ENV['services.phaxio.public'] = {{$_ENV['services.phaxio.public']}}<br>
-								$_ENV['services.phaxio.secret'] = {{$_ENV['services.phaxio.secret']}}
-								</div>
-								@endif
 								<hr>
 							</div>
 						</div>
@@ -204,11 +191,11 @@
 								@else
 								<h4>Database Settings</h4>
 								<div class="alert alert-info">
-								$_ENV['database.default'] = {{$_ENV['database.default']}}<br>
-								$_ENV['database.database'] = {{$_ENV['database.database']}}<br>
-								$_ENV['database.host'] = {{$_ENV['database.host']}}<br>
-								$_ENV['database.username'] = {{$_ENV['database.username']}}<br>
-								$_ENV['database.password'] = {{$_ENV['database.password']}}
+								$_ENV['database_default'] = {{$_ENV['database_default']}}<br>
+								$_ENV['database_database'] = {{$_ENV['database_database']}}<br>
+								$_ENV['database_host'] = {{$_ENV['database_host']}}<br>
+								$_ENV['database_username'] = {{$_ENV['database_username']}}<br>
+								$_ENV['database_password'] = {{$_ENV['database_password']}}
 								</div>
 								@endif
 								<br>

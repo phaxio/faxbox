@@ -89,7 +89,7 @@ class SettingController extends BaseController {
         }
         
         
-        $this->settings->writeArray($data, true);
+        $this->settings->writeArray($data);
 
         Session::flash('success', "Appearance settings successfully updated");
         return Redirect::action('SettingController@editAppearance');
@@ -102,7 +102,7 @@ class SettingController extends BaseController {
             'services.phaxio.secret'
         ]);
 
-        $this->view('settings.api', compact('settings'));
+        $this->view('settings.api', compact('settings'), true);
     }
 
     public function updateFaxApi()
